@@ -1,7 +1,7 @@
-using _Project._Screpts.GameItems.Enemy.Conteiner;
-using _Project._Screpts.GameItems.GameLevels;
+using _Project._Screpts.GameItems.EnemyComponents;
+using _Project._Screpts.GameItems.GameLevels.Levels;
 using _Project._Screpts.GameItems.PlayerObjects;
-using _Project._Screpts.GameStateMashine.States;
+using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
@@ -10,18 +10,24 @@ using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.MoveItems;
 using _Project._Screpts.Services.PauseSystem;
 using _Project._Screpts.UI;
+using _Project.Screpts.GameItems.GameLevel;
+using _Project.Screpts.GameStateMashine.States;
+using _Project.Screpts.Services.Conteiner;
+using _Project.Screpts.Services.Factory;
+using _Project.Screpts.Services.Level;
 using Services;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project._Screpts.GameStateMashine.EntryPoint
 {
     public class ProjectContext : MonoInstaller
     {
-        [SerializeField] private EnemyConteiner _enemyConteiner;
-        [SerializeField] private ConteinerLevels _conteinerLevelsPrefab;
+        [SerializeField] private GameItemsConteiner<Enemy> _enemyConteiner;
+        [FormerlySerializedAs("_levelPrefab")] [SerializeField] private GameLevel gameLevelPrefab;
         [SerializeField] private CameraFollow cameraFollow;
-        [SerializeField] private PlayerObjectConteiner _playerObjectConteiner;
+        [SerializeField] private GameItemsConteiner<MoveObject> _playerObjectConteiner;
         [SerializeField] private GameUI _gameUI;
 
         private GameFSM _gameFSM;
@@ -102,9 +108,9 @@ namespace _Project._Screpts.GameStateMashine.EntryPoint
 
         private void RegisterConteiners(DiContainer container)
         {
-            container.Bind<PlayerObjectConteiner>().FromInstance(_playerObjectConteiner).AsSingle();
-            container.Bind<ConteinerLevels>().FromInstance(_conteinerLevelsPrefab).AsSingle();
-            container.Bind<EnemyConteiner>().FromInstance(_enemyConteiner).AsSingle();
+            container.Bind<GameItemsConteiner<MoveObject>>().FromInstance(_playerObjectConteiner).AsSingle();
+            container.Bind<GameLevel>().FromInstance(gameLevelPrefab).AsSingle();
+            container.Bind<GameItemsConteiner<Enemy>>().FromInstance(_enemyConteiner).AsSingle();
         }
     }
 }

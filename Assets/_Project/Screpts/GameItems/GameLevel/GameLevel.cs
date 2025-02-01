@@ -1,11 +1,10 @@
-﻿using System;
 using System.Collections.Generic;
+using _Project._Screpts.GameItems.GameLevels.Levels;
 using UnityEngine;
 
-namespace _Project._Screpts.GameItems.GameLevels.Levels
+namespace _Project.Screpts.GameItems.GameLevel
 {
-    [Serializable]
-    public abstract class BaseLevel : MonoBehaviour
+    public class GameLevel : MonoBehaviour
     {
         [SerializeField] private List<Transform> _pointsPlayerObject;
         [SerializeField] private List<Transform> _pointsEnemy;

@@ -1,11 +1,11 @@
-﻿using _Project._Screpts.GameItems.GameLevels;
+﻿using _Project._Screpts.GameStateMashine;
 using _Project._Screpts.Interfaces;
 using _Project._Screpts.LoadSystem;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace _Project._Screpts.GameStateMashine.States
+namespace _Project.Screpts.GameStateMashine.States
 {
     public class LoadingState : IGameState
     {
@@ -13,7 +13,7 @@ namespace _Project._Screpts.GameStateMashine.States
         private LoadingService _loadingService;
 
         [Inject]
-        public void Constructor(GameFSM gameFsm, ConteinerLevels conteinerLevelsPrefab, LoadingService loadingService)
+        public void Constructor(GameFSM gameFsm,LoadingService loadingService)
         {
             _gameFsm = gameFsm;
             _loadingService = loadingService;

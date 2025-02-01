@@ -1,10 +1,11 @@
-﻿using _Project._Screpts.Interfaces;
+﻿using _Project._Screpts.GameStateMashine;
+using _Project._Screpts.Interfaces;
 using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
 using Zenject;
 
-namespace _Project._Screpts.GameStateMashine.States
+namespace _Project.Screpts.GameStateMashine.States
 {
     public class GameOverState : IGameState
     {

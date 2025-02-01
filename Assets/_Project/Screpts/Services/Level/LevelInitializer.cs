@@ -1,52 +1,53 @@
 ﻿using System.Collections.Generic;
 using _Project._Screpts.GameItems.EnemyComponents;
-using _Project._Screpts.GameItems.GameLevels;
-using _Project._Screpts.GameItems.GameLevels.Levels;
 using _Project._Screpts.GameItems.PlayerObjects;
 using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project._Screpts.Services.Factory;
+using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.MoveItems;
 using _Project._Screpts.UI;
+using _Project.Screpts.GameItems.GameLevel;
+using _Project.Screpts.Services.Factory;
+using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
 
-namespace _Project._Screpts.Services.Level
+namespace _Project.Screpts.Services.Level
 {
     public class LevelInitializer
     {
-        private ConteinerLevels _conteinerLevels;
+        private GameLevel _levelPrefab;
         private FactoryPlayerObjects _factoryPlayerObjects;
         private EnemyFactory _enemyFactory;
-        private DiContainer _container;
+        private IInstantiator _instantiator;
         private LevelWinHandle _levelWinHandle;
         private List<MoveObject> _moveObjects = new();
         private List<Enemy> _enemies = new();
 
-        private BaseLevel _levelInstance;
+        private GameLevel _gameLevelInstance;
 
         [Inject]
-        public void Construct(ConteinerLevels conteinerLevels, FactoryPlayerObjects factoryPlayerObjects,
+        public void Construct(GameLevel levelPrefab, FactoryPlayerObjects factoryPlayerObjects,
             EnemyFactory enemyFactory, LevelWinHandle levelWinHandle, DiContainer container)
         {
-            _conteinerLevels = conteinerLevels;
+            _levelPrefab = levelPrefab;
             _factoryPlayerObjects = factoryPlayerObjects;
             _enemyFactory = enemyFactory;
-            _container = container;
+            _instantiator = container;
             _levelWinHandle = levelWinHandle;
         }
 
-        public void InitializeLevel(CameraFollow cameraFollow, GameUI gameUI, MovePlayerItems movePlayerItems)
+        public void InitializeLevel(CameraFollow cameraFollow, GameUI gameUI, MovePlayerItems movePlayerItems,
+            Transform parent)
         {
-            _levelInstance = Object.Instantiate(_conteinerLevels.GetLevel());
-            _levelInstance.ExitZone.OnEnterObject += _levelWinHandle.CheckWin;
-            _container.Inject(_levelInstance);
-            _container.Inject(_levelInstance.ExitZone);
-            var moveObject = AddPlayerObjects(_levelInstance);
-            AddEnemy(_levelInstance);
+            _gameLevelInstance = _instantiator.InstantiatePrefabForComponent<GameLevel>(_levelPrefab, parent);
+            _gameLevelInstance.ExitZone.OnEnterObject += _levelWinHandle.CheckWin;
+            var moveObject = AddPlayerObjects(_gameLevelInstance);
+            AddEnemy(_gameLevelInstance);
             SetItemInSystem(moveObject, cameraFollow, gameUI, movePlayerItems);
         }
 
-        private MoveObject AddPlayerObjects(BaseLevel levelInstance)
+        private MoveObject AddPlayerObjects(GameLevel levelInstance)
         {
             var playerInstanceItemOne = _factoryPlayerObjects.CreateMoveableObject(0);
             _moveObjects.Add(playerInstanceItemOne);
@@ -59,7 +60,7 @@ namespace _Project._Screpts.Services.Level
             return playerInstanceItemOne;
         }
 
-        private void AddEnemy(BaseLevel levelInstance)
+        private void AddEnemy(GameLevel levelInstance)
         {
             var enemyInstanceOne = _enemyFactory.InstanceEnemy(0);
             _enemies.Add(enemyInstanceOne);
@@ -83,12 +84,12 @@ namespace _Project._Screpts.Services.Level
 
         public void DestroyObject()
         {
-            _levelInstance.ExitZone.OnEnterObject -= _levelWinHandle.CheckWin;
+            _gameLevelInstance.ExitZone.OnEnterObject -= _levelWinHandle.CheckWin;
             ClearCollections();
 
             _moveObjects = new List<MoveObject>();
             _enemies = new List<Enemy>();
-            Object.Destroy(_levelInstance.gameObject);
+            Object.Destroy(_gameLevelInstance.gameObject);
         }
 
         private void ClearCollections()

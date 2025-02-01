@@ -1,14 +1,14 @@
 ﻿using _Project._Screpts.Interfaces;
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
-using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.MoveItems;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Screpts.Services.Level;
 using Services;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.GameStateMashine.States
+namespace _Project.Screpts.GameStateMashine.States
 {
     public class GamePlayState : IGameState, IFixedTickable
     {
@@ -44,10 +44,11 @@ namespace _Project._Screpts.GameStateMashine.States
         {
             var cameraFollowConteiner = new GameObject("CameraFollow");
             var UIConteiner = new GameObject("UI");
+            var levelConteiner = new GameObject("Level");
             var gameUIInstance = _gameUIFactory.InstanceGUI(UIConteiner.transform);
             var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(cameraFollowConteiner.transform);
             _switchObjectService.SubscribeElements(cameraFollowInstance, _movePlayerItems, gameUIInstance);
-            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movePlayerItems);
+            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movePlayerItems,levelConteiner.transform);
             _pauseService.SetUI(gameUIInstance);
         }
 

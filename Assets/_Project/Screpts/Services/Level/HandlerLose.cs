@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project._Screpts.GameStateMashine;
-using _Project._Screpts.GameStateMashine.States;
+using _Project.Screpts.GameStateMashine.States;
 using Zenject;
 
 namespace _Project._Screpts.Services

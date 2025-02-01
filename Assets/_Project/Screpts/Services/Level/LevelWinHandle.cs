@@ -1,5 +1,5 @@
 ﻿using _Project._Screpts.GameStateMashine;
-using _Project._Screpts.GameStateMashine.States;
+using _Project.Screpts.GameStateMashine.States;
 using UnityEngine;
 using Zenject;
 

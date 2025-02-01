@@ -1,4 +1,4 @@
-﻿using _Project._Screpts.GameStateMashine.States;
+﻿using _Project.Screpts.GameStateMashine.States;
 using Zenject;
 
 namespace _Project._Screpts.GameStateMashine.EntryPoint

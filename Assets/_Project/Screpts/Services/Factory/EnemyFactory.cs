@@ -1,23 +1,22 @@
-﻿using _Project._Screpts.GameItems.Enemy;
-using _Project._Screpts.GameItems.Enemy.Conteiner;
-using _Project._Screpts.GameItems.EnemyComponents;
+﻿using _Project._Screpts.GameItems.EnemyComponents;
 using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Screpts.Services.Conteiner;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.Services.Factory
+namespace _Project.Screpts.Services.Factory
 {
     public class EnemyFactory
     {
-        private EnemyConteiner _enemyConteiner;
+        private GameItemsConteiner<Enemy> _enemyConteiner;
         private SaveService _saveService;
         private LoadingService _loadingService;
         private PauseService _pauseService;
 
         [Inject]
-        public void Construct(EnemyConteiner enemyConteiner, SaveService saveService, LoadingService loadingService, PauseService pauseService)
+        public void Construct(GameItemsConteiner<Enemy> enemyConteiner, SaveService saveService, LoadingService loadingService, PauseService pauseService)
         {
             _enemyConteiner = enemyConteiner;
             _saveService = saveService;
@@ -28,7 +27,7 @@ namespace _Project._Screpts.Services.Factory
 
         public Enemy InstanceEnemy(int itemId)
         {
-            var instanceObject = Object.Instantiate(_enemyConteiner.GetItem(itemId));
+            var instanceObject = Object.Instantiate(_enemyConteiner.GetObject(itemId));
             _saveService.AddSaveItem(instanceObject);
             _loadingService.AddLoadingItem(instanceObject);
             _pauseService.AddPauseItem(instanceObject);
