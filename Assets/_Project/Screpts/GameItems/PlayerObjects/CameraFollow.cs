@@ -1,5 +1,6 @@
 ﻿using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project._Screpts.Interfaces;
+using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using UnityEngine;
 
 namespace _Project._Screpts.GameItems.PlayerObjects

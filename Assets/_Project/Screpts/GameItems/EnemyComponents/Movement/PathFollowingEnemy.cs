@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Project._Screpts.GameItems.EnemyComponents.Movement
 {
-    [RequireComponent(typeof(EnemyComponents.Enemy))]
+    [RequireComponent(typeof(Screpts.GameItems.EnemyComponents.Enemy))]
     public class PathFollowingEnemy : MonoBehaviour
     {
         [SerializeField] private float _patrolDistance;
@@ -12,9 +12,9 @@ namespace _Project._Screpts.GameItems.EnemyComponents.Movement
 
         private Vector3 _startPosition;
         private Vector3 _direction = Vector3.forward;
-        private EnemyComponents.Enemy _enemy;
+        private Screpts.GameItems.EnemyComponents.Enemy _enemy;
 
-        private void Awake() => _enemy = GetComponent<EnemyComponents.Enemy>();
+        private void Awake() => _enemy = GetComponent<Screpts.GameItems.EnemyComponents.Enemy>();
 
 
         private void Start()

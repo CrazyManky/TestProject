@@ -1,11 +1,13 @@
 using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
+using _Project._Screpts.UI;
 using _Project._Screpts.UI.HPBar;
+using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.UI
+namespace _Project.Screpts.UI
 {
     public class GameUI : MonoBehaviour
     {

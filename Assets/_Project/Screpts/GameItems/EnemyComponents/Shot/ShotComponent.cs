@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Project._Screpts.GameItems.Enemy.Shot
 {
-    [RequireComponent(typeof(EnemyComponents.Enemy))]
+    [RequireComponent(typeof(Screpts.GameItems.EnemyComponents.Enemy))]
     public class ShotComponent : MonoBehaviour
     {
         [SerializeField] private ShotingZone _shotingZone;

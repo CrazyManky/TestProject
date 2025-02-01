@@ -3,9 +3,9 @@ using _Project._Screpts.Interfaces;
 using _Project._Screpts.SaveSystem;
 using UnityEngine;
 
-namespace _Project._Screpts.GameItems.PlayerObjects.MoveItems
+namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
 {
-    public abstract class MoveObject : MonoBehaviour, IDamageProvaider, ISaveAndLoad
+    public abstract class MoveObject : MonoBehaviour, IDamageProvaider, ISaveAndLoad, IDestroyGameElement
     {
         [SerializeField] protected MoveableObjectData MoveableObjectData;
         [SerializeField] protected float Speed;
@@ -54,6 +54,11 @@ namespace _Project._Screpts.GameItems.PlayerObjects.MoveItems
         {
             var data = new SaveData(MoveableObjectData.KeyItem, MoveableObjectData.Health, transform.position);
             return data;
+        }
+
+        public void DestroyItem()
+        {
+            Destroy(gameObject);
         }
     }
 }

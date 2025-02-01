@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace _Project._Screpts.GameItems.Enemy.Movement
 {
-    [RequireComponent(typeof(EnemyComponents.Enemy))]
+    [RequireComponent(typeof(Screpts.GameItems.EnemyComponents.Enemy))]
     public class PersecutionObject : MonoBehaviour
     {
         [SerializeField] private FieldView _fieldView;
         [SerializeField] private float _speed;
         [SerializeField] private int _damage;
 
-        private EnemyComponents.Enemy _enemy;
+        private Screpts.GameItems.EnemyComponents.Enemy _enemy;
         private Transform _target;
 
         private void OnEnable()
@@ -22,7 +22,7 @@ namespace _Project._Screpts.GameItems.Enemy.Movement
 
         private void Awake()
         {
-            _enemy = GetComponent<EnemyComponents.Enemy>();
+            _enemy = GetComponent<Screpts.GameItems.EnemyComponents.Enemy>();
         }
 
         private void SetTarget(Transform target)

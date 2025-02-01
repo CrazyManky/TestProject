@@ -1,8 +1,7 @@
 ﻿using System;
-using _Project._Screpts.GameItems.Enemy;
 using UnityEngine;
 
-namespace _Project._Screpts.GameItems.PlayerObjects
+namespace _Project.Screpts.GameItems.PlayerObjects
 {
     [Serializable]
     public struct MoveableObjectData 

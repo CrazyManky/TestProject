@@ -3,9 +3,9 @@ using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services.PauseSystem;
 using UnityEngine;
 
-namespace _Project._Screpts.GameItems.EnemyComponents
+namespace _Project.Screpts.GameItems.EnemyComponents
 {
-    public class Enemy : MonoBehaviour, ISaveAndLoad, IPausable
+    public class Enemy : MonoBehaviour, ISaveAndLoad, IPausable, IDestroyGameElement
     {
         [SerializeField] private string _keyItem;
         public string KeyItem => _keyItem;
@@ -33,5 +33,10 @@ namespace _Project._Screpts.GameItems.EnemyComponents
 
         public void Pause() => PauseAcitve = true;
         public void Continue() => PauseAcitve = false;
+
+        public void DestroyItem()
+        {
+            Destroy(gameObject);
+        }
     }
 }

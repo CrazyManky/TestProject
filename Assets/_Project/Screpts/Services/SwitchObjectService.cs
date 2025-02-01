@@ -3,6 +3,8 @@ using _Project._Screpts.GameItems.PlayerObjects;
 using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project._Screpts.Services.MoveItems;
 using _Project._Screpts.UI;
+using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
+using _Project.Screpts.UI;
 using Zenject;
 
 namespace _Project._Screpts.Services
