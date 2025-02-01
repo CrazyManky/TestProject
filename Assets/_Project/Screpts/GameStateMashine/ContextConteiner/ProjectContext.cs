@@ -1,34 +1,31 @@
-using _Project._Screpts.GameItems.EnemyComponents;
-using _Project._Screpts.GameItems.GameLevels.Levels;
 using _Project._Screpts.GameItems.PlayerObjects;
-using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
+using _Project._Screpts.GameStateMashine;
+using _Project._Screpts.GameStateMashine.EntryPoint;
 using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
 using _Project._Screpts.Services.Level;
-using _Project._Screpts.Services.MoveItems;
 using _Project._Screpts.Services.PauseSystem;
-using _Project._Screpts.UI;
 using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.GameItems.GameLevel;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.GameStateMashine.States;
 using _Project.Screpts.Services.Conteiner;
 using _Project.Screpts.Services.Factory;
+using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
+using _Project.Screpts.Services.MoveItems;
 using _Project.Screpts.UI;
-using Services;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
-namespace _Project._Screpts.GameStateMashine.EntryPoint
+namespace _Project.Screpts.GameStateMashine.ContextConteiner
 {
     public class ProjectContext : MonoInstaller
     {
         [SerializeField] private GameItemsConteiner<Enemy> _enemyConteiner;
-        [FormerlySerializedAs("_levelPrefab")] [SerializeField] private GameLevel gameLevelPrefab;
+        [SerializeField] private GameLevel gameLevelPrefab;
         [SerializeField] private CameraFollow cameraFollow;
         [SerializeField] private GameItemsConteiner<MoveObject> _playerObjectConteiner;
         [SerializeField] private GameUI _gameUI;
@@ -42,8 +39,6 @@ namespace _Project._Screpts.GameStateMashine.EntryPoint
             RegisterServices(Container);
             RegisterFactories(Container);
             RegisterConteiners(Container);
-            RegisterTickItems(Container);
-            RegisterFixedTickItems(Container);
             RegisterGameObjects(Container);
             CreateGameFsm(Container);
             DontDestroyOnLoad(this);
@@ -69,20 +64,10 @@ namespace _Project._Screpts.GameStateMashine.EntryPoint
             container.Bind<GameOverState>().AsTransient();
         }
 
-        private void RegisterTickItems(DiContainer container)
-        {
-            container.Bind<ITickable>().To<InputHandler>().FromResolve();
-        }
-
-        private void RegisterFixedTickItems(DiContainer container)
-        {
-            container.Bind<IFixedTickable>().To<GamePlayState>().FromResolve();
-        }
 
         private void RegisterServices(DiContainer container)
         {
-            container.Bind<IInputMovement>().To<InputMovement>().AsSingle();
-            container.Bind<IInputGamePlayActionHandler>().To<GamePlayInput>().AsSingle();
+            container.BindInterfacesAndSelfTo<InputHandler>();
             container.Bind<LevelInitializer>().AsSingle();
             container.Bind<InputHandler>().AsSingle();
             container.Bind<SaveService>().AsSingle();

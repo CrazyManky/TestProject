@@ -1,9 +1,10 @@
 ﻿using _Project._Screpts.Interfaces;
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
-using _Project._Screpts.Services.MoveItems;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
+using _Project.Screpts.Services.MoveItems;
 using Services;
 using UnityEngine;
 using Zenject;
@@ -37,7 +38,7 @@ namespace _Project.Screpts.GameStateMashine.States
         public void EnterState()
         {
             InitGamePlay();
-            AddActionInput();
+            _inputHandler.Initialize();
         }
 
         private void InitGamePlay()
@@ -48,15 +49,9 @@ namespace _Project.Screpts.GameStateMashine.States
             var gameUIInstance = _gameUIFactory.InstanceGUI(UIConteiner.transform);
             var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(cameraFollowConteiner.transform);
             _switchObjectService.SubscribeElements(cameraFollowInstance, _movePlayerItems, gameUIInstance);
-            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movePlayerItems,levelConteiner.transform);
+            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movePlayerItems,
+                levelConteiner.transform);
             _pauseService.SetUI(gameUIInstance);
-        }
-
-
-        private void AddActionInput()
-        {
-            _inputHandler.GamePlayInput.AddActionGamePlay(KeyCode.Tab, _switchObjectService.SwitchObject);
-            _inputHandler.GamePlayInput.AddActionGamePlay(KeyCode.Escape, _pauseService.PauseExecute);
         }
 
         public void FixedTick() => _movePlayerItems.FixedTick();
@@ -65,8 +60,6 @@ namespace _Project.Screpts.GameStateMashine.States
         public void ExitState()
         {
             _cameraFollowFactory.DestroyCameraFollow();
-            _inputHandler.GamePlayInput.RemoveActionGamePlay(KeyCode.Tab);
-            _inputHandler.GamePlayInput.RemoveActionGamePlay(KeyCode.Escape);
             _levelInitializer.DestroyObject();
             _gameUIFactory.DestroyGameUI();
             _switchObjectService.UnsubscribeElements();

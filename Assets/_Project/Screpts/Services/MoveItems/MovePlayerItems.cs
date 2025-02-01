@@ -1,9 +1,8 @@
-﻿using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
-using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
-using Services;
+﻿using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
+using _Project.Screpts.Services.Inputs;
 using Zenject;
 
-namespace _Project._Screpts.Services.MoveItems
+namespace _Project.Screpts.Services.MoveItems
 {
     public class MovePlayerItems
     {
@@ -23,10 +22,10 @@ namespace _Project._Screpts.Services.MoveItems
 
         public void FixedTick()
         {
-            if (_activeItem  == null)
+            if (_activeItem == null)
                 return;
-            
-            _activeItem.Move(_inputHandler.InputMovement.MoveDirection);
+
+            _activeItem.Move(_inputHandler.MoveDirection);
         }
     }
 }
