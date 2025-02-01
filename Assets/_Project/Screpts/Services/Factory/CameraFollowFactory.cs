@@ -1,4 +1,5 @@
 ﻿using _Project._Screpts.GameItems.PlayerObjects;
+using _Project.Screpts.GameItems.PlayerObjects;
 using UnityEngine;
 using Zenject;
 

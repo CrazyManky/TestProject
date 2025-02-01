@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.PauseSystem;
-using Services;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Zenject;
 
 namespace _Project.Screpts.Services.Inputs
 {
-    public class InputHandler : ITickable, IFixedTickable, IPausable
+    public class InputHandler : ITickable, IPausable
     {
         private Dictionary<KeyCode, Action> _keyActions;
         private bool _pauseActivated = false;
@@ -35,6 +33,7 @@ namespace _Project.Screpts.Services.Inputs
 
         public void Tick()
         {
+            HandleActionKey();
             if (_pauseActivated)
                 return;
 
@@ -42,13 +41,11 @@ namespace _Project.Screpts.Services.Inputs
             MoveDirection = direaction;
         }
 
-        public void FixedTick()
-        {
-            HandleActionKey();
-        }
-
         private void HandleActionKey()
         {
+            if (_keyActions is null)
+                return;
+
             foreach (var keyAction in _keyActions)
             {
                 if (Input.GetKeyDown(keyAction.Key))

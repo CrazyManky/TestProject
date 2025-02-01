@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using _Project._Screpts.GameItems.GameLevels.Levels;
+using _Project._Screpts.Interfaces;
 using UnityEngine;
 
 namespace _Project.Screpts.GameItems.GameLevel
 {
-    public class GameLevel : MonoBehaviour
+    public class GameLevel : MonoBehaviour, IDestroyGameElement
     {
         [SerializeField] private List<Transform> _pointsPlayerObject;
         [SerializeField] private List<Transform> _pointsEnemy;
@@ -36,6 +37,11 @@ namespace _Project.Screpts.GameItems.GameLevel
             }
 
             return Vector3.zero;
+        }
+
+        public void DestroyItem()
+        {
+            Destroy(gameObject);
         }
     }
 }

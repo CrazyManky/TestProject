@@ -1,7 +1,7 @@
-﻿using _Project.Screpts.GameStateMashine.States;
-using Zenject;
+﻿using _Project._Screpts.GameStateMashine;
+using _Project.Screpts.GameStateMashine.States;
 
-namespace _Project._Screpts.GameStateMashine.EntryPoint
+namespace _Project.Screpts.GameStateMashine.EntryPoint
 {
     public class EntryPoint
     {

@@ -1,6 +1,5 @@
 using _Project._Screpts.GameItems.PlayerObjects;
 using _Project._Screpts.GameStateMashine;
-using _Project._Screpts.GameStateMashine.EntryPoint;
 using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
@@ -9,6 +8,7 @@ using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.PauseSystem;
 using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.GameItems.GameLevel;
+using _Project.Screpts.GameItems.PlayerObjects;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.GameStateMashine.States;
 using _Project.Screpts.Services.Conteiner;
@@ -31,7 +31,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
         [SerializeField] private GameUI _gameUI;
 
         private GameFSM _gameFSM;
-        private EntryPoint _entryPoint;
+        private EntryPoint.EntryPoint _entryPoint;
 
         public override void InstallBindings()
         {
@@ -46,7 +46,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
 
         private void Start()
         {
-            _entryPoint = new EntryPoint(_gameFSM);
+            _entryPoint = new EntryPoint.EntryPoint(_gameFSM);
             _entryPoint.Start();
         }
 
@@ -60,16 +60,15 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
         private void RegisterStates(DiContainer container)
         {
             container.Bind<LoadingState>().AsTransient();
-            container.Bind<GamePlayState>().AsTransient();
+            container.BindInterfacesAndSelfTo<GamePlayState>().AsTransient();
             container.Bind<GameOverState>().AsTransient();
         }
 
 
         private void RegisterServices(DiContainer container)
         {
-            container.BindInterfacesAndSelfTo<InputHandler>();
+            container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
             container.Bind<LevelInitializer>().AsSingle();
-            container.Bind<InputHandler>().AsSingle();
             container.Bind<SaveService>().AsSingle();
             container.Bind<LoadingService>().AsSingle();
             container.Bind<PauseService>().AsSingle();

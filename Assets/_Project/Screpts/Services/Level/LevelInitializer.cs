@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
-using _Project._Screpts.GameItems.EnemyComponents;
-using _Project._Screpts.GameItems.PlayerObjects;
 using _Project._Screpts.Interfaces;
 using _Project._Screpts.Services.Level;
 using _Project.Screpts.GameItems.GameLevel;
+using _Project.Screpts.GameItems.PlayerObjects;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.Services.Factory;
 using _Project.Screpts.Services.MoveItems;
 using _Project.Screpts.UI;
 using UnityEngine;
 using Zenject;
-using Object = UnityEngine.Object;
 
 namespace _Project.Screpts.Services.Level
 {
@@ -41,6 +39,7 @@ namespace _Project.Screpts.Services.Level
         {
             _gameLevelInstance = _instantiator.InstantiatePrefabForComponent<GameLevel>(_levelPrefab, parent);
             _gameLevelInstance.ExitZone.OnEnterObject += _levelWinHandle.CheckWin;
+            _destroyGameElements.Add(_gameLevelInstance);
             var moveObject = AddPlayerObjects(_gameLevelInstance);
             AddEnemy(_gameLevelInstance);
             SetItemInSystem(moveObject, cameraFollow, gameUI, movePlayerItems);
@@ -85,7 +84,6 @@ namespace _Project.Screpts.Services.Level
         {
             _gameLevelInstance.ExitZone.OnEnterObject -= _levelWinHandle.CheckWin;
             ClearCollections();
-            Object.Destroy(_gameLevelInstance.gameObject);
         }
 
         private void ClearCollections()
@@ -95,6 +93,7 @@ namespace _Project.Screpts.Services.Level
                 if (item != null)
                     item.DestroyItem();
             });
+            _destroyGameElements.Clear();
         }
     }
 }
