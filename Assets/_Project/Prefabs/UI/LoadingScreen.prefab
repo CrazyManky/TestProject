@@ -350,7 +350,7 @@ MonoBehaviour:
   _buttonSave: {fileID: 8136275561048020478}
   _buttonLoad: {fileID: 8036046531165341229}
   _saveListContainer: {fileID: 3409927173870430574}
-  _saveButtonPrefab: {fileID: 3224494773714656767, guid: f396c0077a3f9c44ea0082066a1b6f46, type: 3}
+  _saveButtonPrefab: {fileID: 5618294040881275869, guid: f396c0077a3f9c44ea0082066a1b6f46, type: 3}
 --- !u!1 &4511829827274263058
 GameObject:
   m_ObjectHideFlags: 0

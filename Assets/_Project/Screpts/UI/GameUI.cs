@@ -1,9 +1,6 @@
-using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
-using _Project._Screpts.LoadSystem;
-using _Project._Screpts.SaveSystem;
-using _Project._Screpts.UI;
 using _Project._Screpts.UI.HPBar;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
+using _Project.Screpts.UI.SaveAndLoadUI;
 using UnityEngine;
 using Zenject;
 
@@ -12,18 +9,16 @@ namespace _Project.Screpts.UI
     public class GameUI : MonoBehaviour
     {
         [SerializeField] private HealtBar _hpBar;
-        [SerializeField] private SaveAndLoadScreen _saveScreen;
+        [SerializeField] private SaveAndLoadView saveView;
 
         private MoveObject _subscribedObject;
-        private SaveAndLoadScreen _saveScreenInstance;
-        private SaveService _saveService;
-        private LoadingService _loadingService;
+        private SaveAndLoadView _saveViewInstance;
+        private SaveAndLoadModel _saveAndLoadModel;
 
         [Inject]
-        public void Construct(SaveService saveService, LoadingService loadingService)
+        public void Construct(SaveAndLoadModel saveAndLoadModel)
         {
-            _saveService = saveService;
-            _loadingService = loadingService;
+            _saveAndLoadModel = saveAndLoadModel;
         }
 
         public void SubscribeInObject(MoveObject moveObject)
@@ -38,14 +33,16 @@ namespace _Project.Screpts.UI
 
         public void ShowSaveScreen()
         {
-            if (_saveScreenInstance != null)
+            if (_saveViewInstance != null)
             {
-                Destroy(_saveScreenInstance.gameObject);
+                Destroy(_saveViewInstance.gameObject);
                 return;
             }
 
-            _saveScreenInstance = Instantiate(_saveScreen, transform);
-            _saveScreenInstance.Constructor(_saveService, _loadingService);
+            _saveViewInstance = Instantiate(saveView, transform);
+            var prestenter = new SaveAndLoadPresenter(_saveAndLoadModel);
+            _saveAndLoadModel.SetView(_saveViewInstance);
+            _saveViewInstance.Initialize(prestenter);
         }
 
         private void UnsubscribeInObject() =>

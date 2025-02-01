@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpBar: {fileID: 2835779411914493073}
-  _saveScreen: {fileID: 7329191100929795920, guid: 3dc6e41a7f423aa4d95b5d3b5b064049, type: 3}
+  saveView: {fileID: 7329191100929795920, guid: 3dc6e41a7f423aa4d95b5d3b5b064049, type: 3}
 --- !u!1 &5560638498924009577
 GameObject:
   m_ObjectHideFlags: 0

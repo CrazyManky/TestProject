@@ -17,6 +17,7 @@ using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
 using _Project.Screpts.Services.MoveItems;
 using _Project.Screpts.UI;
+using _Project.Screpts.UI.SaveAndLoadUI;
 using UnityEngine;
 using Zenject;
 
@@ -40,6 +41,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             RegisterFactories(Container);
             RegisterConteiners(Container);
             RegisterGameObjects(Container);
+            RegisterModel(Container);
             CreateGameFsm(Container);
             DontDestroyOnLoad(this);
         }
@@ -78,6 +80,12 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             container.Bind<HandlerLose>().AsSingle();
             container.Bind<LevelWinHandle>().AsSingle();
         }
+
+        private void RegisterModel(DiContainer container)
+        {
+            container.Bind<SaveAndLoadModel>().AsSingle();
+        }
+
 
         private void RegisterFactories(DiContainer container)
         {
