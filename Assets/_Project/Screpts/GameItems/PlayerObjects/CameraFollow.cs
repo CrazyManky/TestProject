@@ -11,7 +11,6 @@ namespace _Project.Screpts.GameItems.PlayerObjects
 
         private Transform _target;
 
-
         public void SetTarget(MoveObject target)
         {
             _target = target.transform;

@@ -34,7 +34,7 @@ namespace _Project.Screpts.Services.Level
             _levelWinHandle = levelWinHandle;
         }
 
-        public void InitializeLevel(CameraFollow cameraFollow, GameUI gameUI, MovePlayerItems movePlayerItems,
+        public void InitializeLevel(CameraFollow cameraFollow, GameUI gameUI, MovementPlayerObjects movementPlayerObjects,
             Transform parent)
         {
             _gameLevelInstance = _instantiator.InstantiatePrefabForComponent<GameLevel>(_levelPrefab, parent);
@@ -42,7 +42,7 @@ namespace _Project.Screpts.Services.Level
             _destroyGameElements.Add(_gameLevelInstance);
             var moveObject = AddPlayerObjects(_gameLevelInstance);
             AddEnemy(_gameLevelInstance);
-            SetItemInSystem(moveObject, cameraFollow, gameUI, movePlayerItems);
+            SetItemInSystem(moveObject, cameraFollow, gameUI, movementPlayerObjects);
         }
 
         private MoveObject AddPlayerObjects(GameLevel levelInstance)
@@ -73,11 +73,11 @@ namespace _Project.Screpts.Services.Level
         }
 
         private static void SetItemInSystem(MoveObject subItem, CameraFollow cameraFollow, GameUI gameUI,
-            MovePlayerItems movePlayerItems)
+            MovementPlayerObjects movementPlayerObjects)
         {
             gameUI.SubscribeInObject(subItem);
             cameraFollow.SetTarget(subItem);
-            movePlayerItems.SetMovementItem(subItem);
+            movementPlayerObjects.SetMovementItem(subItem);
         }
 
         public void DestroyObject()

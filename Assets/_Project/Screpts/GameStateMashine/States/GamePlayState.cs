@@ -2,6 +2,7 @@
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Screpts.Services;
 using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
 using _Project.Screpts.Services.MoveItems;
@@ -13,25 +14,25 @@ namespace _Project.Screpts.GameStateMashine.States
 {
     public class GamePlayState : IGameState, IFixedTickable
     {
-        private MovePlayerItems _movePlayerItems;
+        private MovementPlayerObjects _movementPlayerObjects;
         private InputHandler _inputHandler;
         private PauseService _pauseService;
         private LevelInitializer _levelInitializer;
-        private SwitchObjectService _switchObjectService;
+        private SwitchingService _switchingService;
         private GameUIFactory _gameUIFactory;
         private CameraFollowFactory _cameraFollowFactory;
 
         [Inject]
         public GamePlayState(InputHandler inputHandler, CameraFollowFactory cameraFollowFactory,
-            LevelInitializer levelInitializer, MovePlayerItems movePlayerItems, GameUIFactory gameUIFactory,
-            SwitchObjectService switchObjectService, PauseService pauseService)
+            LevelInitializer levelInitializer, MovementPlayerObjects movementPlayerObjects, GameUIFactory gameUIFactory,
+            SwitchingService switchingService, PauseService pauseService)
         {
             _inputHandler = inputHandler;
             _cameraFollowFactory = cameraFollowFactory;
             _levelInitializer = levelInitializer;
-            _movePlayerItems = movePlayerItems;
+            _movementPlayerObjects = movementPlayerObjects;
             _gameUIFactory = gameUIFactory;
-            _switchObjectService = switchObjectService;
+            _switchingService = switchingService;
             _pauseService = pauseService;
         }
 
@@ -48,13 +49,13 @@ namespace _Project.Screpts.GameStateMashine.States
             var levelConteiner = new GameObject("Level");
             var gameUIInstance = _gameUIFactory.InstanceGUI(UIConteiner.transform);
             var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(cameraFollowConteiner.transform);
-            _switchObjectService.SubscribeElements(cameraFollowInstance, _movePlayerItems, gameUIInstance);
-            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movePlayerItems,
+            _switchingService.SubscribeElements(cameraFollowInstance, _movementPlayerObjects, gameUIInstance);
+            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movementPlayerObjects,
                 levelConteiner.transform);
             _pauseService.SetUI(gameUIInstance);
         }
 
-        public void FixedTick() => _movePlayerItems.FixedTick();
+        public void FixedTick() => _movementPlayerObjects.FixedTick();
 
 
         public void ExitState()
@@ -62,7 +63,7 @@ namespace _Project.Screpts.GameStateMashine.States
             _cameraFollowFactory.DestroyCameraFollow();
             _levelInitializer.DestroyObject();
             _gameUIFactory.DestroyGameUI();
-            _switchObjectService.UnsubscribeElements();
+            _switchingService.UnsubscribeElements();
         }
     }
 }

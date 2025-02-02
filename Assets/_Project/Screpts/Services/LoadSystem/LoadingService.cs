@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace _Project._Screpts.LoadSystem
+namespace _Project.Screpts.Services.LoadSystem
 {
     public class LoadingService
     {

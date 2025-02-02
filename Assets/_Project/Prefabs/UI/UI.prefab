@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 107371685061813761}
   - component: {fileID: 1221169291362087115}
   - component: {fileID: 8392673805634604988}
-  - component: {fileID: 2835779411914493073}
+  - component: {fileID: 1804665653945758446}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2.84
---- !u!114 &2835779411914493073
+--- !u!114 &1804665653945758446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,10 +88,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 644703051838462380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b201f6318bce80c4f8d5e8d3ad6db405, type: 3}
+  m_Script: {fileID: 11500000, guid: 34b6f59ec33943d687d003fbae6e5dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vueBar: {fileID: 8093482127612515249}
+  _vueBar: {fileID: 1427334418378151234}
   _textValue: {fileID: 1075051951081126887}
 --- !u!1 &1076331144736765303
 GameObject:
@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04afce702ddde3c42bfd5e50cc02a94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpBar: {fileID: 2835779411914493073}
+  _hpBar: {fileID: 1804665653945758446}
   saveView: {fileID: 7329191100929795920, guid: 3dc6e41a7f423aa4d95b5d3b5b064049, type: 3}
 --- !u!1 &5560638498924009577
 GameObject:

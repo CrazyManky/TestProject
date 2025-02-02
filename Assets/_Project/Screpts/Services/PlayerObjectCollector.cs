@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using Object = UnityEngine.Object;
 
-namespace _Project._Screpts.Services
+namespace _Project.Screpts.Services
 {
     public class PlayerObjectCollector
     {

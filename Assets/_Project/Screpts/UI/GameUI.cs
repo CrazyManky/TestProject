@@ -1,5 +1,5 @@
-using _Project._Screpts.UI.HPBar;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
+using _Project.Screpts.UI.HPBar;
 using _Project.Screpts.UI.SaveAndLoadUI;
 using UnityEngine;
 using Zenject;

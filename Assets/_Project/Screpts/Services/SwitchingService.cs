@@ -1,20 +1,18 @@
 ﻿using System;
-using _Project._Screpts.GameItems.PlayerObjects;
-using _Project._Screpts.GameItems.PlayerObjects.MoveItems;
-using _Project._Screpts.UI;
+using _Project._Screpts.Services;
 using _Project.Screpts.GameItems.PlayerObjects;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.Services.MoveItems;
 using _Project.Screpts.UI;
 using Zenject;
 
-namespace _Project._Screpts.Services
+namespace _Project.Screpts.Services
 {
-    public class SwitchObjectService
+    public class SwitchingService
     {
         private PlayerObjectCollector _playerObjectCollector;
         private CameraFollow _cameraFollow;
-        private MovePlayerItems _movePlayerItems;
+        private MovementPlayerObjects _movementPlayerObjects;
         private GameUI _gameUI;
         public event Action<MoveObject> OnSwitched;
 
@@ -24,9 +22,9 @@ namespace _Project._Screpts.Services
             _playerObjectCollector = playerObjectCollector;
         }
 
-        public void SubscribeElements(CameraFollow cameraFollow,MovePlayerItems movePlayerItems,GameUI gameUI)
+        public void SubscribeElements(CameraFollow cameraFollow,MovementPlayerObjects movementPlayerObjects,GameUI gameUI)
         {
-            _movePlayerItems = movePlayerItems;
+            _movementPlayerObjects = movementPlayerObjects;
             _gameUI = gameUI;
             _cameraFollow = cameraFollow;
             Subscribe();
@@ -35,7 +33,7 @@ namespace _Project._Screpts.Services
         private void Subscribe()
         {
             OnSwitched += _cameraFollow.SetTarget;
-            OnSwitched += _movePlayerItems.SetMovementItem;
+            OnSwitched += _movementPlayerObjects.SetMovementItem;
             OnSwitched += _gameUI.SubscribeInObject;
         }
 
@@ -53,7 +51,7 @@ namespace _Project._Screpts.Services
         public void UnsubscribeElements()
         {
             OnSwitched -= _cameraFollow.SetTarget;
-            OnSwitched -= _movePlayerItems.SetMovementItem;
+            OnSwitched -= _movementPlayerObjects.SetMovementItem;
             OnSwitched -= _gameUI.SubscribeInObject;
         }
     }

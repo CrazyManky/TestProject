@@ -4,7 +4,7 @@ using Zenject;
 
 namespace _Project.Screpts.Services.MoveItems
 {
-    public class MovePlayerItems
+    public class MovementPlayerObjects
     {
         private InputHandler _inputHandler;
         private MoveObject _activeItem;

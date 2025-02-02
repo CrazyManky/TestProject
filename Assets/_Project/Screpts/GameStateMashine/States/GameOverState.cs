@@ -1,8 +1,9 @@
 ﻿using _Project._Screpts.GameStateMashine;
 using _Project._Screpts.Interfaces;
-using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
+using _Project.Screpts.Services;
+using _Project.Screpts.Services.LoadSystem;
 using Zenject;
 
 namespace _Project.Screpts.GameStateMashine.States

@@ -12,21 +12,21 @@ namespace _Project.Screpts.Services.Inputs
         private Dictionary<KeyCode, Action> _keyActions;
         private bool _pauseActivated = false;
         private PauseService _pauseService;
-        private SwitchObjectService _switchObjectService;
+        private SwitchingService _switchingService;
         public Vector3 MoveDirection { get; private set; }
 
         [Inject]
-        public void Construct(PauseService pauseService, SwitchObjectService switchObjectService)
+        public void Construct(PauseService pauseService, SwitchingService switchingService)
         {
             _pauseService = pauseService;
-            _switchObjectService = switchObjectService;
+            _switchingService = switchingService;
         }
 
         public void Initialize()
         {
             _keyActions = new Dictionary<KeyCode, Action>()
             {
-                [KeyCode.Tab] = _switchObjectService.SwitchObject,
+                [KeyCode.Tab] = _switchingService.SwitchObject,
                 [KeyCode.Escape] = _pauseService.PauseExecute,
             };
         }

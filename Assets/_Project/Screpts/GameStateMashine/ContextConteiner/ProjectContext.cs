@@ -1,6 +1,4 @@
-using _Project._Screpts.GameItems.PlayerObjects;
 using _Project._Screpts.GameStateMashine;
-using _Project._Screpts.LoadSystem;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
@@ -10,11 +8,14 @@ using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.GameItems.GameLevel;
 using _Project.Screpts.GameItems.PlayerObjects;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
+using _Project.Screpts.GameStateMashine.EntryPoint;
 using _Project.Screpts.GameStateMashine.States;
+using _Project.Screpts.Services;
 using _Project.Screpts.Services.Conteiner;
 using _Project.Screpts.Services.Factory;
 using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
+using _Project.Screpts.Services.LoadSystem;
 using _Project.Screpts.Services.MoveItems;
 using _Project.Screpts.UI;
 using _Project.Screpts.UI.SaveAndLoadUI;
@@ -30,12 +31,13 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
         [SerializeField] private CameraFollow cameraFollow;
         [SerializeField] private GameItemsConteiner<MoveObject> _playerObjectConteiner;
         [SerializeField] private GameUI _gameUI;
+        [SerializeField] private EntryPointGame _entryPoint;
 
         private GameFSM _gameFSM;
-        private EntryPoint.EntryPoint _entryPoint;
 
         public override void InstallBindings()
         {
+            RegisterEntryPoint(Container);
             RegisterStates(Container);
             RegisterServices(Container);
             RegisterFactories(Container);
@@ -46,12 +48,11 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             DontDestroyOnLoad(this);
         }
 
-        private void Start()
-        {
-            _entryPoint = new EntryPoint.EntryPoint(_gameFSM);
-            _entryPoint.Start();
-        }
 
+        private void RegisterEntryPoint(DiContainer container)
+        {
+            container.Bind<EntryPointGame>().FromInstance(_entryPoint).AsSingle();
+        }
 
         private void CreateGameFsm(DiContainer container)
         {
@@ -75,8 +76,8 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             container.Bind<LoadingService>().AsSingle();
             container.Bind<PauseService>().AsSingle();
             container.Bind<PlayerObjectCollector>().AsSingle();
-            container.Bind<MovePlayerItems>().AsSingle();
-            container.Bind<SwitchObjectService>().AsSingle();
+            container.Bind<MovementPlayerObjects>().AsSingle();
+            container.Bind<SwitchingService>().AsSingle();
             container.Bind<HandlerLose>().AsSingle();
             container.Bind<LevelWinHandle>().AsSingle();
         }

@@ -1,5 +1,4 @@
-﻿using _Project._Screpts.UI;
-using _Project.Screpts.UI;
+﻿using _Project.Screpts.UI;
 using UnityEngine;
 using Zenject;
 

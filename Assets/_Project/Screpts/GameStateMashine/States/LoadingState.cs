@@ -1,6 +1,6 @@
 ﻿using _Project._Screpts.GameStateMashine;
 using _Project._Screpts.Interfaces;
-using _Project._Screpts.LoadSystem;
+using _Project.Screpts.Services.LoadSystem;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
