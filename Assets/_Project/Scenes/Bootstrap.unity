@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 532075386}
   - component: {fileID: 532075387}
   - component: {fileID: 532075388}
+  - component: {fileID: 532075389}
   m_Layer: 0
   m_Name: EntryPoint
   m_TagString: Untagged
@@ -168,19 +169,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyConteiner:
-    _baseEnemies:
+    _items:
     - {fileID: 3557741217692078327, guid: 01ca2d76cc027034fac9a414bf648f61, type: 3}
-    - {fileID: 3557741217692078327, guid: 6e5e4d80cda78b74abc4d070f87f4874, type: 3}
     - {fileID: 3557741217692078327, guid: d990d5419f7d2484bb0147ff21860f83, type: 3}
-  _conteinerLevelsPrefab:
-    _levels:
-    - {fileID: 3240610769547690261, guid: eb8d5bad0e5355f4791ca46d2138c345, type: 3}
+    - {fileID: 3557741217692078327, guid: 6e5e4d80cda78b74abc4d070f87f4874, type: 3}
+  gameLevelPrefab: {fileID: 3240610769547690261, guid: eb8d5bad0e5355f4791ca46d2138c345, type: 3}
   cameraFollow: {fileID: 6386079965472256451, guid: 788f1670b68f59e45b5c42146f25b69e, type: 3}
   _playerObjectConteiner:
-    _moveableObjects:
+    _items:
     - {fileID: 6593811820853287025, guid: f3b6e1b239c37df4ab4444dd8d6e2719, type: 3}
     - {fileID: 3980423329328086675, guid: f567a2b19075f7249b97957b7a4b1dd7, type: 3}
   _gameUI: {fileID: 283884486167705403, guid: df751137ae0725b478c886f9faf98d9d, type: 3}
+  _entryPoint: {fileID: 532075389}
 --- !u!114 &532075388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +213,18 @@ MonoBehaviour:
   _parentNewObjectsUnderSceneContext: 0
   _contractNames: []
   _parentContractNames: []
+--- !u!114 &532075389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532075385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44e2020b2831477a964db687ac12f322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1267708194
 GameObject:
   m_ObjectHideFlags: 0
