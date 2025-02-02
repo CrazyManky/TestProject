@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
-using Object = UnityEngine.Object;
 
 namespace _Project.Screpts.Services
 {
@@ -31,12 +30,11 @@ namespace _Project.Screpts.Services
         public void RemoveItem(MoveObject moveObject)
         {
             _switchableElements.Remove(moveObject);
-            Object.Destroy(moveObject.gameObject);
         }
 
         public void RemoveItems()
         {
-            _switchableElements.ForEach((item) => Object.Destroy(item.gameObject));
+            _switchableElements.ForEach((item) => item.DestroyItem());
             _switchableElements.Clear();
         }
     }

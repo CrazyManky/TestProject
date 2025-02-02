@@ -56,6 +56,11 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
             return data;
         }
 
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
+
         public void DestroyItem()
         {
             Destroy(gameObject);

@@ -1,10 +1,9 @@
 ﻿using _Project._Screpts.GameStateMashine;
 using _Project.Screpts.GameStateMashine.States;
-using _Project.Screpts.Services;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.Services.Level
+namespace _Project.Screpts.Services.Level
 {
     public class LevelWinHandle
     {
@@ -21,7 +20,6 @@ namespace _Project._Screpts.Services.Level
 
         public void CheckWin()
         {
-            Debug.Log(_playerObjectCollector.ObjectCount);
             if (_playerObjectCollector.ObjectCount <= 1)
             {
                 _gameFSM.Enter<GameOverState>();
