@@ -2,6 +2,7 @@
 using _Project._Screpts.Interfaces;
 using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem;
+using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -13,19 +14,23 @@ namespace _Project.Screpts.GameStateMashine.States
         private GameFSM _gameFsm;
         private LoadingService _loadingService;
         private IAnalytics _analytics;
+        private IConfigHandler _configHandler;
 
         [Inject]
-        public void Constructor(GameFSM gameFsm, LoadingService loadingService, IAnalytics analytics)
+        public void Constructor(GameFSM gameFsm, LoadingService loadingService, IAnalytics analytics,
+            IConfigHandler configHandler)
         {
             _gameFsm = gameFsm;
             _loadingService = loadingService;
             _analytics = analytics;
+            _configHandler = configHandler;
         }
 
         public async void EnterState()
         {
             await _analytics.Initialize();
             _analytics.InvokeAppOpen();
+            await _configHandler.DownloadAsync();
             await LoadNextSceneAsync();
         }
 

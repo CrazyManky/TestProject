@@ -18,6 +18,7 @@ using _Project.Screpts.Services.Factory;
 using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
 using _Project.Screpts.Services.LoadSystem;
+using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using _Project.Screpts.Services.MoveItems;
 using _Project.Screpts.UI;
 using _Project.Screpts.UI.SaveAndLoadUI;
@@ -45,6 +46,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             RegisterFactories(Container);
             RegisterConteiners(Container);
             RegisterGameObjects(Container);
+            RegisterAnalyticService(Container);
             RegisterModel(Container);
             CreateGameFsm(Container);
             DontDestroyOnLoad(this);
@@ -86,6 +88,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             container.Bind<SwitchingService>().AsSingle();
             container.Bind<HandlerLose>().AsSingle();
             container.Bind<LevelWinHandle>().AsSingle();
+            container.Bind<IConfigHandler>().To<ConfigHandler>().AsSingle();
         }
 
         private void RegisterModel(DiContainer container)
