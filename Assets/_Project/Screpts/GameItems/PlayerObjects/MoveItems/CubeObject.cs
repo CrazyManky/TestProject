@@ -1,7 +1,6 @@
-﻿using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _Project._Screpts.GameItems.PlayerObjects.MoveItems
+namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
 {
     public class CubeObject : MoveObject
     {
@@ -13,7 +12,7 @@ namespace _Project._Screpts.GameItems.PlayerObjects.MoveItems
                 return;
 
             moveDirection = moveDirection.normalized;
-            _rb.velocity = moveDirection * Speed;
+            _rb.velocity = moveDirection * MoveableObjectData.Speed;
         }
 
         public override void SetPosition(Vector3 position)

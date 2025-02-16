@@ -1,7 +1,6 @@
-using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using UnityEngine;
 
-namespace _Project._Screpts.GameItems.PlayerObjects.MoveItems
+namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
 {
     public class Capsule : MoveObject
     {
@@ -12,7 +11,7 @@ namespace _Project._Screpts.GameItems.PlayerObjects.MoveItems
             if (moveDirection == Vector3.zero)
                 return;
 
-            _characterController.Move(moveDirection * Speed);
+            _characterController.Move(moveDirection * MoveableObjectData.Speed);
         }
 
         public override void SetPosition(Vector3 position)

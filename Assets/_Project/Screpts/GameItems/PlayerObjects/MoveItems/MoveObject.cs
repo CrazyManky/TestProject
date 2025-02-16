@@ -1,22 +1,41 @@
 ﻿using System;
 using _Project._Screpts.Interfaces;
 using _Project._Screpts.SaveSystem;
+using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
 {
     public abstract class MoveObject : MonoBehaviour, IDamageProvaider, ISaveAndLoad, IDestroyGameElement
     {
-        [SerializeField] protected MoveableObjectData MoveableObjectData;
-        [SerializeField] protected float Speed;
+        [SerializeField] private string _keyItem;
 
-        public string KeyItem => MoveableObjectData.KeyItem;
+        private IConfigHandler _configHandler;
+
+        protected MoveableObjectData MoveableObjectData;
+
+        public string KeyItem => _keyItem;
         public int Health => MoveableObjectData.Health;
         public int MaxHealth => MoveableObjectData.MaxHealth;
 
         public event Action OnDead;
         public event Action<int, int> OnValueChanged;
 
+        [Inject]
+        public void Construct(IConfigHandler configHandler) => _configHandler = configHandler;
+
+
+        public void LoadingConfig()
+        {
+            var config = _configHandler.GetConfig<GameObjectConfig>(_keyItem);
+            if (config != null && config is GameObjectConfig configObject)
+            {
+                MoveableObjectData.Health = configObject.Health;
+                MoveableObjectData.MaxHealth = configObject.MaxHealth;
+                MoveableObjectData.Speed = configObject.Speed;
+            }
+        }
 
         public void Load(ISavableData data)
         {
@@ -52,9 +71,10 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
 
         public ISavableData SaveData()
         {
-            var data = new SaveData(MoveableObjectData.KeyItem, MoveableObjectData.Health, transform.position);
+            var data = new SaveData(KeyItem, MoveableObjectData.Health, transform.position);
             return data;
         }
+
 
         public void DestroyItem()
         {
