@@ -8,6 +8,7 @@ namespace _Project.Screpts.UI.HPBar
     {
         [SerializeField] private Image _vueBar;
         [SerializeField] private TextMeshProUGUI _textValue;
+        
 
         public void SetNewData(int value, int _maxValue)
         {

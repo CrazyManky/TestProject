@@ -12,18 +12,8 @@ namespace _Project.Screpts.Services.LoadSystem.ConfigLoading
     public class ConfigHandler : IConfigHandler
     {
         private FirebaseRemoteConfig _configInstance;
-        private Dictionary<string, string> _downloadConfigs = new();
+        private Dictionary<string, string> _downloadConfigs = new Dictionary<string, string>();
         private Dictionary<string, IGameConfig> _parsedConfigs = new();
-
-        // 🔹 Словарь для автоматического выбора типа по ключу
-        private readonly Dictionary<string, Type> _configTypes = new()
-        {
-            { "Capsule", typeof(GameObjectConfig) },
-            { "Cube", typeof(GameObjectConfig) },
-            { "EnemPathFollowing", typeof(EnemyPathConfig) },
-            { "ShotingEnemy", typeof(ShootingEnemyConfig) },
-            { "StalkerEnemy", typeof(EnemyStalkerConfig) }
-        };
 
         public async UniTask DownloadAsync()
         {
@@ -56,39 +46,50 @@ namespace _Project.Screpts.Services.LoadSystem.ConfigLoading
                 string key = entry.Key;
                 string jsonValue = entry.Value;
 
-                // 🔹 Проверяем, есть ли ключ в словаре типов
-                if (_configTypes.TryGetValue(key, out Type configType))
+                IGameConfig config = DeserializeConfigByKey(key, jsonValue);
+                if (config != null)
                 {
-                    // Десериализуем JSON в нужный тип
-                    IGameConfig config = JsonConvert.DeserializeObject(jsonValue, configType) as IGameConfig;
-
-                    if (config != null)
-                    {
-                        _parsedConfigs[key] = config;
-                    }
-                    else
-                    {
-                        Debug.LogError($"❌ Ошибка десериализации для ключа {key}!");
-                    }
+                    _parsedConfigs[key] = config;
                 }
                 else
                 {
-                    Debug.LogError($"❌ Неизвестный ключ конфигурации: {key}");
+                    Debug.LogError($"❌ Не удалось десериализовать конфиг для ключа {key}");
                 }
             }
         }
 
-        public T GetConfig<T>(string key) where T : class, IGameConfig
+        private IGameConfig DeserializeConfigByKey(string key, string jsonValue)
         {
-            if (_parsedConfigs.TryGetValue(key, out IGameConfig config))
+            switch (key)
             {
-                return config as T;
+                case "Capsule":
+                case "Cube":
+                    return JsonConvert.DeserializeObject<GameObjectConfig>(jsonValue);
+                case "EnemPathFollowing":
+                    return JsonConvert.DeserializeObject<EnemyPathConfig>(jsonValue);
+                case "StalkerEnemy":
+                    return JsonConvert.DeserializeObject<EnemyStalkerConfig>(jsonValue);
+                case "ShotingEnemy":
+                    return JsonConvert.DeserializeObject<ShootingEnemyConfig>(jsonValue);
+                default:
+                    return null;
+            }
+        }
+
+
+        public IGameConfig GetConfig(string key)
+        {
+            if (_parsedConfigs.ContainsKey(key))
+            {
+                Debug.Log($" выданный объект:{_parsedConfigs[key].KeyItem}");
+                return _parsedConfigs[key];
             }
 
             return null;
         }
     }
 }
+
 
 public class GameObjectConfig : IGameConfig
 {

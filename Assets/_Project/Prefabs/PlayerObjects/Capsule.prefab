@@ -121,11 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd2de51b1d16394d91b2719c9cd9390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveableObjectData:
-    _keyItem: Capsule
-    Health: 100
-    MaxHealth: 100
-  Speed: 0.3
+  _keyItem: '"Capsule"'
   _characterController: {fileID: 5388932948899130883}
 --- !u!143 &5388932948899130883
 CharacterController:

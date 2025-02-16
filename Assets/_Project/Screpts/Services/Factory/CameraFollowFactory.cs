@@ -1,9 +1,8 @@
-﻿using _Project._Screpts.GameItems.PlayerObjects;
-using _Project.Screpts.GameItems.PlayerObjects;
+﻿using _Project.Screpts.GameItems.PlayerObjects;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.Services.Factory
+namespace _Project.Screpts.Services.Factory
 {
     public class CameraFollowFactory
     {

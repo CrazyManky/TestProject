@@ -25,15 +25,17 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         [Inject]
         public void Construct(IConfigHandler configHandler) => _configHandler = configHandler;
 
+        private void Awake() => LoadingConfig();
 
         public void LoadingConfig()
         {
-            var config = _configHandler.GetConfig<GameObjectConfig>(_keyItem);
-            if (config != null && config is GameObjectConfig configObject)
+            var config = _configHandler.GetConfig(_keyItem);
+            if (config is GameObjectConfig gameObjectConfig)
             {
-                MoveableObjectData.Health = configObject.Health;
-                MoveableObjectData.MaxHealth = configObject.MaxHealth;
-                MoveableObjectData.Speed = configObject.Speed;
+                Debug.Log(gameObjectConfig.Health);
+                MoveableObjectData.Health = gameObjectConfig.Health;
+                MoveableObjectData.MaxHealth = gameObjectConfig.MaxHealth;
+                MoveableObjectData.Speed = gameObjectConfig.Speed;
             }
         }
 
