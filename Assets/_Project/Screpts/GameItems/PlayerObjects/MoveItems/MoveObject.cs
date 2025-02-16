@@ -30,9 +30,9 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         public void LoadingConfig()
         {
             var config = _configHandler.GetConfig(_keyItem);
+
             if (config is GameObjectConfig gameObjectConfig)
             {
-                Debug.Log(gameObjectConfig.Health);
                 MoveableObjectData.Health = gameObjectConfig.Health;
                 MoveableObjectData.MaxHealth = gameObjectConfig.MaxHealth;
                 MoveableObjectData.Speed = gameObjectConfig.Speed;
