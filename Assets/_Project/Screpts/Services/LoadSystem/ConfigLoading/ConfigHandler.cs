@@ -65,7 +65,7 @@ namespace _Project.Screpts.Services.LoadSystem.ConfigLoading
                 case "Capsule":
                 case "Cube":
                     return JsonConvert.DeserializeObject<GameObjectConfig>(jsonValue);
-                case "EnemPathFollowing":
+                case "EnemyPathFollowing":
                     return JsonConvert.DeserializeObject<EnemyPathConfig>(jsonValue);
                 case "StalkerEnemy":
                     return JsonConvert.DeserializeObject<EnemyStalkerConfig>(jsonValue);
@@ -80,11 +80,8 @@ namespace _Project.Screpts.Services.LoadSystem.ConfigLoading
         public IGameConfig GetConfig(string key)
         {
             if (_parsedConfigs.ContainsKey(key))
-            {
-                Debug.Log($" выданный объект:{_parsedConfigs[key].KeyItem}");
                 return _parsedConfigs[key];
-            }
-
+            
             return null;
         }
     }

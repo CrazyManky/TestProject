@@ -1,26 +1,38 @@
 ﻿using _Project._Screpts.Interfaces;
 using UnityEngine;
 
-namespace _Project._Screpts.GameItems.EnemyComponents.Movement
+namespace _Project.Screpts.GameItems.EnemyComponents.Movement
 {
-    [RequireComponent(typeof(Screpts.GameItems.EnemyComponents.Enemy))]
+    [RequireComponent(typeof(EnemyObject))]
     public class PathFollowingEnemy : MonoBehaviour
     {
-        [SerializeField] private float _patrolDistance;
-        [SerializeField] private float _speed;
-        [SerializeField] private int _damage;
+        private EnemyObject _enemy;
+        private float _patrolDistance;
+        private float _speed;
+        private int _damage;
 
         private Vector3 _startPosition;
         private Vector3 _direction = Vector3.forward;
-        private Screpts.GameItems.EnemyComponents.Enemy _enemy;
 
-        private void Awake() => _enemy = GetComponent<Screpts.GameItems.EnemyComponents.Enemy>();
-
-
-        private void Start()
+        private void Awake()
         {
-            _startPosition = transform.position;
+            _enemy = GetComponent<EnemyObject>();
+            LoadingConfig();
         }
+
+        private void LoadingConfig()
+        {
+            var config = _enemy.ConfigHandler.GetConfig(_enemy.KeyItem);
+            if (config is EnemyPathConfig configData)
+            {
+                _patrolDistance = configData.PatrolDistance;
+                _speed = configData.Speed;
+                _damage = configData.Damage;
+            }
+        }
+
+        private void Start() => _startPosition = transform.position;
+
 
         private void Update()
         {

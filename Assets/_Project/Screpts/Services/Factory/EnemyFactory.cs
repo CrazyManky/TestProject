@@ -1,5 +1,4 @@
-﻿using _Project._Screpts.GameItems.EnemyComponents;
-using _Project._Screpts.SaveSystem;
+﻿using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services.PauseSystem;
 using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.Services.Conteiner;
@@ -11,27 +10,32 @@ namespace _Project.Screpts.Services.Factory
 {
     public class EnemyFactory
     {
-        private GameItemsConteiner<Enemy> _enemyConteiner;
+        private GameItemsConteiner<EnemyObject> _enemyConteiner;
         private SaveService _saveService;
         private LoadingService _loadingService;
         private PauseService _pauseService;
+        private IInstantiator _instantiator;
 
         [Inject]
-        public void Construct(GameItemsConteiner<Enemy> enemyConteiner, SaveService saveService, LoadingService loadingService, PauseService pauseService)
+        public void Construct(GameItemsConteiner<EnemyObject> enemyConteiner, SaveService saveService,
+            LoadingService loadingService, PauseService pauseService, IInstantiator instantiator)
         {
             _enemyConteiner = enemyConteiner;
             _saveService = saveService;
             _loadingService = loadingService;
             _pauseService = pauseService;
-            Debug.Log(_pauseService);
+            _instantiator = instantiator;
         }
 
-        public Enemy InstanceEnemy(int itemId)
+        public EnemyObject InstanceEnemy(int itemId)
         {
-            var instanceObject = Object.Instantiate(_enemyConteiner.GetObject(itemId));
+            var instanceObject =
+                _instantiator.InstantiatePrefabForComponent<EnemyObject>(_enemyConteiner.GetObject(itemId));
+            var gameObject = new GameObject(instanceObject.KeyItem);
             _saveService.AddSaveItem(instanceObject);
             _loadingService.AddLoadingItem(instanceObject);
             _pauseService.AddPauseItem(instanceObject);
+            instanceObject.transform.SetParent(gameObject.transform);
             return instanceObject;
         }
     }

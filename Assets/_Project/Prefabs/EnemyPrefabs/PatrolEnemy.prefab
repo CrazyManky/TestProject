@@ -121,9 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26782995ac9b4e36a1c2bf4d385602d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolDistance: 3
-  _speed: 1
-  _damage: 50
+  _enemy: {fileID: 3557741217692078327}
 --- !u!114 &3557741217692078327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,4 +134,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a93943e45042d9aca9aeb43851cd43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyItem: EnemPathFollowing
+  _keyItem: EnemyPathFollowing

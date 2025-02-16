@@ -29,7 +29,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
 {
     public class ProjectContext : MonoInstaller
     {
-        [SerializeField] private GameItemsConteiner<Enemy> _enemyConteiner;
+        [SerializeField] private GameItemsConteiner<EnemyObject> _enemyConteiner;
         [SerializeField] private GameLevel gameLevelPrefab;
         [SerializeField] private CameraFollow cameraFollow;
         [SerializeField] private GameItemsConteiner<MoveObject> _playerObjectConteiner;
@@ -115,7 +115,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
         {
             container.Bind<GameItemsConteiner<MoveObject>>().FromInstance(_playerObjectConteiner).AsSingle();
             container.Bind<GameLevel>().FromInstance(gameLevelPrefab).AsSingle();
-            container.Bind<GameItemsConteiner<Enemy>>().FromInstance(_enemyConteiner).AsSingle();
+            container.Bind<GameItemsConteiner<EnemyObject>>().FromInstance(_enemyConteiner).AsSingle();
         }
     }
 }

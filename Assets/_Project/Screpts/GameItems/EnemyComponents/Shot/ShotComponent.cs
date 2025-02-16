@@ -1,26 +1,41 @@
 using System.Collections;
+using _Project.Screpts.GameItems.EnemyComponents;
 using UnityEngine;
 
 namespace _Project._Screpts.GameItems.Enemy.Shot
 {
-    [RequireComponent(typeof(Screpts.GameItems.EnemyComponents.Enemy))]
+    [RequireComponent(typeof(EnemyObject))]
     public class ShotComponent : MonoBehaviour
     {
         [SerializeField] private ShotingZone _shotingZone;
         [SerializeField] private Projectile _projectile;
         [SerializeField] private Transform _firePoint;
-        [SerializeField] private float _turnSpeed = 5f;
-        [SerializeField] private float _shotDelay = 1.5f;
-        [SerializeField] private float _shootDistance = 10f;
 
+        private float _turnSpeed;
+        private float _shotDelay;
+        private float _shootDistance;
         private PoolObject<Projectile> _projectilePool;
         private Transform _target;
         private Coroutine _shootRoutine;
+        private EnemyObject _enemyObject;
 
         private void Awake()
         {
+            _enemyObject = GetComponent<EnemyObject>();
             _projectilePool = new PoolObject<Projectile>();
             _projectilePool.Initialize(_projectile, transform);
+            LoadingConfig();
+        }
+
+        private void LoadingConfig()
+        {
+            var config = _enemyObject.ConfigHandler.GetConfig(_enemyObject.KeyItem);
+            if (config is ShootingEnemyConfig configData)
+            {
+                _turnSpeed = configData.TurnSpeed;
+                _shotDelay = configData.ShotDelay;
+                _shootDistance = configData.ShootDistance;
+            }
         }
 
         private void OnEnable()
@@ -29,11 +44,6 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
             _shotingZone.OnExitZone += StopShooting;
         }
 
-        private void OnDisable()
-        {
-            _shotingZone.OnEnterZone -= StartShooting;
-            _shotingZone.OnExitZone -= StopShooting;
-        }
 
         private void StartShooting(Transform target)
         {
@@ -91,6 +101,12 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
             newProjectile.transform.position = _firePoint.position;
             newProjectile.SetDirection(transform.forward);
             newProjectile.Initialize(_projectilePool);
+        }
+
+        private void OnDisable()
+        {
+            _shotingZone.OnEnterZone -= StartShooting;
+            _shotingZone.OnExitZone -= StopShooting;
         }
     }
 }
