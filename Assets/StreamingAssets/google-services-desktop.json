@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "267699251160",
+    "project_id": "runer-7aa1f",
+    "storage_bucket": "runer-7aa1f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267699251160:android:375c8feeb96a811e3634ad",
+        "android_client_info": {
+          "package_name": "com.Mirage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCIT4u0ADxalyaJmHISx-2on0-gkR9dJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
