@@ -1,5 +1,6 @@
 ﻿using _Project._Screpts.GameStateMashine;
 using _Project._Screpts.Interfaces;
+using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
@@ -11,17 +12,21 @@ namespace _Project.Screpts.GameStateMashine.States
     {
         private GameFSM _gameFsm;
         private LoadingService _loadingService;
+        private IAnalytics _analytics;
 
         [Inject]
-        public void Constructor(GameFSM gameFsm,LoadingService loadingService)
+        public void Constructor(GameFSM gameFsm, LoadingService loadingService, IAnalytics analytics)
         {
             _gameFsm = gameFsm;
             _loadingService = loadingService;
+            _analytics = analytics;
         }
 
-        public void EnterState()
+        public async void EnterState()
         {
-            LoadNextSceneAsync();
+            await _analytics.Initialize();
+            _analytics.InvokeAppOpen();
+            await LoadNextSceneAsync();
         }
 
         private async UniTask LoadNextSceneAsync()

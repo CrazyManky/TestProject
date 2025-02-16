@@ -4,12 +4,14 @@ using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
 using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Screpts.Analytics_Service;
 using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.GameItems.GameLevel;
 using _Project.Screpts.GameItems.PlayerObjects;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.GameStateMashine.EntryPoint;
 using _Project.Screpts.GameStateMashine.States;
+using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services;
 using _Project.Screpts.Services.Conteiner;
 using _Project.Screpts.Services.Factory;
@@ -67,6 +69,10 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             container.Bind<GameOverState>().AsTransient();
         }
 
+        private void RegisterAnalyticService(DiContainer container)
+        {
+            container.Bind<IAnalytics>().To<FirebaseWrapper>().AsSingle();
+        }
 
         private void RegisterServices(DiContainer container)
         {
