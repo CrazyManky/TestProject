@@ -1,6 +1,7 @@
 ﻿using System;
 using _Project._Screpts.Interfaces;
 using _Project._Screpts.SaveSystem;
+using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         [SerializeField] private string _keyItem;
 
         private IConfigHandler _configHandler;
-
+        private IShowReward _showReward;
         protected MoveableObjectData MoveableObjectData;
 
         public string KeyItem => _keyItem;
@@ -24,9 +25,15 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         public event Action<int, int> OnValueChanged;
 
         [Inject]
-        public void Construct(IConfigHandler configHandler) => _configHandler = configHandler;
+        public void Construct(IConfigHandler configHandler, IShowReward showReward)
+        {
+            _configHandler = configHandler;
+            _showReward = showReward;
+        }
 
         private void Awake() => LoadingConfig();
+
+        public void OnEnable() => _showReward.OnCompletedShow += Reset;
 
         public void LoadingConfig()
         {
@@ -68,7 +75,13 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         private void CheckDeath()
         {
             if (MoveableObjectData.Health <= 0)
-                OnDead?.Invoke();
+                _showReward.ActiveReward();
+        }
+
+        public void Reset()
+        {
+            MoveableObjectData.Health = MoveableObjectData.MaxHealth;
+            OnValueChanged?.Invoke(MoveableObjectData.Health, MoveableObjectData.MaxHealth);
         }
 
 
@@ -81,6 +94,7 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
 
         public void DestroyItem()
         {
+            _showReward.OnCompletedShow -= Reset;
             Destroy(gameObject);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Project._Screpts.GameStateMashine;
+using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.GameStateMashine.States;
 using Zenject;
@@ -9,36 +10,19 @@ namespace _Project._Screpts.Services
     public class HandlerLose
     {
         private GameFSM _gameFsm;
-        private readonly List<MoveObject> _subscribedObjects = new(2);
+        private IShowReward _showReward;
 
         [Inject]
-        public void Construct(GameFSM gameFsm)
+        public void Construct(GameFSM gameFsm, IShowReward showReward)
         {
             _gameFsm = gameFsm;
+            _showReward = showReward;
         }
 
-        public void Subscribe(MoveObject moveObject)
-        {
-            if (!_subscribedObjects.Contains(moveObject))
-            {
-                moveObject.OnDead += LoseGame;
-                _subscribedObjects.Add(moveObject);
-            }
-        }
-        
-        public void UnsubscribeAll()
-        {
-            foreach (var moveObject in _subscribedObjects)
-            {
-                moveObject.OnDead -= LoseGame;
-            }
+        public void Subscribe() => _showReward.OnFeiledShow += LoseGame;
 
-            _subscribedObjects.Clear();
-        }
+        public void Unsubscribe() => _showReward.OnFeiledShow += LoseGame;
 
-        private void LoseGame()
-        {
-            _gameFsm.Enter<GameOverState>();
-        }
+        private void LoseGame() => _gameFsm.Enter<GameOverState>();
     }
 }

@@ -80,7 +80,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
         private void RegisterServices(DiContainer container)
         {
             container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
-            container.BindInterfacesAndSelfTo<UnityAdsHandler>().AsSingle();
+            container.BindInterfacesAndSelfTo<UnityAdsInitializer>().AsSingle();
             container.Bind<LevelInitializer>().AsSingle();
             container.Bind<SaveService>().AsSingle();
             container.Bind<LoadingService>().AsSingle();
@@ -91,6 +91,8 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             container.Bind<HandlerLose>().AsSingle();
             container.Bind<LevelWinHandle>().AsSingle();
             container.Bind<IConfigHandler>().To<ConfigHandler>().AsSingle();
+            container.Bind<IShowReward>().To<AdvertisingShowReward>().AsCached();
+            container.Bind<IAdvertisingShow>().To<AdvertisingShow>().AsSingle();
         }
 
         private void RegisterModel(DiContainer container)

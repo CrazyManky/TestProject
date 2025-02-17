@@ -2,6 +2,7 @@
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Services;
 using _Project.Screpts.Services.Factory;
 using _Project.Screpts.Services.Inputs;
@@ -22,11 +23,12 @@ namespace _Project.Screpts.GameStateMashine.States
         private SwitchingService _switchingService;
         private GameUIFactory _gameUIFactory;
         private CameraFollowFactory _cameraFollowFactory;
+        private HandlerLose _handlerLose;
 
         [Inject]
         public GamePlayState(InputHandler inputHandler, CameraFollowFactory cameraFollowFactory,
             LevelInitializer levelInitializer, MovementPlayerObjects movementPlayerObjects, GameUIFactory gameUIFactory,
-            SwitchingService switchingService, PauseService pauseService)
+            SwitchingService switchingService, PauseService pauseService, HandlerLose handlerLose)
         {
             _inputHandler = inputHandler;
             _cameraFollowFactory = cameraFollowFactory;
@@ -35,10 +37,12 @@ namespace _Project.Screpts.GameStateMashine.States
             _gameUIFactory = gameUIFactory;
             _switchingService = switchingService;
             _pauseService = pauseService;
+            _handlerLose = handlerLose;
         }
 
         public void EnterState()
         {
+            _handlerLose.Subscribe();
             InitGamePlay();
             _inputHandler.Initialize();
         }
@@ -61,6 +65,7 @@ namespace _Project.Screpts.GameStateMashine.States
 
         public void ExitState()
         {
+            _handlerLose.Unsubscribe();
             _cameraFollowFactory.DestroyCameraFollow();
             _levelInitializer.DestroyObject();
             _gameUIFactory.DestroyGameUI();

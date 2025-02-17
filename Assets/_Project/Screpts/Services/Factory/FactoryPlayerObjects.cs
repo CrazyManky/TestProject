@@ -14,19 +14,17 @@ namespace _Project.Screpts.Services.Factory
         private PlayerObjectCollector _playerObjectCollector;
         private SaveService _saveService;
         private LoadingService _loadingService;
-        private HandlerLose _handlerLose;
         private IInstantiator _instantiator;
 
         [Inject]
         public void Construct(PlayerObjectCollector playerObjectCollector,
             GameItemsConteiner<MoveObject> playerObjectConteiner,
-            SaveService saveService, LoadingService loadingService, HandlerLose handlerLose, IInstantiator instantiator)
+            SaveService saveService, LoadingService loadingService, IInstantiator instantiator)
         {
             _playerObjectConteiner = playerObjectConteiner;
             _playerObjectCollector = playerObjectCollector;
             _saveService = saveService;
             _loadingService = loadingService;
-            _handlerLose = handlerLose;
             _instantiator = instantiator;
         }
 
@@ -39,7 +37,6 @@ namespace _Project.Screpts.Services.Factory
             _playerObjectCollector.AddMovebleObject(instance);
             _saveService.AddSaveItem(instance);
             _loadingService.AddLoadingItem(instance);
-            _handlerLose.Subscribe(instance);
             instance.transform.SetParent(gameObject.transform);
             return instance;
         }

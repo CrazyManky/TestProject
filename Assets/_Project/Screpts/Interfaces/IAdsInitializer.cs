@@ -1,7 +1,9 @@
-﻿namespace _Project.Screpts.Interfaces
+﻿using Cysharp.Threading.Tasks;
+
+namespace _Project.Screpts.Interfaces
 {
     public interface IAdsInitializer
     {
-        public void InitializeAds();
+        public UniTask InitializeAdsAsync();
     }
 }
