@@ -15,19 +15,22 @@ namespace _Project.Screpts.GameStateMashine.States
         private LoadingService _loadingService;
         private IAnalytics _analytics;
         private IConfigHandler _configHandler;
+        private IAdsInitializer _adsInitializer;
 
         [Inject]
         public void Constructor(GameFSM gameFsm, LoadingService loadingService, IAnalytics analytics,
-            IConfigHandler configHandler)
+            IConfigHandler configHandler, IAdsInitializer adsInitializer)
         {
             _gameFsm = gameFsm;
             _loadingService = loadingService;
             _analytics = analytics;
             _configHandler = configHandler;
+            _adsInitializer = adsInitializer;
         }
 
         public async void EnterState()
         {
+            _adsInitializer.InitializeAds();
             await _analytics.Initialize();
             _analytics.InvokeAppOpen();
             await _configHandler.DownloadAsync();

@@ -1,4 +1,5 @@
 ﻿using _Project._Screpts.Interfaces;
+using _Project.Screpts.Interfaces;
 using UnityEngine;
 
 namespace _Project.Screpts.GameItems.EnemyComponents.Movement
@@ -55,7 +56,7 @@ namespace _Project.Screpts.GameItems.EnemyComponents.Movement
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<IDamageProvaider>(out var damageProvaider))
+            if (other.TryGetComponent<IDamageProvider>(out var damageProvaider))
             {
                 damageProvaider.TakeDamage(_damage);
                 gameObject.SetActive(false);

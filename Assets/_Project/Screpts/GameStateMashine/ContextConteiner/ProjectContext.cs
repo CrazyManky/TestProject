@@ -4,6 +4,7 @@ using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
 using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Analytics_Service;
 using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.GameItems.GameLevel;
@@ -79,6 +80,7 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
         private void RegisterServices(DiContainer container)
         {
             container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
+            container.BindInterfacesAndSelfTo<UnityAdsHandler>().AsSingle();
             container.Bind<LevelInitializer>().AsSingle();
             container.Bind<SaveService>().AsSingle();
             container.Bind<LoadingService>().AsSingle();

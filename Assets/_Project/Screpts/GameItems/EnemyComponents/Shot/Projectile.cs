@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using _Project._Screpts.Interfaces;
+using _Project.Screpts.Interfaces;
 using UnityEngine;
 
 namespace _Project._Screpts.GameItems.Enemy.Shot
@@ -37,7 +38,7 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<IDamageProvaider>(out var damageProvaider))
+            if (other.TryGetComponent<IDamageProvider>(out var damageProvaider))
             {
                 damageProvaider.TakeDamage(_damage);
             }

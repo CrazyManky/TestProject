@@ -1,13 +1,14 @@
 ﻿using System;
 using _Project._Screpts.Interfaces;
 using _Project._Screpts.SaveSystem;
+using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using UnityEngine;
 using Zenject;
 
 namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
 {
-    public abstract class MoveObject : MonoBehaviour, IDamageProvaider, ISaveAndLoad, IDestroyGameElement
+    public abstract class MoveObject : MonoBehaviour, IDamageProvider, ISaveAndLoad, IDestroyGameElement
     {
         [SerializeField] private string _keyItem;
 
