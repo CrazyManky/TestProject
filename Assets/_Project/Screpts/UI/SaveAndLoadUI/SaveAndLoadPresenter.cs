@@ -17,5 +17,7 @@
         public void Save() => _saveAndLoadModel.SaveGame();
 
         public void LoadSaveFiles(string filePath) => _saveAndLoadModel.LoadSpecificSave(filePath);
+
+        public void BuyStoreItem() => _saveAndLoadModel.BuyStoreItem();
     }
 }

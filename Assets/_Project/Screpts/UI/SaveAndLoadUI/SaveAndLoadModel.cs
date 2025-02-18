@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Project._Screpts.SaveSystem;
 using _Project.Screpts.Services.LoadSystem;
+using _Project.Screpts.ShopSystem;
 using Zenject;
 
 namespace _Project.Screpts.UI.SaveAndLoadUI
@@ -10,12 +11,14 @@ namespace _Project.Screpts.UI.SaveAndLoadUI
         private SaveAndLoadView _view;
         private SaveService _saveService;
         private LoadingService _loadingService;
+        private IBuyStoreItem _buyStoreItem;
 
         [Inject]
-        public void Constructor(SaveService saveService, LoadingService loadingService)
+        public void Constructor(SaveService saveService, LoadingService loadingService, IBuyStoreItem buyStoreItem)
         {
             _saveService = saveService;
             _loadingService = loadingService;
+            _buyStoreItem = buyStoreItem;
         }
 
         public void SetView(SaveAndLoadView view)
@@ -30,6 +33,11 @@ namespace _Project.Screpts.UI.SaveAndLoadUI
         {
             List<string> saveFiles = _loadingService.GetSaveFiles();
             _view.ShowSaveFiles(saveFiles);
+        }
+
+        public void BuyStoreItem()
+        {
+            _buyStoreItem.BuyNoAds();
         }
 
         public async void LoadSpecificSave(string fileName)

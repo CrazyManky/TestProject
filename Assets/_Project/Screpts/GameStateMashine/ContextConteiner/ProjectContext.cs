@@ -6,6 +6,7 @@ using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.PauseSystem;
 using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Analytics_Service;
+using _Project.Screpts.GameItems;
 using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.GameItems.GameLevel;
 using _Project.Screpts.GameItems.PlayerObjects;
@@ -21,6 +22,7 @@ using _Project.Screpts.Services.Level;
 using _Project.Screpts.Services.LoadSystem;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using _Project.Screpts.Services.MoveItems;
+using _Project.Screpts.ShopSystem;
 using _Project.Screpts.UI;
 using _Project.Screpts.UI.SaveAndLoadUI;
 using UnityEngine;
@@ -48,6 +50,8 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             RegisterConteiners(Container);
             RegisterGameObjects(Container);
             RegisterAnalyticService(Container);
+            RegisterAdsServices(Container);
+            RegisterPurchaseServices(Container);
             RegisterModel(Container);
             CreateGameFsm(Container);
             DontDestroyOnLoad(this);
@@ -77,10 +81,22 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             container.Bind<IAnalytics>().To<FirebaseWrapper>().AsSingle();
         }
 
+        private void RegisterAdsServices(DiContainer container)
+        {
+            container.BindInterfacesAndSelfTo<UnityAdsInitializer>().AsSingle();
+            container.Bind<IShowReward>().To<AdvertisingShowReward>().AsCached();
+            container.Bind<IAdvertisingShow>().To<AdvertisingShow>().AsSingle();
+        }
+
+        private void RegisterPurchaseServices(DiContainer container)
+        {
+            container.BindInterfacesAndSelfTo<GameStoreListener>().AsSingle();
+            container.BindInterfacesAndSelfTo<GameStoreInitialize>().AsSingle();
+        }
+
         private void RegisterServices(DiContainer container)
         {
             container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
-            container.BindInterfacesAndSelfTo<UnityAdsInitializer>().AsSingle();
             container.Bind<LevelInitializer>().AsSingle();
             container.Bind<SaveService>().AsSingle();
             container.Bind<LoadingService>().AsSingle();
@@ -91,8 +107,6 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
             container.Bind<HandlerLose>().AsSingle();
             container.Bind<LevelWinHandle>().AsSingle();
             container.Bind<IConfigHandler>().To<ConfigHandler>().AsSingle();
-            container.Bind<IShowReward>().To<AdvertisingShowReward>().AsCached();
-            container.Bind<IAdvertisingShow>().To<AdvertisingShow>().AsSingle();
         }
 
         private void RegisterModel(DiContainer container)

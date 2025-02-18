@@ -3,6 +3,7 @@ using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
 using _Project._Screpts.Services.PauseSystem;
 using _Project.Screpts.AdvertisingServices;
+using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services;
 using _Project.Screpts.Services.Factory;
 using _Project.Screpts.Services.Inputs;
@@ -24,11 +25,13 @@ namespace _Project.Screpts.GameStateMashine.States
         private GameUIFactory _gameUIFactory;
         private CameraFollowFactory _cameraFollowFactory;
         private HandlerLose _handlerLose;
+        private IAdvertisingShow _advertisingShow;
 
         [Inject]
         public GamePlayState(InputHandler inputHandler, CameraFollowFactory cameraFollowFactory,
             LevelInitializer levelInitializer, MovementPlayerObjects movementPlayerObjects, GameUIFactory gameUIFactory,
-            SwitchingService switchingService, PauseService pauseService, HandlerLose handlerLose)
+            SwitchingService switchingService, PauseService pauseService, HandlerLose handlerLose,
+            IAdvertisingShow advertisingShow)
         {
             _inputHandler = inputHandler;
             _cameraFollowFactory = cameraFollowFactory;
@@ -38,6 +41,7 @@ namespace _Project.Screpts.GameStateMashine.States
             _switchingService = switchingService;
             _pauseService = pauseService;
             _handlerLose = handlerLose;
+            _advertisingShow = advertisingShow;
         }
 
         public void EnterState()
@@ -45,6 +49,8 @@ namespace _Project.Screpts.GameStateMashine.States
             _handlerLose.Subscribe();
             InitGamePlay();
             _inputHandler.Initialize();
+            _advertisingShow.Initialize();
+            _advertisingShow.Show();
         }
 
         private void InitGamePlay()
@@ -70,6 +76,7 @@ namespace _Project.Screpts.GameStateMashine.States
             _levelInitializer.DestroyObject();
             _gameUIFactory.DestroyGameUI();
             _switchingService.UnsubscribeElements();
+            _advertisingShow.DisposeShow();
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using _Project._Screpts.GameStateMashine;
 using _Project._Screpts.Interfaces;
-using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
+using _Project.Screpts.ShopSystem;
 using Cysharp.Threading.Tasks;
+using Unity.Services.Core;
 using UnityEngine.SceneManagement;
 using Zenject;
 
@@ -17,27 +18,28 @@ namespace _Project.Screpts.GameStateMashine.States
         private IAnalytics _analytics;
         private IConfigHandler _configHandler;
         private IAdsInitializer _adsInitializer;
-        private IAdvertisingShow _advertisingShow;
+        private IStoreInitialize _gameStoreInitialize;
 
         [Inject]
         public void Constructor(GameFSM gameFsm, LoadingService loadingService, IAnalytics analytics,
-            IConfigHandler configHandler, IAdsInitializer adsInitializer, IAdvertisingShow advertisingShow)
+            IConfigHandler configHandler, IAdsInitializer adsInitializer, IStoreInitialize gameStoreInitialize)
         {
             _gameFsm = gameFsm;
             _loadingService = loadingService;
             _analytics = analytics;
             _configHandler = configHandler;
             _adsInitializer = adsInitializer;
-            _advertisingShow = advertisingShow;
+            _gameStoreInitialize = gameStoreInitialize;
         }
 
         public async void EnterState()
         {
+            await UnityServices.InitializeAsync();
             await _adsInitializer.InitializeAdsAsync();
             await _analytics.Initialize();
             _analytics.InvokeAppOpen();
+            _gameStoreInitialize.InitializePurchasing();
             await _configHandler.DownloadAsync();
-            _advertisingShow.Show();
             await LoadNextSceneAsync();
         }
 

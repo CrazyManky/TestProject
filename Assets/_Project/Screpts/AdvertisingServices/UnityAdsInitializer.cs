@@ -18,7 +18,7 @@ namespace _Project.Screpts.AdvertisingServices
 #if UNITY_ANDROID
         _gameId = AndroidGameId;
 #elif UNITY_EDITOR
-            _gameId = AndroidGameId; // Только для тестирования в редакторе
+            _gameId = AndroidGameId; 
 #endif
             if (!Advertisement.isInitialized && Advertisement.isSupported)
             {

@@ -7,5 +7,7 @@ namespace _Project.Screpts.AdvertisingServices
         public event Action OnCompletedShow;
         public event Action OnFeiledShow;
         public void ActiveReward();
+
+        public void ResetCount();
     }
 }

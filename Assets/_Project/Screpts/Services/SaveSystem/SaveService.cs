@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace _Project._Screpts.SaveSystem
 {
-    public class SaveService : ISeveData
+    public class SaveService : ISaveData
     {
         private const int MaxSaveFiles = 3;
         private readonly Dictionary<string, ISavableData> _saveData = new();

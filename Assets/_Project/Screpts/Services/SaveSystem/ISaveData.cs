@@ -2,7 +2,7 @@
 
 namespace _Project._Screpts.SaveSystem
 {
-    public interface ISeveData
+    public interface ISaveData
     {
         public void SaveGameAsync();
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Project.Screpts.ShopSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ namespace _Project.Screpts.UI.SaveAndLoadUI
     {
         [SerializeField] private Button _buttonSave;
         [SerializeField] private Button _buttonLoad;
+        [SerializeField] private Button _byuDisableAdsButton;
         [SerializeField] private Transform _saveListContainer;
         [SerializeField] private SaveDataItem _saveButtonPrefab;
 
@@ -19,6 +21,7 @@ namespace _Project.Screpts.UI.SaveAndLoadUI
             _saveAndLoadPresenter = saveAndLoadPresenter;
             _buttonSave.onClick.AddListener(_saveAndLoadPresenter.Save);
             _buttonLoad.onClick.AddListener(_saveAndLoadPresenter.ShowSaveFiles);
+            _byuDisableAdsButton.onClick.AddListener(_saveAndLoadPresenter.BuyStoreItem);
             saveAndLoadPresenter.ShowSaveFiles();
         }
 
