@@ -34,7 +34,7 @@ namespace _Project.Screpts.Services.Factory
             var gameObject = new GameObject("MoveableObject");
             var instance =
                 _instantiator.InstantiatePrefabForComponent<MoveObject>(_playerObjectConteiner.GetObject(itemIndex));
-            _playerObjectCollector.AddMovebleObject(instance);
+            _playerObjectCollector.AddMoveObject(instance);
             _saveService.AddSaveItem(instance);
             _loadingService.AddLoadingItem(instance);
             instance.transform.SetParent(gameObject.transform);

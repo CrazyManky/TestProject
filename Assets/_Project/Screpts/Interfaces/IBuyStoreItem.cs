@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace _Project.Screpts.ShopSystem
+﻿namespace _Project.Screpts.Interfaces
 {
     public interface IBuyStoreItem
     {

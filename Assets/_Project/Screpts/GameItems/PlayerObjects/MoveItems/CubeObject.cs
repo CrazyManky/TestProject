@@ -19,5 +19,11 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         {
             transform.position = position;
         }
+
+        public override void DisableItem()
+        {
+            base.DisableItem();
+            Destroy(gameObject);
+        }
     }
 }

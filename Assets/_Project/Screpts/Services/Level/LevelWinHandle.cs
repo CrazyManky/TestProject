@@ -22,10 +22,9 @@ namespace _Project._Screpts.Services.Level
         public void CheckWin()
         {
             Debug.Log(_playerObjectCollector.ObjectCount);
-            if (_playerObjectCollector.ObjectCount <= 1)
-            {
+            if (_playerObjectCollector.ObjectCount - 1 <= 0)
                 _gameFSM.Enter<GameOverState>();
-            }
+            
         }
     }
 }

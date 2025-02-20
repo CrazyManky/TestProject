@@ -91,7 +91,7 @@ namespace _Project.Screpts.Services.Level
             _destroyGameElements.ForEach((item) =>
             {
                 if (item != null)
-                    item.DestroyItem();
+                    item.DisableItem();
             });
             _destroyGameElements.Clear();
         }

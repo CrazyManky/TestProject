@@ -37,6 +37,6 @@ namespace _Project.Screpts.GameItems.EnemyComponents
 
         public void Pause() => PauseAcitve = true;
         public void Continue() => PauseAcitve = false;
-        public void DestroyItem() => Destroy(gameObject);
+        public void DisableItem() => Destroy(gameObject);
     }
 }

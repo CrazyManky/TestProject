@@ -27,7 +27,7 @@ namespace _Project.Screpts.GameItems.PlayerObjects
             _mainCamera.transform.LookAt(_target);
         }
 
-        public void DestroyItem()
+        public void DisableItem()
         {
             Destroy(gameObject);
         }

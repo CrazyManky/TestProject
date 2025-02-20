@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Project._Screpts.SaveSystem;
+using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem;
 using _Project.Screpts.ShopSystem;
 using Zenject;

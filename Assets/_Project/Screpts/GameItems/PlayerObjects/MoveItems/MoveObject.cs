@@ -20,6 +20,7 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         public string KeyItem => _keyItem;
         public int Health => MoveableObjectData.Health;
         public int MaxHealth => MoveableObjectData.MaxHealth;
+        public bool IActive = true;
 
         public event Action OnDead;
         public event Action<int, int> OnValueChanged;
@@ -84,18 +85,17 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
             OnValueChanged?.Invoke(MoveableObjectData.Health, MoveableObjectData.MaxHealth);
         }
 
-
         public ISavableData SaveData()
         {
             var data = new SaveData(KeyItem, MoveableObjectData.Health, transform.position);
             return data;
         }
 
-
-        public void DestroyItem()
+        public virtual void DisableItem()
         {
             _showReward.OnCompletedShow -= Reset;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            IActive = false;
         }
     }
 }

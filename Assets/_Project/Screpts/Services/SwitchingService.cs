@@ -1,5 +1,4 @@
 ﻿using System;
-using _Project._Screpts.Services;
 using _Project.Screpts.GameItems.PlayerObjects;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.Services.MoveItems;
@@ -22,7 +21,8 @@ namespace _Project.Screpts.Services
             _playerObjectCollector = playerObjectCollector;
         }
 
-        public void SubscribeElements(CameraFollow cameraFollow,MovementPlayerObjects movementPlayerObjects,GameUI gameUI)
+        public void SubscribeElements(CameraFollow cameraFollow, MovementPlayerObjects movementPlayerObjects,
+            GameUI gameUI)
         {
             _movementPlayerObjects = movementPlayerObjects;
             _gameUI = gameUI;
@@ -40,12 +40,9 @@ namespace _Project.Screpts.Services
 
         public void SwitchObject()
         {
-            var item = _playerObjectCollector.GetNewMovebleObject();
-
-            if (item is null)
-                return;
-
-            OnSwitched?.Invoke(item);
+            var item = _playerObjectCollector.GetNewMoveObject();
+            if (item != null)
+                OnSwitched?.Invoke(item);
         }
 
         public void UnsubscribeElements()

@@ -2,6 +2,6 @@
 {
     public interface IDestroyGameElement
     {
-        public void DestroyItem();
+        public void DisableItem();
     }
 }

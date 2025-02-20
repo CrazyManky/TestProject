@@ -1,11 +1,10 @@
 using System;
-using _Project._Screpts.Services;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.Services;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.GameItems.GameLevels.Levels
+namespace _Project.Screpts.GameItems.GameLevel
 {
     public class ExitZone : MonoBehaviour
     {
@@ -26,8 +25,9 @@ namespace _Project._Screpts.GameItems.GameLevels.Levels
             if (other.TryGetComponent(out MoveObject moveObject))
             {
                 OnEnterObject?.Invoke();
-                _switchingService.SwitchObject();
                 _playerObjectCollector.RemoveItem(moveObject);
+                moveObject.DisableItem();
+                _switchingService.SwitchObject();
             }
         }
     }
