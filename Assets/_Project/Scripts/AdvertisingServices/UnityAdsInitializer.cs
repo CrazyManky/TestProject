@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace _Project.Screpts.AdvertisingServices
+namespace _Project.Scripts.AdvertisingServices
 {
     public class UnityAdsInitializer : IUnityAdsInitializationListener, IAdsInitializer
     {

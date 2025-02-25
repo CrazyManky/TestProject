@@ -1,13 +1,15 @@
 using System.Collections;
-using _Project.Screpts.GameItems.EnemyComponents;
+using _Project._Screpts.GameItems.Enemy.Shot;
+using _Project.Scripts.MathUtils;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace _Project._Screpts.GameItems.Enemy.Shot
+namespace _Project.Scripts.GameItems.EnemyComponents.Shot
 {
-    [RequireComponent(typeof(EnemyObject))]
+    [RequireComponent(typeof(BaseEnemy))]
     public class ShotComponent : MonoBehaviour
     {
-        [SerializeField] private ShotingZone _shotingZone;
+        [FormerlySerializedAs("_shotingZone")] [SerializeField] private ShootingZone shootingZone;
         [SerializeField] private Projectile _projectile;
         [SerializeField] private Transform _firePoint;
 
@@ -17,11 +19,11 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
         private PoolObject<Projectile> _projectilePool;
         private Transform _target;
         private Coroutine _shootRoutine;
-        private EnemyObject _enemyObject;
+        private BaseEnemy _baseEnemy;
 
         private void Awake()
         {
-            _enemyObject = GetComponent<EnemyObject>();
+            _baseEnemy = GetComponent<BaseEnemy>();
             _projectilePool = new PoolObject<Projectile>();
             _projectilePool.Initialize(_projectile, transform);
             LoadingConfig();
@@ -29,7 +31,7 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
 
         private void LoadingConfig()
         {
-            var config = _enemyObject.ConfigHandler.GetConfig(_enemyObject.KeyItem);
+            var config = _baseEnemy.ConfigHandler.GetConfig(_baseEnemy.Key);
             if (config is ShootingEnemyConfig configData)
             {
                 _turnSpeed = configData.TurnSpeed;
@@ -40,8 +42,8 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
 
         private void OnEnable()
         {
-            _shotingZone.OnEnterZone += StartShooting;
-            _shotingZone.OnExitZone += StopShooting;
+            shootingZone.OnEnter += StartShooting;
+            shootingZone.OnExited += StopShooting;
         }
 
 
@@ -69,8 +71,8 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
             while (_target != null)
             {
                 yield return StartCoroutine(RotateTowardsTarget());
-
-                if (Vector3.Distance(transform.position, _target.position) <= _shootDistance)
+              
+                if (MathfDistance.Calculate(transform, _target) <= _shootDistance)
                     Shoot();
 
                 yield return new WaitForSeconds(_shotDelay);
@@ -105,8 +107,8 @@ namespace _Project._Screpts.GameItems.Enemy.Shot
 
         private void OnDisable()
         {
-            _shotingZone.OnEnterZone -= StartShooting;
-            _shotingZone.OnExitZone -= StopShooting;
+            shootingZone.OnEnter -= StartShooting;
+            shootingZone.OnExited -= StopShooting;
         }
     }
 }

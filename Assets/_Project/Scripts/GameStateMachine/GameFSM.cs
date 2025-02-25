@@ -4,11 +4,11 @@ using Zenject;
 
 namespace _Project.Scripts.GameStateMachine
 {
-    public class GameFSM 
+    public class GameFSM
     {
-        private IGameState _activeState;
+        private IStateExit _activeState;
         private IInstantiator _instantiator;
-        
+
         [Inject]
         public GameFSM(IInstantiator instantiator)
         {
@@ -16,11 +16,12 @@ namespace _Project.Scripts.GameStateMachine
         }
 
 
-        public void Enter<TState>() where TState : IGameState
+        public void Enter<TState>() where TState : IGameState, IStateExit
         {
             _activeState?.ExitState();
-            _activeState = _instantiator.Instantiate<TState>();
-            _activeState.EnterState();
+            var state = _instantiator.Instantiate<TState>();
+            state.EnterState();
+            _activeState = state;
         }
     }
 }

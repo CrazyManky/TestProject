@@ -1,11 +1,10 @@
 using _Project._Screpts.GameItems.Enemy.EnemyElements;
-using _Project._Screpts.Interfaces;
 using _Project.Screpts.Interfaces;
 using UnityEngine;
 
-namespace _Project.Screpts.GameItems.EnemyComponents.Movement
+namespace _Project.Scripts.GameItems.EnemyComponents.Movement
 {
-    [RequireComponent(typeof(EnemyObject))]
+    [RequireComponent(typeof(BaseEnemy))]
     public class PersecutionObject : MonoBehaviour
     {
         [SerializeField] private FieldView _fieldView;
@@ -13,20 +12,20 @@ namespace _Project.Screpts.GameItems.EnemyComponents.Movement
         private float _speed;
         private int _damage;
 
-        private EnemyObject _enemyObject;
+        private BaseEnemy _baseEnemy;
         private Transform _target;
 
         private void OnEnable() => _fieldView.OnDetectedObject += SetTarget;
 
         private void Awake()
         {
-            _enemyObject = GetComponent<EnemyObject>();
+            _baseEnemy = GetComponent<BaseEnemy>();
             LoadingConfig();
         }
 
         private void LoadingConfig()
         {
-            var config = _enemyObject.ConfigHandler.GetConfig(_enemyObject.KeyItem);
+            var config = _baseEnemy.ConfigHandler.GetConfig(_baseEnemy.Key);
 
             if (config is EnemyStalkerConfig configData)
             {
@@ -39,7 +38,7 @@ namespace _Project.Screpts.GameItems.EnemyComponents.Movement
 
         public void Update()
         {
-            if (_enemyObject.PauseAcitve)
+            if (_baseEnemy.PauseActive)
                 return;
 
             ChasePlayer(_target);

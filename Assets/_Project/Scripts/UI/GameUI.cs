@@ -1,6 +1,7 @@
-using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.UI.HPBar;
 using _Project.Screpts.UI.SaveAndLoadUI;
+using _Project.Scripts.GameItems.PlayerItems.MoveItems;
+using _Project.Scripts.UI.SaveAndLoadUI;
 using UnityEngine;
 using Zenject;
 
@@ -11,7 +12,7 @@ namespace _Project.Screpts.UI
         [SerializeField] private HealtBar _hpBar;
         [SerializeField] private SaveAndLoadView saveView;
 
-        private MoveObject _subscribedObject;
+        private PlayerItem _subscribedItem;
         private SaveAndLoadView _saveViewInstance;
         private SaveAndLoadModel _saveAndLoadModel;
 
@@ -21,14 +22,14 @@ namespace _Project.Screpts.UI
             _saveAndLoadModel = saveAndLoadModel;
         }
 
-        public void SubscribeInObject(MoveObject moveObject)
+        public void SubscribeInObject(PlayerItem playerItem)
         {
-            if (_subscribedObject != null)
+            if (_subscribedItem != null)
                 UnsubscribeInObject();
 
-            _subscribedObject = moveObject;
-            _subscribedObject.OnValueChanged += _hpBar.SetNewData;
-            _hpBar.SetNewData(moveObject.Health, moveObject.MaxHealth);
+            _subscribedItem = playerItem;
+            _subscribedItem.OnValueChanged += _hpBar.SetNewData;
+            _hpBar.SetNewData(playerItem.Health, playerItem.MaxHealth);
         }
 
         public void ShowSaveScreen()
@@ -46,6 +47,6 @@ namespace _Project.Screpts.UI
         }
 
         private void UnsubscribeInObject() =>
-            _subscribedObject.OnValueChanged -= _hpBar.SetNewData;
+            _subscribedItem.OnValueChanged -= _hpBar.SetNewData;
     }
 }

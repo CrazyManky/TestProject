@@ -8,17 +8,17 @@ using _Project.Screpts.Services;
 using _Project.Screpts.Services.Factory;
 using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
-using _Project.Screpts.Services.MoveItems;
 using _Project.Scripts.GameStateMachine.States;
+using _Project.Scripts.Services.MoveItems;
 using Services;
 using UnityEngine;
 using Zenject;
 
 namespace _Project.Screpts.GameStateMashine.States
 {
-    public class GamePlayState : IGameState, IFixedTickable
+    public class GamePlayState : IGameState,IStateEnter,IStateExit, IFixedTickable
     {
-        private MovementPlayerObjects _movementPlayerObjects;
+        private MovementPlayer _movementPlayer;
         private InputHandler _inputHandler;
         private PauseService _pauseService;
         private LevelInitializer _levelInitializer;
@@ -30,14 +30,14 @@ namespace _Project.Screpts.GameStateMashine.States
 
         [Inject]
         public GamePlayState(InputHandler inputHandler, CameraFollowFactory cameraFollowFactory,
-            LevelInitializer levelInitializer, MovementPlayerObjects movementPlayerObjects, GameUIFactory gameUIFactory,
+            LevelInitializer levelInitializer, MovementPlayer movementPlayer, GameUIFactory gameUIFactory,
             SwitchingService switchingService, PauseService pauseService, HandlerLose handlerLose,
             IAdvertisingShow advertisingShow)
         {
             _inputHandler = inputHandler;
             _cameraFollowFactory = cameraFollowFactory;
             _levelInitializer = levelInitializer;
-            _movementPlayerObjects = movementPlayerObjects;
+            _movementPlayer = movementPlayer;
             _gameUIFactory = gameUIFactory;
             _switchingService = switchingService;
             _pauseService = pauseService;
@@ -61,13 +61,13 @@ namespace _Project.Screpts.GameStateMashine.States
             var levelConteiner = new GameObject("Level");
             var gameUIInstance = _gameUIFactory.InstanceGUI(UIConteiner.transform);
             var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(cameraFollowConteiner.transform);
-            _switchingService.SubscribeElements(cameraFollowInstance, _movementPlayerObjects, gameUIInstance);
-            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movementPlayerObjects,
+            _switchingService.SubscribeElements(cameraFollowInstance, _movementPlayer, gameUIInstance);
+            _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movementPlayer,
                 levelConteiner.transform);
             _pauseService.SetUI(gameUIInstance);
         }
 
-        public void FixedTick() => _movementPlayerObjects.FixedTick();
+        public void FixedTick() => _movementPlayer.FixedTick();
 
 
         public void ExitState()

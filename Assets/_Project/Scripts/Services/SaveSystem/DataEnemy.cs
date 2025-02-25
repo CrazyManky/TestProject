@@ -1,21 +1,18 @@
-﻿using _Project._Screpts.Interfaces;
-using Newtonsoft.Json;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine;
 
-namespace _Project._Screpts.SaveSystem
+namespace _Project.Scripts.Services.SaveSystem
 {
-    public struct DataEnemy : ISavableData
+    public class DataEnemy
     {
         public string KeyItem { get; }
         public bool IsActive;
-        public Vector3Save Position;
+        public string Position;
 
         public DataEnemy(string keyItem, bool isActive, Vector3 position)
         {
             KeyItem = keyItem;
             IsActive = isActive;
-            Position = new Vector3Save(position.x, position.y, position.z);
+            Position = JsonUtility.ToJson(position);
         }
     }
 }

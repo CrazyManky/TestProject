@@ -1,11 +1,12 @@
 ﻿using System;
+using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Interfaces;
 using UnityEngine.Advertisements;
 using Zenject;
 
-namespace _Project.Screpts.AdvertisingServices
+namespace _Project.Scripts.AdvertisingServices
 {
-    public class AdvertisingShowReward : IUnityAdsShowListener, IShowReward
+    public class RewardHandler : IUnityAdsShowListener, IShowReward
     {
         private string _rewardID = "Rewarded_Android";
         private int _maxCountInvoke = 1;
@@ -35,13 +36,6 @@ namespace _Project.Screpts.AdvertisingServices
             _advertisingShow.Show();
         }
 
-        public void OnUnityAdsShowStart(string placementId)
-        {
-        }
-
-        public void OnUnityAdsShowClick(string placementId)
-        {
-        }
 
         public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
         {
@@ -56,7 +50,10 @@ namespace _Project.Screpts.AdvertisingServices
                 _advertisingShow.Show();
             }
         }
-
         public void ResetCount() => _countInvoke = 0;
+
+        public void OnUnityAdsShowStart(string placementId){}
+
+        public void OnUnityAdsShowClick(string placementId){}
     }
 }

@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 using Zenject;
 
-namespace _Project.Screpts.AdvertisingServices
+namespace _Project.Scripts.AdvertisingServices
 {
-    public class AdvertisingShow : IUnityAdsShowListener, IAdvertisingShow
+    public class AdvertisingHandler : IUnityAdsShowListener, IAdvertisingShow
     {
         private string _lodingAdID = "Interstitial_Android";
         private IPurchaseItem _purchaseItem;
@@ -36,17 +36,6 @@ namespace _Project.Screpts.AdvertisingServices
                 Advertisement.Show(_lodingAdID, this);
         }
 
-        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
-        {
-        }
-
-        public void OnUnityAdsShowStart(string placementId)
-        {
-        }
-
-        public void OnUnityAdsShowClick(string placementId)
-        {
-        }
 
         public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
         {
@@ -60,5 +49,10 @@ namespace _Project.Screpts.AdvertisingServices
         }
 
         public void DisposeShow() => _purchaseItem.OnPurchaseNoAdsСomplete -= DisableShowAds;
+        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message){}
+
+        public void OnUnityAdsShowStart(string placementId){}
+
+        public void OnUnityAdsShowClick(string placementId){}
     }
 }

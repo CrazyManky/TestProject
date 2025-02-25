@@ -242,12 +242,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8979655b844c8f84dbdf99a8898a2a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shotingZone: {fileID: 3356418174619448361}
+  shootingZone: {fileID: 3356418174619448361}
   _projectile: {fileID: 1830768578802685395, guid: 01cd69fa3b573224789fac7344c16737, type: 3}
   _firePoint: {fileID: 4414908733651618931}
-  _turnSpeed: 5
-  _shotDelay: 1.5
-  _shootDistance: 10
 --- !u!1 &6557297829260035380
 GameObject:
   m_ObjectHideFlags: 0

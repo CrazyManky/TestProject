@@ -1,13 +1,13 @@
-﻿using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
-using _Project.Screpts.Services.Inputs;
+﻿using _Project.Screpts.Services.Inputs;
+using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using Zenject;
 
-namespace _Project.Screpts.Services.MoveItems
+namespace _Project.Scripts.Services.MoveItems
 {
-    public class MovementPlayerObjects
+    public class MovementPlayer
     {
         private InputHandler _inputHandler;
-        private MoveObject _activeItem;
+        private PlayerItem _activeItem;
 
         [Inject]
         public void Construct(InputHandler inputHandler)
@@ -15,7 +15,7 @@ namespace _Project.Screpts.Services.MoveItems
             _inputHandler = inputHandler;
         }
 
-        public void SetMovementItem(MoveObject capsule)
+        public void SetMovementItem(PlayerItem capsule)
         {
             _activeItem = capsule;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.UI;
+using _Project.Scripts.GameItems;
 using Services;
 using Zenject;
 
@@ -13,7 +14,7 @@ namespace _Project._Screpts.Services.PauseSystem
         private InputHandler _inputHandler;
         private bool _isPaused;
 
-        private List<IPausable> _pauseItems = new();
+        private List<IPauseItem> _pauseItems = new();
 
 
         [Inject]
@@ -31,7 +32,7 @@ namespace _Project._Screpts.Services.PauseSystem
         }
 
 
-        public void AddPauseItem(IPausable pauseItem)
+        public void AddPauseItem(IPauseItem pauseItem)
         {
             _pauseItems.Add(pauseItem);
         }
@@ -64,11 +65,5 @@ namespace _Project._Screpts.Services.PauseSystem
             _inputHandler.Continue();
             _pauseItems.ForEach(pauseItem => pauseItem.Continue());
         }
-    }
-
-    public interface IPausable
-    {
-        void Pause();
-        void Continue();
     }
 }

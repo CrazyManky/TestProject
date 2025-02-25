@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using _Project._Screpts.Interfaces;
-using _Project.Screpts.GameStateMashine.States;
+﻿using _Project.Screpts.GameStateMashine.States;
 using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using _Project.Screpts.ShopSystem;
+using _Project.Scripts.AnalyticsService;
+using _Project.Scripts.Services;
 using Cysharp.Threading.Tasks;
 using Unity.Services.Core;
 using UnityEngine.SceneManagement;
@@ -20,10 +20,12 @@ namespace _Project.Scripts.GameStateMachine.States
         private IConfigHandler _configHandler;
         private IAdsInitializer _adsInitializer;
         private IStoreInitialize _gameStoreInitialize;
+        private SceneLoader _sceneLoader;
 
         [Inject]
         public void Constructor(GameFSM gameFsm, LoadingService loadingService, IAnalytics analytics,
-            IConfigHandler configHandler, IAdsInitializer adsInitializer, IStoreInitialize gameStoreInitialize)
+            IConfigHandler configHandler, IAdsInitializer adsInitializer, IStoreInitialize gameStoreInitialize,
+            SceneLoader sceneLoader)
         {
             _gameFsm = gameFsm;
             _loadingService = loadingService;
@@ -31,34 +33,29 @@ namespace _Project.Scripts.GameStateMachine.States
             _configHandler = configHandler;
             _adsInitializer = adsInitializer;
             _gameStoreInitialize = gameStoreInitialize;
+            _sceneLoader = sceneLoader;
         }
 
         public async void EnterState()
         {
-            _analytics.InvokeAppOpen();
-            _gameStoreInitialize.InitializePurchasing();
             await AwaitAll();
+            _gameFsm.Enter<GamePlayState>();
         }
 
-        private async Task AwaitAll()
+        private async UniTask AwaitAll()
         {
             await UnityServices.InitializeAsync();
             await _adsInitializer.InitializeAdsAsync();
             await _analytics.Initialize();
             await _configHandler.DownloadAsync();
-            await LoadNextSceneAsync();
-        }
-
-        private async UniTask LoadNextSceneAsync()
-        {
-            var asyncOperation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
             await _loadingService.LoadFromFileAsync();
-            _gameFsm.Enter<GamePlayState>();
+            await _sceneLoader.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         }
-
 
         public void ExitState()
         {
+            _analytics.NotifyAppOpen();
+            _gameStoreInitialize.InitializePurchasing();
         }
     }
 }

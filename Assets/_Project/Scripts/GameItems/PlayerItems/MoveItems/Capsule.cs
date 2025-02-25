@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
+namespace _Project.Scripts.GameItems.PlayerItems.MoveItems
 {
-    public class Capsule : MoveObject
+    public class Capsule : PlayerItem
     {
         [SerializeField] private CharacterController _characterController;
 
@@ -11,7 +11,7 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
             if (moveDirection == Vector3.zero)
                 return;
 
-            _characterController.Move(moveDirection * MoveableObjectData.Speed);
+            _characterController.Move(moveDirection * PlayerItemData.Speed);
         }
 
         public override void SetPosition(Vector3 position)
@@ -19,6 +19,12 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
             _characterController.enabled = false;
             transform.position = position;
             _characterController.enabled = true;
+        }
+
+        public override void DisableItem()
+        {
+            base.DisableItem();
+            Analytics.NotifyPlayerDead(Key);
         }
     }
 }

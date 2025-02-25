@@ -1,12 +1,10 @@
-﻿using _Project.Screpts.GameStateMashine.States;
-using _Project.Scripts.GameStateMachine;
-using _Project.Scripts.GameStateMachine.States;
+﻿using _Project.Scripts.GameStateMachine.States;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Screpts.GameStateMashine.EntryPoint
+namespace _Project.Scripts.GameStateMachine.EntryPoint
 {
-    public class EntryPointGame : MonoBehaviour
+    public class EntryPointGame 
     {
         private GameFSM _gameFsm;
 

@@ -1,15 +1,12 @@
-using _Project.Screpts.Interfaces;
 using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Analytics;
 using UnityEngine;
 
-namespace _Project.Screpts.Analytics_Service
+namespace _Project.Scripts.AnalyticsService
 {
-    public class FirebaseWrapper : IAnalytics
+    public class EventHandler : IAnalytics
     {
-        private FirebaseApp _app;
-
         public async UniTask Initialize()
         {
             Debug.Log("🔥 Начало инициализации Firebase...");
@@ -17,25 +14,24 @@ namespace _Project.Screpts.Analytics_Service
 
             if (dependencyStatus == DependencyStatus.Available)
             {
-                _app = FirebaseApp.DefaultInstance; // ✅ Создаем экземпляр Firebase
                 FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
                 Debug.Log("✅ Firebase успешно инициализирован");
             }
             else
             {
-                Debug.LogError($"❌ Firebase не инициализирован: {dependencyStatus}");
                 return;
             }
 
             Application.quitting += InvokeAppClose;
         }
 
-        public void InvokeAppOpen()
-        {
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventAppOpen);
-        }
+        public void NotifyAppOpen() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventAppOpen);
 
-        public void InvokeAppClose()
+        public void NotifyPlayerDead(string keyItem) => FirebaseAnalytics.LogEvent($"NotifyPlayerDead:{keyItem}");
+        public void NotifyExitArea() => FirebaseAnalytics.LogEvent($"NotifyExitArea");
+        public void NotifyLevelCompleted() => FirebaseAnalytics.LogEvent($"NotifyLevelCompleted");
+
+        private void InvokeAppClose()
         {
             FirebaseAnalytics.LogEvent("App Closed");
             Application.quitting -= InvokeAppClose;

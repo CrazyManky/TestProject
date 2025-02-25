@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
+namespace _Project.Scripts.GameItems.PlayerItems.MoveItems
 {
-    public class CubeObject : MoveObject
+    public class CubeItem : PlayerItem
     {
         [SerializeField] private Rigidbody _rb;
 
@@ -12,7 +12,7 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
                 return;
 
             moveDirection = moveDirection.normalized;
-            _rb.velocity = moveDirection * MoveableObjectData.Speed;
+            _rb.velocity = moveDirection * PlayerItemData.Speed;
         }
 
         public override void SetPosition(Vector3 position)
@@ -23,6 +23,7 @@ namespace _Project.Screpts.GameItems.PlayerObjects.MoveItems
         public override void DisableItem()
         {
             base.DisableItem();
+            Analytics.NotifyPlayerDead(Key);
             Destroy(gameObject);
         }
     }

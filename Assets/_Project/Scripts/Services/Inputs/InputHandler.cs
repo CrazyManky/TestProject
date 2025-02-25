@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.PauseSystem;
+using _Project.Scripts.GameItems;
 using UnityEngine;
 using Zenject;
 
 namespace _Project.Screpts.Services.Inputs
 {
-    public class InputHandler : ITickable, IPausable
+    public class InputHandler : ITickable, IPauseItem
     {
         private Dictionary<KeyCode, Action> _keyActions;
         private bool _pauseActivated = false;

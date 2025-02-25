@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using _Project._Screpts.Interfaces;
+using _Project.Scripts.GameItems;
 using UnityEngine;
 
 namespace _Project.Screpts.GameItems.GameLevel
 {
-    public class GameLevel : MonoBehaviour, IDestroyGameElement
+    public class GameLevel : MonoBehaviour, IDestroy
     {
         [SerializeField] private List<Transform> _pointsPlayerObject;
         [SerializeField] private List<Transform> _pointsEnemy;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using _Project._Screpts.Interfaces;
+using _Project.Scripts.GameItems;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -11,10 +11,9 @@ namespace _Project.Screpts.Services.LoadSystem
 {
     public class LoadingService
     {
-        private Dictionary<string, ISavableData> _loadedData = new();
-
-        private List<ISaveAndLoad> _loadedSaveAndLoad = new();
-
+        private Dictionary<Type, object> _loadedData = new();
+        private List<ISaveData> _loadedSaveAndLoad = new();
+        
         public async UniTask LoadFromFileAsync()
         {
             var saveDirectory = Application.persistentDataPath;
@@ -34,23 +33,25 @@ namespace _Project.Screpts.Services.LoadSystem
             try
             {
                 var jsonData = await ReadFileAsync(latestSaveFile);
-                _loadedData = await UniTask.Run(() =>
-                    JsonConvert.DeserializeObject<Dictionary<string, ISavableData>>(jsonData, new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    })
-                );
+                // _loadedData = await UniTask.Run(() =>
+                //     JsonConvert.DeserializeObject<Dictionary<Type, ISavableData>>(jsonData, new JsonSerializerSettings
+                //     {
+                //         TypeNameHandling = TypeNameHandling.All
+                //     })
+                // );
             }
             catch (Exception ex)
             {
+                Debug.LogError($"Ошибка при загрузке данных: {ex.Message}");
             }
         }
-
-        public void AddLoadingItem(ISaveAndLoad data)
+        
+        public void AddLoadingItem(ISaveData data)
         {
             _loadedSaveAndLoad.Add(data);
         }
 
+       
         public async UniTask LoadFromSpecificFileAsync(string fileName)
         {
             var saveDirectory = Application.persistentDataPath;
@@ -65,12 +66,12 @@ namespace _Project.Screpts.Services.LoadSystem
             try
             {
                 var jsonData = await ReadFileAsync(filePath);
-                _loadedData = await UniTask.Run(() =>
-                    JsonConvert.DeserializeObject<Dictionary<string, ISavableData>>(jsonData, new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.All
-                    })
-                );
+                // _loadedData = await UniTask.Run(() =>
+                //     JsonConvert.DeserializeObject<Dictionary<Type, ISavableData>>(jsonData, new JsonSerializerSettings
+                //     {
+                //         TypeNameHandling = TypeNameHandling.All
+                //     })
+                // );
 
                 Debug.Log($"Данные успешно загружены из файла: {filePath}");
             }
@@ -79,31 +80,33 @@ namespace _Project.Screpts.Services.LoadSystem
                 Debug.LogError($"Ошибка при загрузке данных: {ex.Message}");
             }
         }
-
+        
         private async UniTask<string> ReadFileAsync(string filePath)
         {
             using var reader = new StreamReader(filePath);
             return await reader.ReadToEndAsync();
         }
-
+        
         public List<string> GetSaveFiles()
         {
             string saveDirectory = Application.persistentDataPath;
             var saveFiles = Directory.GetFiles(saveDirectory, "saveData_*.json").OrderBy(File.GetCreationTime).ToList();
             return saveFiles;
         }
-
+        
         public void ClearLoadingItems()
         {
             _loadedSaveAndLoad.Clear();
         }
-
-        public void LoadingData()
+        
+        public void LoadData()
         {
             foreach (var loadingItem in _loadedSaveAndLoad)
             {
-                var loadingData = _loadedData[loadingItem.KeyItem];
-                loadingItem.Load(loadingData);
+                if (_loadedData.TryGetValue(loadingItem.GetType(), out var loadingData))
+                {
+                   // loadingItem.Load(loadingData);
+                }
             }
         }
     }

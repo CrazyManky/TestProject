@@ -1,13 +1,12 @@
-﻿using _Project._Screpts.Interfaces;
-using _Project.Screpts.Interfaces;
+﻿using _Project.Screpts.Interfaces;
 using UnityEngine;
 
-namespace _Project.Screpts.GameItems.EnemyComponents.Movement
+namespace _Project.Scripts.GameItems.EnemyComponents.Movement
 {
-    [RequireComponent(typeof(EnemyObject))]
+    [RequireComponent(typeof(BaseEnemy))]
     public class PathFollowingEnemy : MonoBehaviour
     {
-        private EnemyObject _enemy;
+        private BaseEnemy _baseEnemy;
         private float _patrolDistance;
         private float _speed;
         private int _damage;
@@ -17,13 +16,13 @@ namespace _Project.Screpts.GameItems.EnemyComponents.Movement
 
         private void Awake()
         {
-            _enemy = GetComponent<EnemyObject>();
+            _baseEnemy = GetComponent<BaseEnemy>();
             LoadingConfig();
         }
 
         private void LoadingConfig()
         {
-            var config = _enemy.ConfigHandler.GetConfig(_enemy.KeyItem);
+            var config = _baseEnemy.ConfigHandler.GetConfig(_baseEnemy.Key);
             if (config is EnemyPathConfig configData)
             {
                 _patrolDistance = configData.PatrolDistance;
@@ -37,7 +36,7 @@ namespace _Project.Screpts.GameItems.EnemyComponents.Movement
 
         private void Update()
         {
-            if (_enemy.PauseAcitve)
+            if (_baseEnemy.PauseActive)
                 return;
 
             MoveAlongPath();

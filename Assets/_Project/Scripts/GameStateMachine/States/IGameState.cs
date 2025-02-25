@@ -1,6 +1,6 @@
 ﻿namespace _Project.Scripts.GameStateMachine.States
 {
-    public interface IGameState : IStateEnter, IStateExit
+    public interface IGameState : IStateEnter,IStateExit
     {
     }
 
