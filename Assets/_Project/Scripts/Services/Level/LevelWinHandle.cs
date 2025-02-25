@@ -1,6 +1,6 @@
-﻿using _Project._Screpts.GameStateMashine;
-using _Project.Screpts.GameStateMashine.States;
+﻿using _Project.Screpts.GameStateMashine.States;
 using _Project.Screpts.Services;
+using _Project.Scripts.GameStateMachine;
 using UnityEngine;
 using Zenject;
 

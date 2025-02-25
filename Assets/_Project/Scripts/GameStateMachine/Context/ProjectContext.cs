@@ -1,4 +1,3 @@
-using _Project._Screpts.GameStateMashine;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
 using _Project._Screpts.Services.Factory;
@@ -6,7 +5,6 @@ using _Project._Screpts.Services.Level;
 using _Project._Screpts.Services.PauseSystem;
 using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Analytics_Service;
-using _Project.Screpts.GameItems;
 using _Project.Screpts.GameItems.EnemyComponents;
 using _Project.Screpts.GameItems.GameLevel;
 using _Project.Screpts.GameItems.PlayerObjects;
@@ -25,17 +23,19 @@ using _Project.Screpts.Services.MoveItems;
 using _Project.Screpts.ShopSystem;
 using _Project.Screpts.UI;
 using _Project.Screpts.UI.SaveAndLoadUI;
+using _Project.Scripts.GameStateMachine.States;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
-namespace _Project.Screpts.GameStateMashine.ContextConteiner
+namespace _Project.Scripts.GameStateMachine.Context
 {
     public class ProjectContext : MonoInstaller
     {
-        [SerializeField] private GameItemsConteiner<EnemyObject> _enemyConteiner;
+        [SerializeField] private GameItemsConteiner<EnemyObject> _enemies;
         [SerializeField] private GameLevel gameLevelPrefab;
         [SerializeField] private CameraFollow cameraFollow;
-        [SerializeField] private GameItemsConteiner<MoveObject> _playerObjectConteiner;
+        [SerializeField] private GameItemsConteiner<MoveObject> _playerObjects;
         [SerializeField] private GameUI _gameUI;
         [SerializeField] private EntryPointGame _entryPoint;
 
@@ -131,9 +131,9 @@ namespace _Project.Screpts.GameStateMashine.ContextConteiner
 
         private void RegisterConteiners(DiContainer container)
         {
-            container.Bind<GameItemsConteiner<MoveObject>>().FromInstance(_playerObjectConteiner).AsSingle();
+            container.Bind<GameItemsConteiner<MoveObject>>().FromInstance(_playerObjects).AsSingle();
             container.Bind<GameLevel>().FromInstance(gameLevelPrefab).AsSingle();
-            container.Bind<GameItemsConteiner<EnemyObject>>().FromInstance(_enemyConteiner).AsSingle();
+            container.Bind<GameItemsConteiner<EnemyObject>>().FromInstance(_enemies).AsSingle();
         }
     }
 }

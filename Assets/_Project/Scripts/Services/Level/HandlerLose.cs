@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using _Project._Screpts.GameStateMashine;
 using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.GameItems.PlayerObjects.MoveItems;
 using _Project.Screpts.GameStateMashine.States;
+using _Project.Scripts.GameStateMachine;
 using Zenject;
 
 namespace _Project._Screpts.Services

@@ -1,10 +1,11 @@
-﻿using _Project._Screpts.GameStateMashine;
-using _Project._Screpts.Interfaces;
+﻿using _Project._Screpts.Interfaces;
 using _Project._Screpts.SaveSystem;
 using _Project._Screpts.Services;
 using _Project.Screpts.AdvertisingServices;
 using _Project.Screpts.Services;
 using _Project.Screpts.Services.LoadSystem;
+using _Project.Scripts.GameStateMachine;
+using _Project.Scripts.GameStateMachine.States;
 using Zenject;
 
 namespace _Project.Screpts.GameStateMashine.States

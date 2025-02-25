@@ -9,6 +9,7 @@ using _Project.Screpts.Services.Factory;
 using _Project.Screpts.Services.Inputs;
 using _Project.Screpts.Services.Level;
 using _Project.Screpts.Services.MoveItems;
+using _Project.Scripts.GameStateMachine.States;
 using Services;
 using UnityEngine;
 using Zenject;

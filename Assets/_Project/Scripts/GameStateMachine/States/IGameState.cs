@@ -1,4 +1,4 @@
-﻿namespace _Project._Screpts.Interfaces
+﻿namespace _Project.Scripts.GameStateMachine.States
 {
     public interface IGameState : IStateEnter, IStateExit
     {

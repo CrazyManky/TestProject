@@ -1,11 +1,12 @@
 ﻿using _Project._Screpts.Interfaces;
+using _Project.Scripts.GameStateMachine.States;
 using Zenject;
 
-namespace _Project._Screpts.GameStateMashine
+namespace _Project.Scripts.GameStateMachine
 {
     public class GameFSM 
     {
-        private IGameState _entreState;
+        private IGameState _activeState;
         private IInstantiator _instantiator;
         
         [Inject]
@@ -17,9 +18,9 @@ namespace _Project._Screpts.GameStateMashine
 
         public void Enter<TState>() where TState : IGameState
         {
-            _entreState?.ExitState();
-            _entreState = _instantiator.Instantiate<TState>();
-            _entreState.EnterState();
+            _activeState?.ExitState();
+            _activeState = _instantiator.Instantiate<TState>();
+            _activeState.EnterState();
         }
     }
 }

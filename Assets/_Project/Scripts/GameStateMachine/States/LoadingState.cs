@@ -1,5 +1,6 @@
-﻿using _Project._Screpts.GameStateMashine;
+﻿using System.Threading.Tasks;
 using _Project._Screpts.Interfaces;
+using _Project.Screpts.GameStateMashine.States;
 using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.LoadSystem;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
@@ -9,7 +10,7 @@ using Unity.Services.Core;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace _Project.Screpts.GameStateMashine.States
+namespace _Project.Scripts.GameStateMachine.States
 {
     public class LoadingState : IGameState
     {
@@ -34,11 +35,16 @@ namespace _Project.Screpts.GameStateMashine.States
 
         public async void EnterState()
         {
+            _analytics.InvokeAppOpen();
+            _gameStoreInitialize.InitializePurchasing();
+            await AwaitAll();
+        }
+
+        private async Task AwaitAll()
+        {
             await UnityServices.InitializeAsync();
             await _adsInitializer.InitializeAdsAsync();
             await _analytics.Initialize();
-            _analytics.InvokeAppOpen();
-            _gameStoreInitialize.InitializePurchasing();
             await _configHandler.DownloadAsync();
             await LoadNextSceneAsync();
         }
@@ -47,12 +53,6 @@ namespace _Project.Screpts.GameStateMashine.States
         {
             var asyncOperation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
             await _loadingService.LoadFromFileAsync();
-
-            while (!asyncOperation.isDone)
-            {
-                await UniTask.Yield();
-            }
-
             _gameFsm.Enter<GamePlayState>();
         }
 
