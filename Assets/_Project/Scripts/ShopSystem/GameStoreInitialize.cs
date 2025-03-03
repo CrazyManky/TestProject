@@ -1,9 +1,8 @@
-﻿using _Project.Screpts.Interfaces;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Purchasing;
 using Zenject;
 
-namespace _Project.Screpts.ShopSystem
+namespace _Project.Scripts.ShopSystem
 {
     public class GameStoreInitialize : IStoreInitialize, IBuyStoreItem
     {

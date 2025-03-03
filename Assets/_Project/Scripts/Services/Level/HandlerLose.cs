@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using _Project.Screpts.AdvertisingServices;
-using _Project.Screpts.GameStateMashine.States;
+﻿using _Project.Screpts.AdvertisingServices;
 using _Project.Scripts.AnalyticsService;
 using _Project.Scripts.GameStateMachine;
+using _Project.Scripts.GameStateMachine.States;
 using Zenject;
 
-namespace _Project._Screpts.Services
+namespace _Project.Scripts.Services.Level
 {
     public class HandlerLose
     {
@@ -14,7 +13,7 @@ namespace _Project._Screpts.Services
         private IAnalytics _analytics;
 
         [Inject]
-        public void Construct(GameFSM gameFsm, IShowReward showReward,IAnalytics analytics)
+        public void Construct(GameFSM gameFsm, IShowReward showReward, IAnalytics analytics)
         {
             _gameFsm = gameFsm;
             _showReward = showReward;

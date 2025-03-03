@@ -1,4 +1,5 @@
 ﻿using _Project.Screpts.Interfaces;
+using _Project.Scripts.ShopSystem;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using Zenject;
@@ -23,7 +24,7 @@ namespace _Project.Scripts.AdvertisingServices
                 return;
             }
 
-            _purchaseItem.OnPurchaseNoAdsСomplete += DisableShowAds;
+            _purchaseItem.OnPurchaseNoAdsComplete += DisableShowAds;
         }
 
 
@@ -48,7 +49,7 @@ namespace _Project.Scripts.AdvertisingServices
             PlayerPrefs.SetInt("No-Ads", 1);
         }
 
-        public void DisposeShow() => _purchaseItem.OnPurchaseNoAdsСomplete -= DisableShowAds;
+        public void DisposeShow() => _purchaseItem.OnPurchaseNoAdsComplete -= DisableShowAds;
         public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message){}
 
         public void OnUnityAdsShowStart(string placementId){}

@@ -100,7 +100,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -135,8 +135,8 @@ Transform:
   m_GameObject: {fileID: 4130525971022902682}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.71, y: 0.32, z: -0.15}
-  m_LocalScale: {x: 7.7686, y: 0.34698611, z: 2.2942545}
+  m_LocalPosition: {x: -13.117, y: 0.32, z: -0.15}
+  m_LocalScale: {x: 22.58332, y: 0.34698611, z: 2.2942545}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4585983446877508878}
@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 6599432734080859723}
   - component: {fileID: 3557741217692078327}
   - component: {fileID: 8782213219154950322}
+  - component: {fileID: 8840380561919942530}
   m_Layer: 0
   m_Name: StalkerEnemy
   m_TagString: Untagged
@@ -331,9 +332,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.50000036
-  m_Height: 2
+  m_Height: 2.0824647
   m_Direction: 1
-  m_Center: {x: -0.0000075697935, y: 0, z: -0.0000019967565}
+  m_Center: {x: -0.00000756979, y: -0.041232377, z: -0.000002026558}
 --- !u!114 &3557741217692078327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,3 +361,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fieldView: {fileID: 2936724146798781082}
+--- !u!54 &8840380561919942530
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697256593576250143}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 1
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0

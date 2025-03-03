@@ -1,17 +1,16 @@
 ﻿using System;
-using _Project.Screpts.Interfaces;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 
-namespace _Project.Screpts.ShopSystem
+namespace _Project.Scripts.ShopSystem
 {
     public class GameStoreListener : IPurchaseItem, IControllerBuyItem
     {
         private IStoreController _storeController;
         public IStoreController StoreController => _storeController;
-        
-        public event Action OnPurchaseNoAdsСomplete;
+
+        public event Action OnPurchaseNoAdsComplete;
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
@@ -19,9 +18,6 @@ namespace _Project.Screpts.ShopSystem
             Debug.Log("Game Store Initialized Successfully");
         }
 
-        public void OnInitializeFailed(InitializationFailureReason error)
-        {
-        }
 
         public void OnInitializeFailed(InitializationFailureReason error, string message)
         {
@@ -30,8 +26,12 @@ namespace _Project.Screpts.ShopSystem
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
-            OnPurchaseNoAdsСomplete?.Invoke();
+            OnPurchaseNoAdsComplete?.Invoke();
             return PurchaseProcessingResult.Complete;
+        }
+
+        public void OnInitializeFailed(InitializationFailureReason error)
+        {
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)

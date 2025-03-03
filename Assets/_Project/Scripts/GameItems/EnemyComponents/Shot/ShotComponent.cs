@@ -9,7 +9,9 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
     [RequireComponent(typeof(BaseEnemy))]
     public class ShotComponent : MonoBehaviour
     {
-        [FormerlySerializedAs("_shotingZone")] [SerializeField] private ShootingZone shootingZone;
+        [FormerlySerializedAs("_shotingZone")] [SerializeField]
+        private ShootingZone shootingZone;
+
         [SerializeField] private Projectile _projectile;
         [SerializeField] private Transform _firePoint;
 
@@ -31,13 +33,10 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
 
         private void LoadingConfig()
         {
-            var config = _baseEnemy.ConfigHandler.GetConfig(_baseEnemy.Key);
-            if (config is ShootingEnemyConfig configData)
-            {
-                _turnSpeed = configData.TurnSpeed;
-                _shotDelay = configData.ShotDelay;
-                _shootDistance = configData.ShootDistance;
-            }
+            var config = _baseEnemy.ConfigHandler.GetConfig<ShootingEnemyConfig>(_baseEnemy.Key);
+            _turnSpeed = config.TurnSpeed;
+            _shotDelay = config.ShotDelay;
+            _shootDistance = config.ShootDistance;
         }
 
         private void OnEnable()
@@ -71,8 +70,8 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
             while (_target != null)
             {
                 yield return StartCoroutine(RotateTowardsTarget());
-              
-                if (MathfDistance.Calculate(transform, _target) <= _shootDistance)
+
+                if (MathfDistance.Calculate(transform.position, _target.position) <= _shootDistance)
                     Shoot();
 
                 yield return new WaitForSeconds(_shotDelay);

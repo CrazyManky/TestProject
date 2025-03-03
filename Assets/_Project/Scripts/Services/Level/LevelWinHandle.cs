@@ -1,11 +1,10 @@
-﻿using _Project.Screpts.GameStateMashine.States;
-using _Project.Screpts.Services;
-using _Project.Scripts.AnalyticsService;
+﻿using _Project.Scripts.AnalyticsService;
 using _Project.Scripts.GameStateMachine;
+using _Project.Scripts.GameStateMachine.States;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.Services.Level
+namespace _Project.Scripts.Services.Level
 {
     public class LevelWinHandle
     {
@@ -14,7 +13,7 @@ namespace _Project._Screpts.Services.Level
         private IAnalytics _analytics;
 
         [Inject]
-        public void Construct(PlayerObjectCollector playerObjectCollector, GameFSM gameFSM,IAnalytics analytics)
+        public void Construct(PlayerObjectCollector playerObjectCollector, GameFSM gameFSM, IAnalytics analytics)
         {
             _playerObjectCollector = playerObjectCollector;
             _gameFSM = gameFSM;
@@ -30,7 +29,6 @@ namespace _Project._Screpts.Services.Level
                 _analytics.NotifyLevelCompleted();
                 _gameFSM.Enter<GameOverState>();
             }
-            
         }
     }
 }

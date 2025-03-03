@@ -1,5 +1,4 @@
-﻿using _Project._Screpts.Interfaces;
-using _Project.Scripts.GameStateMachine.States;
+﻿using _Project.Scripts.GameStateMachine.States;
 using Zenject;
 
 namespace _Project.Scripts.GameStateMachine

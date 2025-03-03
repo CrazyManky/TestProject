@@ -1,5 +1,5 @@
-﻿using _Project.Screpts.Services.Inputs;
-using _Project.Scripts.GameItems.PlayerItems.MoveItems;
+﻿using _Project.Scripts.GameItems.PlayerItems.MoveItems;
+using _Project.Scripts.Services.Inputs;
 using Zenject;
 
 namespace _Project.Scripts.Services.MoveItems

@@ -2,7 +2,7 @@ using System;
 using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using UnityEngine;
 
-namespace _Project._Screpts.GameItems.Enemy.EnemyElements
+namespace _Project.Scripts.GameItems.EnemyComponents.EnemyElements
 {
     public class FieldView : MonoBehaviour
     {
@@ -13,6 +13,7 @@ namespace _Project._Screpts.GameItems.Enemy.EnemyElements
             if (other.TryGetComponent(out PlayerItem moveObject))
             {
                 OnDetectedObject?.Invoke(moveObject.transform);
+                gameObject.SetActive(false);
             }
         }
     }

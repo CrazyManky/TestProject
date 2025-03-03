@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Project.Screpts.Services.LoadSystem.ConfigLoading;
+using _Project.Scripts.Services.LoadSystem.ConfigLoading;
 using Cysharp.Threading.Tasks;
 using Firebase.RemoteConfig;
 using Newtonsoft.Json;
@@ -12,83 +12,47 @@ namespace _Project.Screpts.Services.LoadSystem.ConfigLoading
     public class ConfigHandler : IConfigHandler
     {
         private FirebaseRemoteConfig _configInstance;
-        private Dictionary<string, string> _downloadConfigs = new Dictionary<string, string>();
-        private Dictionary<string, IGameConfig> _parsedConfigs = new();
+        private Dictionary<string, string> _downloadConfigs = new();
+        private Dictionary<string, object> _parsedConfigs = new();
 
         public async UniTask DownloadAsync()
         {
-            try
-            {
-                _configInstance = FirebaseRemoteConfig.DefaultInstance;
-                await _configInstance.FetchAsync(TimeSpan.Zero);
-                await _configInstance.ActivateAsync();
+            _configInstance = FirebaseRemoteConfig.DefaultInstance;
+            await _configInstance.FetchAsync(TimeSpan.Zero);
+            await _configInstance.ActivateAsync();
 
-                _downloadConfigs = _configInstance.AllValues.ToDictionary(
-                    item => item.Key,
-                    item => item.Value.StringValue
-                );
+            _downloadConfigs = _configInstance.AllValues.ToDictionary(
+                item => item.Key,
+                item => item.Value.StringValue
+            );
 
-                DeserializeData();
-
-                Debug.Log("✅ Конфиги загружены успешно!");
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Ошибка загрузки конфига: {e}");
-                throw;
-            }
+            Debug.Log("✅ Конфиги загружены успешно!");
         }
 
-        private void DeserializeData()
-        {
-            foreach (var entry in _downloadConfigs)
-            {
-                string key = entry.Key;
-                string jsonValue = entry.Value;
+        private T DeserializeConfigByKey<T>(string jsonValue) => JsonConvert.DeserializeObject<T>(jsonValue);
 
-                IGameConfig config = DeserializeConfigByKey(key, jsonValue);
-                if (config != null)
-                {
-                    _parsedConfigs[key] = config;
-                }
-                else
-                {
-                    Debug.LogError($"❌ Не удалось десериализовать конфиг для ключа {key}");
-                }
-            }
-        }
-
-        private IGameConfig DeserializeConfigByKey(string key, string jsonValue)
-        {
-            switch (key)
-            {
-                case "Capsule":
-                case "Cube":
-                    return JsonConvert.DeserializeObject<GameObjectConfig>(jsonValue);
-                case "EnemyPathFollowing":
-                    return JsonConvert.DeserializeObject<EnemyPathConfig>(jsonValue);
-                case "StalkerEnemy":
-                    return JsonConvert.DeserializeObject<EnemyStalkerConfig>(jsonValue);
-                case "ShotingEnemy":
-                    return JsonConvert.DeserializeObject<ShootingEnemyConfig>(jsonValue);
-                default:
-                    return null;
-            }
-        }
-
-
-        public IGameConfig GetConfig(string key)
+        public T GetConfig<T>(string key)
         {
             if (_parsedConfigs.ContainsKey(key))
-                return _parsedConfigs[key];
-            
-            return null;
+            {
+                return (T)_parsedConfigs[key];
+            }
+
+            if (_downloadConfigs.TryGetValue(key, out string jsonValue))
+            {
+                T config = DeserializeConfigByKey<T>(jsonValue);
+                _parsedConfigs[key] = config;
+                return config;
+            }
+
+            Debug.LogWarning($"Конфиг с ключом '{key}' не найден.");
+            return default(T);
         }
     }
 }
 
 
-public class GameObjectConfig : IGameConfig
+public class GameObjectConfig
 {
     public string KeyItem { get; set; }
     public int Health { get; set; }
@@ -96,7 +60,7 @@ public class GameObjectConfig : IGameConfig
     public float Speed { get; set; }
 }
 
-public class EnemyPathConfig : IGameConfig
+public class EnemyPathConfig
 {
     public string KeyItem { get; set; }
     public int PatrolDistance { get; set; }
@@ -104,14 +68,14 @@ public class EnemyPathConfig : IGameConfig
     public int Damage { get; set; }
 }
 
-public class EnemyStalkerConfig : IGameConfig
+public class EnemyStalkerConfig
 {
     public string KeyItem { get; set; }
     public int Speed { get; set; }
     public int Damage { get; set; }
 }
 
-public class ShootingEnemyConfig : IGameConfig
+public class ShootingEnemyConfig
 {
     public string KeyItem { get; set; }
     public int TurnSpeed { get; set; }

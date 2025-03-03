@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using _Project.Screpts.ShopSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-namespace _Project.Screpts.UI.SaveAndLoadUI
+namespace _Project.Scripts.UI.SaveAndLoadUI
 {
     public class SaveAndLoadView : MonoBehaviour
     {

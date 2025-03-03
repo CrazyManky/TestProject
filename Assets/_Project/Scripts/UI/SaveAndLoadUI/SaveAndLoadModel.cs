@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using _Project.Screpts.Interfaces;
-using _Project.Screpts.Services.LoadSystem;
-using _Project.Screpts.UI.SaveAndLoadUI;
+using _Project.Scripts.Services.LoadSystem;
 using _Project.Scripts.Services.SaveSystem;
+using _Project.Scripts.ShopSystem;
 using Zenject;
 
 namespace _Project.Scripts.UI.SaveAndLoadUI
@@ -13,20 +12,20 @@ namespace _Project.Scripts.UI.SaveAndLoadUI
         private SaveDataHandler _saveDataHandler;
         private LoadingService _loadingService;
         private IBuyStoreItem _buyStoreItem;
+        private EntityLoaderService _entityLoaderService;
 
         [Inject]
-        public void Constructor(SaveDataHandler saveDataHandler, LoadingService loadingService, IBuyStoreItem buyStoreItem)
+        public void Constructor(SaveDataHandler saveDataHandler, LoadingService loadingService,
+            IBuyStoreItem buyStoreItem, EntityLoaderService entityLoaderService)
         {
             _saveDataHandler = saveDataHandler;
             _loadingService = loadingService;
             _buyStoreItem = buyStoreItem;
+            _entityLoaderService = entityLoaderService;
         }
 
-        public void SetView(SaveAndLoadView view)
-        {
-            _view = view;
-        }
-
+        public void SetView(SaveAndLoadView view) => _view = view;
+        
         public void SaveGame() => _saveDataHandler.SaveGameAsync();
 
 
@@ -44,7 +43,7 @@ namespace _Project.Scripts.UI.SaveAndLoadUI
         public async void LoadSpecificSave(string fileName)
         {
             await _loadingService.LoadFromSpecificFileAsync(fileName);
-            //_loadingService.LoadingData();
+            _entityLoaderService.LoadEntities();
         }
     }
 }

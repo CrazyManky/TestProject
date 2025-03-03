@@ -2,12 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Project.Screpts.UI.SaveAndLoadUI
+namespace _Project.Scripts.UI.SaveAndLoadUI
 {
     public class SaveDataItem : MonoBehaviour
     {
         [SerializeField] private Button _button;
-        [SerializeField] private TextMeshProUGUI _dataPath;
+        [field:SerializeField] public TextMeshProUGUI _dataPath { get; private set; }
 
         public Button ButtonClick => _button;
 

@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace _Project.Screpts.Interfaces
+namespace _Project.Scripts.AdvertisingServices
 {
     public interface IAdsInitializer
     {

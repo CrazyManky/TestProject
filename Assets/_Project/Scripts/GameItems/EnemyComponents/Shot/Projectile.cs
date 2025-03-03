@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using _Project._Screpts.Interfaces;
-using _Project.Screpts.Interfaces;
+using _Project.Scripts.GameItems;
 using UnityEngine;
 
 namespace _Project._Screpts.GameItems.Enemy.Shot

@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b6f59ec33943d687d003fbae6e5dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vueBar: {fileID: 1427334418378151234}
+  _viewBar: {fileID: 1427334418378151234}
   _textValue: {fileID: 1075051951081126887}
 --- !u!1 &1076331144736765303
 GameObject:
@@ -226,7 +226,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpBar: {fileID: 1804665653945758446}
-  saveView: {fileID: 7329191100929795920, guid: 3dc6e41a7f423aa4d95b5d3b5b064049, type: 3}
+  _saveView: {fileID: 7329191100929795920, guid: 3dc6e41a7f423aa4d95b5d3b5b064049, type: 3}
 --- !u!1 &5560638498924009577
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,37 +1,30 @@
-﻿using _Project._Screpts.Interfaces;
-using _Project._Screpts.Services;
-using _Project._Screpts.Services.Factory;
-using _Project._Screpts.Services.PauseSystem;
-using _Project.Screpts.AdvertisingServices;
-using _Project.Screpts.Interfaces;
-using _Project.Screpts.Services;
-using _Project.Screpts.Services.Factory;
-using _Project.Screpts.Services.Inputs;
-using _Project.Screpts.Services.Level;
-using _Project.Scripts.GameStateMachine.States;
+﻿using _Project.Screpts.Interfaces;
+using _Project.Scripts.Services;
+using _Project.Scripts.Services.Factory;
+using _Project.Scripts.Services.Inputs;
+using _Project.Scripts.Services.Level;
 using _Project.Scripts.Services.MoveItems;
-using Services;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Screpts.GameStateMashine.States
+namespace _Project.Scripts.GameStateMachine.States
 {
-    public class GamePlayState : IGameState,IStateEnter,IStateExit, IFixedTickable
+    public class GamePlayState : IGameState, IFixedTickable
     {
         private MovementPlayer _movementPlayer;
         private InputHandler _inputHandler;
-        private PauseService _pauseService;
         private LevelInitializer _levelInitializer;
         private SwitchingService _switchingService;
         private GameUIFactory _gameUIFactory;
         private CameraFollowFactory _cameraFollowFactory;
         private HandlerLose _handlerLose;
         private IAdvertisingShow _advertisingShow;
+        private GameObject _gameObject = new("level");
 
         [Inject]
         public GamePlayState(InputHandler inputHandler, CameraFollowFactory cameraFollowFactory,
             LevelInitializer levelInitializer, MovementPlayer movementPlayer, GameUIFactory gameUIFactory,
-            SwitchingService switchingService, PauseService pauseService, HandlerLose handlerLose,
+            SwitchingService switchingService, HandlerLose handlerLose,
             IAdvertisingShow advertisingShow)
         {
             _inputHandler = inputHandler;
@@ -40,7 +33,6 @@ namespace _Project.Screpts.GameStateMashine.States
             _movementPlayer = movementPlayer;
             _gameUIFactory = gameUIFactory;
             _switchingService = switchingService;
-            _pauseService = pauseService;
             _handlerLose = handlerLose;
             _advertisingShow = advertisingShow;
         }
@@ -56,15 +48,11 @@ namespace _Project.Screpts.GameStateMashine.States
 
         private void InitGamePlay()
         {
-            var cameraFollowConteiner = new GameObject("CameraFollow");
-            var UIConteiner = new GameObject("UI");
-            var levelConteiner = new GameObject("Level");
-            var gameUIInstance = _gameUIFactory.InstanceGUI(UIConteiner.transform);
-            var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(cameraFollowConteiner.transform);
+            var gameUIInstance = _gameUIFactory.InstanceGUI(_gameObject.transform);
+            var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(_gameObject.transform);
             _switchingService.SubscribeElements(cameraFollowInstance, _movementPlayer, gameUIInstance);
             _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movementPlayer,
-                levelConteiner.transform);
-            _pauseService.SetUI(gameUIInstance);
+                _gameObject.transform);
         }
 
         public void FixedTick() => _movementPlayer.FixedTick();
@@ -73,11 +61,12 @@ namespace _Project.Screpts.GameStateMashine.States
         public void ExitState()
         {
             _handlerLose.Unsubscribe();
-            _cameraFollowFactory.DestroyCameraFollow();
             _levelInitializer.DestroyObject();
             _gameUIFactory.DestroyGameUI();
             _switchingService.UnsubscribeElements();
             _advertisingShow.DisposeShow();
+            _cameraFollowFactory.DestroyInstance();
+            Object.Destroy(_gameObject);
         }
     }
 }

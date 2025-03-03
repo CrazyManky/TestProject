@@ -1,20 +1,12 @@
-﻿using _Project.Scripts.UI.SaveAndLoadUI;
-
-namespace _Project.Screpts.UI.SaveAndLoadUI
+﻿namespace _Project.Scripts.UI.SaveAndLoadUI
 {
     public class SaveAndLoadPresenter
     {
         public SaveAndLoadModel _saveAndLoadModel;
 
-        public SaveAndLoadPresenter(SaveAndLoadModel saveAndLoadModel)
-        {
-            _saveAndLoadModel = saveAndLoadModel;
-        }
+        public SaveAndLoadPresenter(SaveAndLoadModel saveAndLoadModel) => _saveAndLoadModel = saveAndLoadModel;
 
-        public void ShowSaveFiles()
-        {
-            _saveAndLoadModel.LoadSaveFiles();
-        }
+        public void ShowSaveFiles() => _saveAndLoadModel.LoadSaveFiles();
 
         public void Save() => _saveAndLoadModel.SaveGame();
 

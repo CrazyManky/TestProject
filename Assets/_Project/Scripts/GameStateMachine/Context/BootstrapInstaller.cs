@@ -1,31 +1,26 @@
-using _Project._Screpts.Services;
-using _Project._Screpts.Services.Factory;
-using _Project._Screpts.Services.Level;
-using _Project._Screpts.Services.PauseSystem;
 using _Project.Screpts.AdvertisingServices;
-using _Project.Screpts.GameItems.GameLevel;
-using _Project.Screpts.GameItems.PlayerObjects;
-using _Project.Screpts.GameStateMashine.States;
 using _Project.Screpts.Interfaces;
-using _Project.Screpts.Services;
 using _Project.Screpts.Services.Conteiner;
-using _Project.Screpts.Services.Factory;
-using _Project.Screpts.Services.Inputs;
-using _Project.Screpts.Services.Level;
-using _Project.Screpts.Services.LoadSystem;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
-using _Project.Screpts.ShopSystem;
-using _Project.Screpts.UI;
 using _Project.Scripts.AdvertisingServices;
 using _Project.Scripts.AnalyticsService;
 using _Project.Scripts.GameItems.EnemyComponents;
+using _Project.Scripts.GameItems.GameLevel;
+using _Project.Scripts.GameItems.PlayerItems;
 using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using _Project.Scripts.GameStateMachine.EntryPoint;
 using _Project.Scripts.GameStateMachine.States;
 using _Project.Scripts.Services;
 using _Project.Scripts.Services.Factory;
+using _Project.Scripts.Services.Inputs;
+using _Project.Scripts.Services.Level;
+using _Project.Scripts.Services.LoadSystem;
+using _Project.Scripts.Services.LoadSystem.ConfigLoading;
 using _Project.Scripts.Services.MoveItems;
+using _Project.Scripts.Services.PauseSystem;
 using _Project.Scripts.Services.SaveSystem;
+using _Project.Scripts.ShopSystem;
+using _Project.Scripts.UI;
 using _Project.Scripts.UI.SaveAndLoadUI;
 using UnityEngine;
 using Zenject;
@@ -104,7 +99,7 @@ namespace _Project.Scripts.GameStateMachine.Context
             container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
             container.Bind<LevelInitializer>().AsSingle();
             container.Bind<SaveDataHandler>().AsSingle();
-            container.Bind<LoadingService>().AsSingle();
+            container.BindInterfacesAndSelfTo<LoadingService>().AsSingle();
             container.Bind<PauseService>().AsSingle();
             container.Bind<PlayerObjectCollector>().AsSingle();
             container.Bind<MovementPlayer>().AsSingle();
@@ -112,7 +107,9 @@ namespace _Project.Scripts.GameStateMachine.Context
             container.Bind<HandlerLose>().AsSingle();
             container.Bind<LevelWinHandle>().AsSingle();
             container.Bind<IConfigHandler>().To<ConfigHandler>().AsSingle();
+            container.Bind<ISaveStrategy>().To<SaveToFile>().AsSingle();
             container.Bind<SceneLoader>().AsSingle();
+            container.Bind<EntityLoaderService>().AsSingle();
         }
 
         private void RegisterModel(DiContainer container)

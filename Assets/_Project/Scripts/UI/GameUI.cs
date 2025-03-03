@@ -1,25 +1,29 @@
-using _Project.Screpts.UI.HPBar;
-using _Project.Screpts.UI.SaveAndLoadUI;
 using _Project.Scripts.GameItems.PlayerItems.MoveItems;
+using _Project.Scripts.Services.PauseSystem;
+using _Project.Scripts.UI.HPBar;
 using _Project.Scripts.UI.SaveAndLoadUI;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Screpts.UI
+namespace _Project.Scripts.UI
 {
     public class GameUI : MonoBehaviour
     {
         [SerializeField] private HealtBar _hpBar;
-        [SerializeField] private SaveAndLoadView saveView;
+        [SerializeField] private SaveAndLoadView _saveView;
 
         private PlayerItem _subscribedItem;
         private SaveAndLoadView _saveViewInstance;
         private SaveAndLoadModel _saveAndLoadModel;
+        private PauseService _pauseService;
+
+        private void OnEnable(){ _pauseService.OnPause += ShowSaveScreen;}
 
         [Inject]
-        public void Construct(SaveAndLoadModel saveAndLoadModel)
+        public void Construct(SaveAndLoadModel saveAndLoadModel, PauseService pauseService)
         {
             _saveAndLoadModel = saveAndLoadModel;
+            _pauseService = pauseService;
         }
 
         public void SubscribeInObject(PlayerItem playerItem)
@@ -28,8 +32,8 @@ namespace _Project.Screpts.UI
                 UnsubscribeInObject();
 
             _subscribedItem = playerItem;
-            _subscribedItem.OnValueChanged += _hpBar.SetNewData;
-            _hpBar.SetNewData(playerItem.Health, playerItem.MaxHealth);
+            _subscribedItem.OnHealthChanged += _hpBar.SetNewData;
+            _hpBar.SetNewData(playerItem.Health);
         }
 
         public void ShowSaveScreen()
@@ -40,13 +44,14 @@ namespace _Project.Screpts.UI
                 return;
             }
 
-            _saveViewInstance = Instantiate(saveView, transform);
-            var prestenter = new SaveAndLoadPresenter(_saveAndLoadModel);
+            _saveViewInstance = Instantiate(_saveView, transform);
+            var presenter = new SaveAndLoadPresenter(_saveAndLoadModel);
             _saveAndLoadModel.SetView(_saveViewInstance);
-            _saveViewInstance.Initialize(prestenter);
+            _saveViewInstance.Initialize(presenter);
         }
 
-        private void UnsubscribeInObject() =>
-            _subscribedItem.OnValueChanged -= _hpBar.SetNewData;
+        private void UnsubscribeInObject() => _subscribedItem.OnHealthChanged -= _hpBar.SetNewData;
+
+        private void OnDisable(){ _pauseService.OnPause += ShowSaveScreen; }
     }
 }

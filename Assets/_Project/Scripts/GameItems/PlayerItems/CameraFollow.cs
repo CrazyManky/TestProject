@@ -1,9 +1,7 @@
-﻿using _Project._Screpts.Interfaces;
-using _Project.Scripts.GameItems;
-using _Project.Scripts.GameItems.PlayerItems.MoveItems;
+﻿using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using UnityEngine;
 
-namespace _Project.Screpts.GameItems.PlayerObjects
+namespace _Project.Scripts.GameItems.PlayerItems
 {
     public class CameraFollow : MonoBehaviour, IDestroy
     {
@@ -12,25 +10,17 @@ namespace _Project.Screpts.GameItems.PlayerObjects
 
         private Transform _target;
 
-        public void SetTarget(PlayerItem target)
-        {
-            _target = target.transform;
-        }
+        public void SetTarget(PlayerItem target) => _target = target.transform;
 
         private void LateUpdate()
         {
             if (_target == null)
-            {
                 return;
-            }
 
             _mainCamera.transform.position = _target.position + _offset;
             _mainCamera.transform.LookAt(_target);
         }
 
-        public void DisableItem()
-        {
-            Destroy(gameObject);
-        }
+        public void DisableItem() => Destroy(gameObject);
     }
 }

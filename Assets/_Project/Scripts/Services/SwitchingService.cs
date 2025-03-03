@@ -1,11 +1,12 @@
 ﻿using System;
-using _Project.Screpts.GameItems.PlayerObjects;
-using _Project.Screpts.UI;
+using _Project.Screpts.Services;
+using _Project.Scripts.GameItems.PlayerItems;
 using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using _Project.Scripts.Services.MoveItems;
+using _Project.Scripts.UI;
 using Zenject;
 
-namespace _Project.Screpts.Services
+namespace _Project.Scripts.Services
 {
     public class SwitchingService
     {
@@ -16,10 +17,9 @@ namespace _Project.Screpts.Services
         public event Action<PlayerItem> OnSwitched;
 
         [Inject]
-        public void Construct(PlayerObjectCollector playerObjectCollector)
-        {
+        public void Construct(PlayerObjectCollector playerObjectCollector) =>
             _playerObjectCollector = playerObjectCollector;
-        }
+
 
         public void SubscribeElements(CameraFollow cameraFollow, MovementPlayer movementPlayer,
             GameUI gameUI)

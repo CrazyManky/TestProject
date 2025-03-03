@@ -256,6 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53e42b67a310f464598253bc877c4a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ExitZone>k__BackingField: {fileID: 971436018349318815}
   _pointsPlayerObject:
   - {fileID: 88249378213719614}
   - {fileID: 1988766731646258551}
@@ -263,7 +264,6 @@ MonoBehaviour:
   - {fileID: 1161199860453286303}
   - {fileID: 5020193263562942118}
   - {fileID: 7615889360381537761}
-  _exitZone: {fileID: 971436018349318815}
 --- !u!1 &3617061104920122152
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,9 @@
-﻿using _Project.Screpts.GameStateMashine.States;
-using _Project.Screpts.Interfaces;
-using _Project.Screpts.Services.LoadSystem;
-using _Project.Screpts.Services.LoadSystem.ConfigLoading;
-using _Project.Screpts.ShopSystem;
+﻿using _Project.Scripts.AdvertisingServices;
 using _Project.Scripts.AnalyticsService;
 using _Project.Scripts.Services;
+using _Project.Scripts.Services.LoadSystem;
+using _Project.Scripts.Services.LoadSystem.ConfigLoading;
+using _Project.Scripts.ShopSystem;
 using Cysharp.Threading.Tasks;
 using Unity.Services.Core;
 using UnityEngine.SceneManagement;

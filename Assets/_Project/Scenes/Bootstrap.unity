@@ -176,8 +176,8 @@ MonoBehaviour:
   cameraFollow: {fileID: 6386079965472256451, guid: 788f1670b68f59e45b5c42146f25b69e, type: 3}
   _playerObjects:
     _items:
-    - {fileID: 6593811820853287025, guid: f3b6e1b239c37df4ab4444dd8d6e2719, type: 3}
-    - {fileID: 3980423329328086675, guid: f567a2b19075f7249b97957b7a4b1dd7, type: 3}
+    - {fileID: 4347839775322463542, guid: f3b6e1b239c37df4ab4444dd8d6e2719, type: 3}
+    - {fileID: 2892477964716001885, guid: f567a2b19075f7249b97957b7a4b1dd7, type: 3}
   _gameUI: {fileID: 283884486167705403, guid: df751137ae0725b478c886f9faf98d9d, type: 3}
 --- !u!114 &532075388
 MonoBehaviour:

@@ -1,35 +1,17 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using _Project.Scripts.GameItems;
-using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
-using UnityEngine;
+﻿using _Project.Scripts.GameItems;
+using Zenject;
 
 namespace _Project.Scripts.Services.SaveSystem
 {
     public class SaveDataHandler : IGameSave
     {
-        private List<ISaveData> _saveElements = new();
-        private Dictionary<string, object> _saveData = new();
-        private const string SaveFileName = "saveData.json";
+        private ISaveStrategy _saveStrategy;
 
-        public void AddSaveItem(ISaveData data)
-        {
-            _saveElements.Add(data);
-        }
+        [Inject]
+        public void Construct(ISaveStrategy saveStrategy) => _saveStrategy = saveStrategy;
 
-        public async void SaveGameAsync()
-        {
-            await SaveAsync();
-        }
+        public void AddItem(ISaveData data) => _saveStrategy.AddSaveItem(data);
 
-        private async UniTask SaveAsync()
-        {
-            string filePath = Path.Combine(Application.persistentDataPath, SaveFileName);
-            string jsonData = JsonConvert.SerializeObject(_saveData, Formatting.Indented);
-            await File.WriteAllTextAsync(filePath, jsonData);
-            Debug.Log($"Данные сохранены в файл: {filePath}");
-        }
+        public async void SaveGameAsync() => await _saveStrategy.Execute();
     }
 }

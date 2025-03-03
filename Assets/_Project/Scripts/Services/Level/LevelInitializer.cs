@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
-using _Project._Screpts.Interfaces;
-using _Project._Screpts.Services.Level;
-using _Project.Screpts.GameItems.GameLevel;
-using _Project.Screpts.GameItems.PlayerObjects;
-using _Project.Screpts.Services.Factory;
-using _Project.Screpts.UI;
 using _Project.Scripts.GameItems;
+using _Project.Scripts.GameItems.GameLevel;
+using _Project.Scripts.GameItems.PlayerItems;
 using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using _Project.Scripts.Services.Factory;
 using _Project.Scripts.Services.MoveItems;
+using _Project.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Screpts.Services.Level
+namespace _Project.Scripts.Services.Level
 {
     public class LevelInitializer
     {

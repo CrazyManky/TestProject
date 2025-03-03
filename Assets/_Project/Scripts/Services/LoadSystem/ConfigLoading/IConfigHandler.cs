@@ -1,10 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace _Project.Screpts.Services.LoadSystem.ConfigLoading
+namespace _Project.Scripts.Services.LoadSystem.ConfigLoading
 {
     public interface IConfigHandler
     {
         public  UniTask DownloadAsync();
-        public IGameConfig GetConfig(string key);
+        public T GetConfig<T>(string key);
     }
 }

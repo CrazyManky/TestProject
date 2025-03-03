@@ -1,64 +1,86 @@
 ﻿using System;
 using _Project.Screpts.AdvertisingServices;
-using _Project.Screpts.Interfaces;
-using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using _Project.Scripts.AnalyticsService;
+using _Project.Scripts.Services.LoadSystem;
+using _Project.Scripts.Services.LoadSystem.ConfigLoading;
+using _Project.Scripts.Services.LoadSystem.LoaderEntity;
 using _Project.Scripts.Services.SaveSystem;
-using Newtonsoft.Json;
 using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.GameItems.PlayerItems.MoveItems
 {
-    public abstract class PlayerItem : MonoBehaviour, IDamageProvider, ISaveData, IDestroy
+    [RequireComponent(typeof(CharacterController))]
+    public class PlayerItem : MonoBehaviour, IDamageProvider, ISaveData, ILoadingEntity, IDestroy
     {
         [SerializeField] private string _keyItem;
 
+        private PlayerItemData PlayerItemData = new();
         private IConfigHandler _configHandler;
         private IShowReward _showReward;
         protected IAnalytics Analytics;
-        protected PlayerItemData PlayerItemData;
+        private IDataProvider _dataProvider;
+        private CharacterController _controller;
 
         public string Key => _keyItem;
         public int Health => PlayerItemData.Health;
-        public int MaxHealth => PlayerItemData.MaxHealth;
-        public bool IActive = true;
 
-        public event Action OnDead;
-        public event Action<int, int> OnValueChanged;
+        public bool IActive { get; private set; } = true;
+        public event Action<int> OnHealthChanged;
 
         [Inject]
-        public void Construct(IConfigHandler configHandler, IShowReward showReward, IAnalytics analytics)
+        public void Construct(IConfigHandler configHandler, IShowReward showReward, IAnalytics analytics,
+            IDataProvider dataProvider)
         {
             _configHandler = configHandler;
             _showReward = showReward;
             Analytics = analytics;
+            _dataProvider = dataProvider;
         }
 
-        private void Awake() => LoadingConfig();
+        private void Awake()
+        {
+            _controller = GetComponent<CharacterController>();
+            LoadConfig();
+        }
 
         public void OnEnable() => _showReward.OnCompletedShow += Reset;
 
-        public void LoadingConfig()
+        private void LoadConfig()
         {
-            var config = _configHandler.GetConfig(_keyItem);
-
-            if (config is GameObjectConfig gameObjectConfig)
-            {
-                PlayerItemData.Health = gameObjectConfig.Health;
-                PlayerItemData.MaxHealth = gameObjectConfig.MaxHealth;
-                PlayerItemData.Speed = gameObjectConfig.Speed;
-            }
+            var config = _configHandler.GetConfig<GameObjectConfig>(_keyItem);
+            PlayerItemData.Health = config.Health;
+            PlayerItemData.Speed = config.Speed;
+            PlayerItemData.MaxHealth = config.MaxHealth;
         }
 
-        public abstract void Move(Vector3 direction);
+        public void Load()
+        {
+            var data = _dataProvider.GetData<SaveData>(Key);
+            PlayerItemData.Health = data.Health;
+            PlayerItemData.MaxHealth = data.Health;
+            transform.position = data.Position;
+        }
 
-        public abstract void SetPosition(Vector3 position);
+        public void Move(Vector3 direction)
+        {
+            if (direction == Vector3.zero)
+                return;
+
+            _controller.Move(direction * PlayerItemData.Speed);
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            _controller.enabled = false;
+            transform.position = position;
+            _controller.enabled = true;
+        }
 
         public void TakeDamage(int damage)
         {
             PlayerItemData.Health = Math.Max(0, PlayerItemData.Health - damage);
-            OnValueChanged?.Invoke(PlayerItemData.Health, PlayerItemData.MaxHealth);
+            OnHealthChanged?.Invoke(PlayerItemData.Health);
             CheckDeath();
         }
 
@@ -71,19 +93,8 @@ namespace _Project.Scripts.GameItems.PlayerItems.MoveItems
         public void Reset()
         {
             PlayerItemData.Health = PlayerItemData.MaxHealth;
-            OnValueChanged?.Invoke(PlayerItemData.Health, PlayerItemData.MaxHealth);
+            OnHealthChanged?.Invoke(PlayerItemData.Health);
         }
-
-        public void Load<T>(T data)
-        {
-            if (data is SaveData playerItemData)
-            {
-                PlayerItemData.Health = playerItemData.Health;
-                transform.position = JsonConvert.DeserializeObject<Vector3>(playerItemData.Position);
-                OnValueChanged?.Invoke(PlayerItemData.Health, PlayerItemData.MaxHealth);
-            }
-        }
-
 
         public object SaveData()
         {
@@ -93,9 +104,10 @@ namespace _Project.Scripts.GameItems.PlayerItems.MoveItems
 
         public virtual void DisableItem()
         {
+            IActive = false;
             _showReward.OnCompletedShow -= Reset;
             gameObject.SetActive(false);
-            IActive = false;
+            Analytics.NotifyPlayerDead(Key);
         }
     }
 }

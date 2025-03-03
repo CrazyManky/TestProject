@@ -1,30 +1,29 @@
-﻿using _Project.Screpts.GameItems.PlayerObjects;
+﻿using _Project.Scripts.GameItems.PlayerItems;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Screpts.Services.Factory
+namespace _Project.Scripts.Services.Factory
 {
     public class CameraFollowFactory
     {
         private CameraFollow _cameraFollowPrefab;
-
-        private CameraFollow _cameraInstance;
+        private IInstantiator _instantiator;
+        private CameraFollow _cameraFollowInstance;
 
         [Inject]
-        public void Construct(CameraFollow cameraFollowPrefab)
+        public void Construct(CameraFollow cameraFollowPrefab, IInstantiator instantiator)
         {
             _cameraFollowPrefab = cameraFollowPrefab;
+            _instantiator = instantiator;
         }
 
         public CameraFollow InstanceCameraFollow(Transform parent)
         {
-            _cameraInstance = Object.Instantiate(_cameraFollowPrefab,parent);
-            return _cameraInstance;
+            _cameraFollowInstance =
+                _instantiator.InstantiatePrefabForComponent<CameraFollow>(_cameraFollowPrefab, parent);
+            return _cameraFollowInstance;
         }
 
-        public void DestroyCameraFollow()
-        {
-            Object.Destroy(_cameraInstance.gameObject);     
-        }
+        public void DestroyInstance() => Object.Destroy(_cameraFollowInstance.gameObject);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace _Project.Scripts.GameItems.PlayerItems
 {
-    public struct PlayerItemData
+    public class PlayerItemData
     {
         public int Health;
         public int MaxHealth;

@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 778714127566427387}
   - component: {fileID: 5623798645902746281}
   - component: {fileID: 9154105731634389695}
-  - component: {fileID: 76469725241641005}
-  - component: {fileID: 3980423329328086675}
-  - component: {fileID: 7465245593605875774}
+  - component: {fileID: 4084302736888711370}
+  - component: {fileID: 2892477964716001885}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -86,8 +85,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &76469725241641005
-BoxCollider:
+--- !u!143 &4084302736888711370
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,9 +104,14 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3980423329328086675
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.45, z: 0}
+--- !u!114 &2892477964716001885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,35 +120,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8117378325443285985}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7002d6cceb894648becb3fdd7374d9aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bd1c985ec8541bfa4c85fd74d93fb1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _keyItem: Cube
-  _rb: {fileID: 7465245593605875774}
---- !u!54 &7465245593605875774
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8117378325443285985}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0

@@ -1,8 +1,8 @@
-﻿using _Project.Screpts.UI;
+﻿using _Project.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
-namespace _Project._Screpts.Services.Factory
+namespace _Project.Scripts.Services.Factory
 {
     public class GameUIFactory
     {

@@ -1,12 +1,13 @@
-﻿using _Project.Screpts.Interfaces;
+﻿using _Project.Scripts.MathUtils;
 using UnityEngine;
 
 namespace _Project.Scripts.GameItems.EnemyComponents.Movement
 {
-    [RequireComponent(typeof(BaseEnemy))]
-    public class PathFollowingEnemy : MonoBehaviour
+    [RequireComponent(typeof(BaseEnemy), typeof(Rigidbody))]
+    public class PathFollowingEnemy : MonoBehaviour // TODO : Добавить движение через физику
     {
         private BaseEnemy _baseEnemy;
+        private Rigidbody _rb;
         private float _patrolDistance;
         private float _speed;
         private int _damage;
@@ -17,26 +18,24 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Movement
         private void Awake()
         {
             _baseEnemy = GetComponent<BaseEnemy>();
+            _rb = GetComponent<Rigidbody>();
             LoadingConfig();
-        }
-
-        private void LoadingConfig()
-        {
-            var config = _baseEnemy.ConfigHandler.GetConfig(_baseEnemy.Key);
-            if (config is EnemyPathConfig configData)
-            {
-                _patrolDistance = configData.PatrolDistance;
-                _speed = configData.Speed;
-                _damage = configData.Damage;
-            }
         }
 
         private void Start() => _startPosition = transform.position;
 
-
-        private void Update()
+        private void LoadingConfig()
         {
-            if (_baseEnemy.PauseActive)
+            var config = _baseEnemy.ConfigHandler.GetConfig<EnemyPathConfig>(_baseEnemy.Key);
+                _patrolDistance = config.PatrolDistance;
+                _speed = config.Speed;
+                _damage = config.Damage;
+        }
+
+
+        private void FixedUpdate()
+        {
+            if (_baseEnemy.PauseService.Pause)
                 return;
 
             MoveAlongPath();
@@ -45,19 +44,19 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Movement
 
         private void MoveAlongPath()
         {
-            transform.Translate(_direction * (_speed * Time.deltaTime));
-
-            if (Vector3.Distance(_startPosition, transform.position) >= _patrolDistance)
+            _rb.velocity = _direction * _speed;
+            if (MathfDistance.Calculate(_startPosition, transform.position) > _patrolDistance)
             {
                 _direction = -_direction;
+                _startPosition = transform.position;
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<IDamageProvider>(out var damageProvaider))
+            if (other.TryGetComponent<IDamageProvider>(out var damageProvider))
             {
-                damageProvaider.TakeDamage(_damage);
+                damageProvider.TakeDamage(_damage);
                 gameObject.SetActive(false);
             }
         }

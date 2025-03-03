@@ -1,4 +1,4 @@
-﻿namespace _Project.Screpts.Interfaces
+﻿namespace _Project.Scripts.GameItems
 {
     public interface IDamageProvider
     {
