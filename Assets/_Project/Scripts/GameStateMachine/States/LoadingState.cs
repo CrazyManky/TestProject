@@ -37,18 +37,12 @@ namespace _Project.Scripts.GameStateMachine.States
 
         public async void EnterState()
         {
-            await AwaitAll();
-            _gameFsm.Enter<GamePlayState>();
-        }
-
-        private async UniTask AwaitAll()
-        {
             await UnityServices.InitializeAsync();
-            await _adsInitializer.InitializeAdsAsync();
             await _analytics.Initialize();
-            await _configHandler.DownloadAsync();
-            await _loadingService.LoadFromFileAsync();
-            await _sceneLoader.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+            await UniTask.WhenAll(_adsInitializer.InitializeAdsAsync(), _configHandler.DownloadAsync(),
+                _loadingService.LoadFromFileAsync(),
+                _sceneLoader.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1));
+            _gameFsm.Enter<GamePlayState>();
         }
 
         public void ExitState()

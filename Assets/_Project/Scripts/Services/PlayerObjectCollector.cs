@@ -6,11 +6,12 @@ namespace _Project.Scripts.Services
 {
     public class PlayerObjectCollector
     {
-        private List<PlayerItem> _switchableElements = new();
         private int _activeItemIndex;
-
-        public int ObjectCount { get; private set; }
         private int _removeItems = 0;
+
+        private List<PlayerItem> _switchableElements = new();
+        
+        public int ObjectCount { get; private set; }
 
         public void AddMoveObject(PlayerItem capsule)
         {
@@ -21,7 +22,7 @@ namespace _Project.Scripts.Services
         public PlayerItem GetNewMoveObject()
         {
             _activeItemIndex++;
-            if (_activeItemIndex <= ObjectCount  && _switchableElements[_activeItemIndex].IActive)
+            if (_activeItemIndex <= ObjectCount && _switchableElements[_activeItemIndex].IActive)
                 return _switchableElements[_activeItemIndex];
             _activeItemIndex = 0;
             return _switchableElements[_activeItemIndex];

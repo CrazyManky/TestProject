@@ -27,23 +27,26 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Movement
         private void LoadingConfig()
         {
             var config = _baseEnemy.ConfigHandler.GetConfig<EnemyPathConfig>(_baseEnemy.Key);
-                _patrolDistance = config.PatrolDistance;
-                _speed = config.Speed;
-                _damage = config.Damage;
+            _patrolDistance = config.PatrolDistance;
+            _speed = config.Speed;
+            _damage = config.Damage;
         }
 
 
         private void FixedUpdate()
         {
-            if (_baseEnemy.PauseService.Pause)
-                return;
-
             MoveAlongPath();
         }
 
 
         private void MoveAlongPath()
         {
+            if (_baseEnemy.PauseService.Pause)
+            {
+                _rb.velocity = Vector3.zero;
+                return;
+            }
+
             _rb.velocity = _direction * _speed;
             if (MathfDistance.Calculate(_startPosition, transform.position) > _patrolDistance)
             {

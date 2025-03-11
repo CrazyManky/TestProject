@@ -1,6 +1,6 @@
 using System;
-using _Project.Screpts.Services;
 using _Project.Scripts.AnalyticsService;
+using _Project.Scripts.GameItems.GameEffects;
 using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using _Project.Scripts.Services;
 using UnityEngine;
@@ -10,6 +10,9 @@ namespace _Project.Scripts.GameItems.GameLevel
 {
     public class ExitZone : MonoBehaviour
     {
+        [SerializeField] private AnnihilationEffect _annihilationEffect;
+        [SerializeField] private AudioSource _audioSource;
+
         private PlayerObjectCollector _playerObjectCollector;
         private SwitchingService _switchingService;
         private IAnalytics _analytics;
@@ -32,7 +35,15 @@ namespace _Project.Scripts.GameItems.GameLevel
                 OnEnterObject?.Invoke();
                 _playerObjectCollector.RemoveItem(moveObject);
                 _switchingService.SwitchObject();
+                ShowCollisionEffect(moveObject.transform.position);
+                _audioSource.Play();
             }
+        }
+
+        private void ShowCollisionEffect(Vector3 CollisionPosition)
+        {
+            var instance = Instantiate(_annihilationEffect);
+            instance.transform.position = CollisionPosition;
         }
     }
 }

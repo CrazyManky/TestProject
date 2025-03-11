@@ -3,14 +3,13 @@ using Zenject;
 
 namespace _Project.Scripts.GameStateMachine.EntryPoint
 {
-    public class EntryPointGame 
+    public class EntryPointGame : IInitializable
     {
         private GameFSM _gameFsm;
 
         [Inject]
         public void Construct(GameFSM gameFsm) => _gameFsm = gameFsm;
-        
-        public void Start() => _gameFsm.Enter<LoadingState>();
-        
+
+        public void Initialize() => _gameFsm.Enter<LoadingState>();
     }
 }

@@ -54,11 +54,9 @@ namespace _Project.Scripts.GameStateMachine.Context
             DontDestroyOnLoad(this);
         }
 
-        private void Start() => _entryPoint.Start();
-
         private void RegisterEntryPoint(DiContainer container)
         {
-            container.Bind<EntryPointGame>().AsSingle();
+            container.Bind<IInitializable>().To<EntryPointGame>().AsSingle();
             _entryPoint = new EntryPointGame();
             container.Inject(_entryPoint);
         }
