@@ -1,5 +1,5 @@
 ﻿using System;
-using _Project.Screpts.AdvertisingServices;
+using _Project.Scripts.AdvertisingServices;
 using _Project.Scripts.AnalyticsService;
 using _Project.Scripts.Services.LoadSystem;
 using _Project.Scripts.Services.LoadSystem.ConfigLoading;
@@ -21,6 +21,7 @@ namespace _Project.Scripts.GameItems.PlayerItems.MoveItems
         protected IAnalytics Analytics;
         private IDataProvider _dataProvider;
         private CharacterController _controller;
+        private bool _iDead = false;
 
         public string Key => _keyItem;
         public int Health => PlayerItemData.Health;
@@ -86,12 +87,16 @@ namespace _Project.Scripts.GameItems.PlayerItems.MoveItems
 
         private void CheckDeath()
         {
-            if (PlayerItemData.Health <= 0)
+            if (PlayerItemData.Health <= 0 && !_iDead)
+            {
                 _showReward.ActiveReward();
+                _iDead = true;
+            }
         }
 
         public void Reset()
         {
+            _iDead = false;
             PlayerItemData.Health = PlayerItemData.MaxHealth;
             OnHealthChanged?.Invoke(PlayerItemData.Health);
         }

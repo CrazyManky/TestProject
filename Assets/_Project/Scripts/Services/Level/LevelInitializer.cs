@@ -47,8 +47,10 @@ namespace _Project.Scripts.Services.Level
         private PlayerItem AddPlayerObjects(GameLevel levelInstance)
         {
             var playerInstanceItemOne = _factoryPlayerObjects.CreateMoveableObject(0);
+            playerInstanceItemOne.transform.SetParent(_gameLevelInstance.transform);
             _destroyGameElements.Add(playerInstanceItemOne);
             var playerInstanceItemTwo = _factoryPlayerObjects.CreateMoveableObject(1);
+            playerInstanceItemTwo.transform.SetParent(_gameLevelInstance.transform);
             _destroyGameElements.Add(playerInstanceItemTwo);
 
             playerInstanceItemOne.SetPosition(levelInstance.GetPlayerPosition());
@@ -60,10 +62,13 @@ namespace _Project.Scripts.Services.Level
         private void AddEnemy(GameLevel levelInstance)
         {
             var enemyInstanceOne = _enemyFactory.InstanceEnemy(0);
+            enemyInstanceOne.transform.SetParent(_gameLevelInstance.transform);
             _destroyGameElements.Add(enemyInstanceOne);
             var enemyInstanceTwo = _enemyFactory.InstanceEnemy(1);
+            enemyInstanceTwo.transform.SetParent(_gameLevelInstance.transform);
             _destroyGameElements.Add(enemyInstanceTwo);
             var enemyInstanceFree = _enemyFactory.InstanceEnemy(2);
+            enemyInstanceFree.transform.SetParent(_gameLevelInstance.transform);
             _destroyGameElements.Add(enemyInstanceFree);
 
             enemyInstanceOne.SetPosition(levelInstance.GetEnemyPosition());
@@ -83,6 +88,7 @@ namespace _Project.Scripts.Services.Level
         {
             _gameLevelInstance.ExitZone.OnEnterObject -= _levelWinHandle.CheckWin;
             ClearCollections();
+            Object.Destroy(_gameLevelInstance.gameObject);
         }
 
         private void ClearCollections()

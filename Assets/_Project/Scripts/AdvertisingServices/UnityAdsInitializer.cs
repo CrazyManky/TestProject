@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using _Project.Screpts.Interfaces;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;

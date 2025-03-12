@@ -1,6 +1,5 @@
 ﻿using System;
-using _Project.Screpts.AdvertisingServices;
-using _Project.Screpts.Interfaces;
+using UnityEngine;
 using UnityEngine.Advertisements;
 using Zenject;
 
@@ -8,52 +7,50 @@ namespace _Project.Scripts.AdvertisingServices
 {
     public class RewardHandler : IUnityAdsShowListener, IShowReward
     {
-        private string _rewardID = "Rewarded_Android";
-        private int _maxCountInvoke = 1;
+        private const string _rewardID = "Rewarded_Android";
+        private const int _maxCountInvoke = 1;
         private int _countInvoke = 0;
         public event Action OnCompletedShow;
-        public event Action OnFeiledShow;
+        public event Action OnFieldShow;
 
         private IAdvertisingShow _advertisingShow;
 
         [Inject]
         public void Construct(IAdvertisingShow advertisingShow) => _advertisingShow = advertisingShow;
-        
+
         public void ActiveReward()
         {
-            if (Advertisement.isShowing || _countInvoke == _maxCountInvoke)
+            if (_countInvoke < _maxCountInvoke && !Advertisement.isShowing)
             {
-                OnFeiledShow?.Invoke();
+                _countInvoke++;
+                Advertisement.Show(_rewardID, this);
                 return;
             }
 
-            Advertisement.Show(_rewardID, this);
+            OnFieldShow?.Invoke();
         }
 
         public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
         {
-            OnFeiledShow?.Invoke();
-            _advertisingShow.Show();
+            OnFieldShow?.Invoke();
         }
-
 
         public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
         {
             if (placementId == _rewardID && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
-            {
-                _maxCountInvoke++;
                 OnCompletedShow?.Invoke();
-            }
             else
-            {
-                OnFeiledShow?.Invoke();
-                _advertisingShow.Show();
-            }
+                OnFieldShow?.Invoke();
         }
+
         public void ResetCount() => _countInvoke = 0;
 
-        public void OnUnityAdsShowStart(string placementId){}
+        public void OnUnityAdsShowStart(string placementId)
+        {
+        }
 
-        public void OnUnityAdsShowClick(string placementId){}
+        public void OnUnityAdsShowClick(string placementId)
+        {
+        }
     }
 }

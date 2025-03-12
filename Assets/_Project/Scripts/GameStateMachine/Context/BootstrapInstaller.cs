@@ -1,5 +1,3 @@
-using _Project.Screpts.AdvertisingServices;
-using _Project.Screpts.Interfaces;
 using _Project.Screpts.Services.Conteiner;
 using _Project.Screpts.Services.LoadSystem.ConfigLoading;
 using _Project.Scripts.AdvertisingServices;
@@ -11,6 +9,7 @@ using _Project.Scripts.GameItems.PlayerItems.MoveItems;
 using _Project.Scripts.GameStateMachine.EntryPoint;
 using _Project.Scripts.GameStateMachine.States;
 using _Project.Scripts.Services;
+using _Project.Scripts.Services.Audio;
 using _Project.Scripts.Services.Factory;
 using _Project.Scripts.Services.Inputs;
 using _Project.Scripts.Services.Level;
@@ -23,6 +22,7 @@ using _Project.Scripts.ShopSystem;
 using _Project.Scripts.UI;
 using _Project.Scripts.UI.SaveAndLoadUI;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts.GameStateMachine.Context
@@ -34,6 +34,8 @@ namespace _Project.Scripts.GameStateMachine.Context
         [SerializeField] private CameraFollow cameraFollow;
         [SerializeField] private GameItemsConteiner<PlayerItem> _playerObjects;
         [SerializeField] private GameUI _gameUI;
+        [FormerlySerializedAs("_gameOverScreen")] [SerializeField] private GameOverUI gameOverUI;
+        [SerializeField] private AudioService _audioServicePrefab;
 
         private GameFSM _gameFSM;
         private EntryPointGame _entryPoint;
@@ -43,7 +45,7 @@ namespace _Project.Scripts.GameStateMachine.Context
             RegisterStates(Container);
             RegisterServices(Container);
             RegisterFactories(Container);
-            RegisterConteiners(Container);
+            RegisterContainers(Container);
             RegisterGameObjects(Container);
             RegisterAnalyticService(Container);
             RegisterAdsServices(Container);
@@ -128,9 +130,11 @@ namespace _Project.Scripts.GameStateMachine.Context
         {
             container.Bind<CameraFollow>().FromInstance(cameraFollow).AsSingle();
             container.Bind<GameUI>().FromInstance(_gameUI).AsSingle();
+            container.Bind<GameOverUI>().FromInstance(gameOverUI).AsSingle();
+            container.Bind<IPlaySound>().FromInstance(_audioServicePrefab).AsSingle();
         }
 
-        private void RegisterConteiners(DiContainer container)
+        private void RegisterContainers(DiContainer container)
         {
             container.Bind<GameItemsConteiner<PlayerItem>>().FromInstance(_playerObjects).AsSingle();
             container.Bind<GameLevel>().FromInstance(gameLevelPrefab).AsSingle();

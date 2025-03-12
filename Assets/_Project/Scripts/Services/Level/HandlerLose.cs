@@ -1,29 +1,33 @@
-﻿using _Project.Screpts.AdvertisingServices;
+﻿using _Project.Scripts.AdvertisingServices;
 using _Project.Scripts.AnalyticsService;
 using _Project.Scripts.GameStateMachine;
 using _Project.Scripts.GameStateMachine.States;
+using _Project.Scripts.Services.Factory;
 using Zenject;
 
 namespace _Project.Scripts.Services.Level
 {
     public class HandlerLose
     {
-        private GameFSM _gameFsm;
+        private GameUIFactory _gameUIFactory;
         private IShowReward _showReward;
-        private IAnalytics _analytics;
+
 
         [Inject]
-        public void Construct(GameFSM gameFsm, IShowReward showReward, IAnalytics analytics)
+        public void Construct(GameUIFactory gameUIFactory, IShowReward showReward)
         {
-            _gameFsm = gameFsm;
+            _gameUIFactory = gameUIFactory;
             _showReward = showReward;
-            _analytics = analytics;
         }
 
-        public void Subscribe() => _showReward.OnFeiledShow += LoseGame;
+        public void Subscribe() => _showReward.OnFieldShow += LoseGame;
 
-        public void Unsubscribe() => _showReward.OnFeiledShow += LoseGame;
+        public void Unsubscribe() => _showReward.OnFieldShow += LoseGame;
 
-        private void LoseGame() => _gameFsm.Enter<GameOverState>();
+        private void LoseGame()
+        {
+            var gameOverScreen = _gameUIFactory.InstanceGameOverScreen();
+            gameOverScreen.Open();
+        }
     }
 }

@@ -17,7 +17,10 @@ namespace _Project.Scripts.UI
         private SaveAndLoadModel _saveAndLoadModel;
         private PauseService _pauseService;
 
-        private void OnEnable(){ _pauseService.OnPause += ShowSaveScreen;}
+        private void OnEnable()
+        {
+            _pauseService.OnPause += ShowSaveScreen;
+        }
 
         [Inject]
         public void Construct(SaveAndLoadModel saveAndLoadModel, PauseService pauseService)
@@ -50,8 +53,13 @@ namespace _Project.Scripts.UI
             _saveViewInstance.Initialize(presenter);
         }
 
+        public void DisableItem() => Destroy(gameObject);
+        
         private void UnsubscribeInObject() => _subscribedItem.OnHealthChanged -= _hpBar.SetNewData;
 
-        private void OnDisable(){ _pauseService.OnPause += ShowSaveScreen; }
+        private void OnDisable()
+        {
+            _pauseService.OnPause += ShowSaveScreen;
+        }
     }
 }

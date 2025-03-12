@@ -1,4 +1,4 @@
-﻿using _Project.Screpts.AdvertisingServices;
+﻿using _Project.Scripts.AdvertisingServices;
 using _Project.Scripts.Services;
 using Zenject;
 

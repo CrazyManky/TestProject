@@ -1,5 +1,4 @@
-﻿using _Project.Screpts.Interfaces;
-using _Project.Scripts.ShopSystem;
+﻿using _Project.Scripts.ShopSystem;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using Zenject;

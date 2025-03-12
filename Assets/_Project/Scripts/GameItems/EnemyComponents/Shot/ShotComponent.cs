@@ -10,7 +10,6 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
     public class ShotComponent : MonoBehaviour
     {
         [SerializeField] private ShootingZone shootingZone;
-        [SerializeField] private AudioSource _shotSound;
         [SerializeField] private Projectile _projectile;
         [SerializeField] private Transform _firePoint;
 
@@ -96,12 +95,13 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
         private void Shoot()
         {
             if (_target == null) return;
-
+            if(_baseEnemy.PauseService.Pause) return;
+            
             Projectile newProjectile = _projectilePool.GetItem();
             newProjectile.transform.position = _firePoint.position;
             newProjectile.SetDirection(transform.forward);
             newProjectile.Initialize(_projectilePool);
-            _shotSound.Play();
+            _baseEnemy.SoundPlayer.PlayEnemyShotSound(_target != null);
         }
 
         private void OnDisable()

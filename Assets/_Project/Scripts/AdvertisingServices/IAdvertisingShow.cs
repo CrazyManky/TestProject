@@ -1,4 +1,4 @@
-﻿namespace _Project.Screpts.Interfaces
+﻿namespace _Project.Scripts.AdvertisingServices
 {
     public interface IAdvertisingShow
     {

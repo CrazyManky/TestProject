@@ -7,14 +7,15 @@ namespace _Project.Scripts.Services.Factory
     public class GameUIFactory
     {
         private GameUI _gameUIPrefab;
+        private GameOverUI _gameOverUI;
         private IInstantiator _installer;
-
         private GameUI _gameUIInstance;
 
         [Inject]
-        public void Construct(GameUI gameUIPrefab, IInstantiator container)
+        public void Construct(GameUI gameUIPrefab, GameOverUI gameOverUI, IInstantiator container)
         {
             _gameUIPrefab = gameUIPrefab;
+            _gameOverUI = gameOverUI;
             _installer = container;
         }
 
@@ -24,9 +25,15 @@ namespace _Project.Scripts.Services.Factory
             return _gameUIInstance;
         }
 
-        public void DestroyGameUI()
+        public GameOverUI InstanceGameOverScreen()
         {
-            Object.Destroy(_gameUIInstance.gameObject);
+            var gameObject = new GameObject("GameOverContainer");
+            var gameOverUIInstance =
+                _installer.InstantiatePrefabForComponent<GameOverUI>(_gameOverUI, gameObject.transform);
+            return gameOverUIInstance;
         }
+
+        public void DestroyGameUI() => _gameUIInstance.DisableItem();
+        
     }
 }
