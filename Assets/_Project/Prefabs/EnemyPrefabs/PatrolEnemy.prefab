@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2701710547389410532}
   - component: {fileID: 1162035599724597397}
   - component: {fileID: 6599432734080859723}
-  - component: {fileID: 5724826756477201796}
   - component: {fileID: 3557741217692078327}
+  - component: {fileID: 5724826756477201796}
   - component: {fileID: 1159000618768601122}
   m_Layer: 0
   m_Name: PatrolEnemy
@@ -110,18 +110,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: -0.0000075697935, y: 0, z: -0.0000019967565}
---- !u!114 &5724826756477201796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5697256593576250143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26782995ac9b4e36a1c2bf4d385602d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3557741217692078327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +122,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a93943e45042d9aca9aeb43851cd43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyItem: EnemyPathFollowing
+  _keyItem: EnemyOne
+--- !u!114 &5724826756477201796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697256593576250143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26782995ac9b4e36a1c2bf4d385602d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _keyConfig: EnemyPathFollowing
 --- !u!54 &1159000618768601122
 Rigidbody:
   m_ObjectHideFlags: 0

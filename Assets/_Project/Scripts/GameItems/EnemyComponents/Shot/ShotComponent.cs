@@ -1,25 +1,43 @@
+using System;
 using System.Collections;
 using _Project._Screpts.GameItems.Enemy.Shot;
 using _Project.Scripts.MathUtils;
+using _Project.Scripts.Services.Audio;
+using _Project.Scripts.Services.LoadSystem.ConfigLoading;
+using _Project.Scripts.Services.PauseSystem;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Zenject;
 
 namespace _Project.Scripts.GameItems.EnemyComponents.Shot
 {
     [RequireComponent(typeof(BaseEnemy))]
     public class ShotComponent : MonoBehaviour
     {
+        [SerializeField] private string _keyConfig;
         [SerializeField] private ShootingZone shootingZone;
         [SerializeField] private Projectile _projectile;
         [SerializeField] private Transform _firePoint;
 
-        private float _turnSpeed;
-        private float _shotDelay;
-        private float _shootDistance;
         private PoolObject<Projectile> _projectilePool;
         private Transform _target;
         private Coroutine _shootRoutine;
         private BaseEnemy _baseEnemy;
+        private IConfigHandler _configHandler;
+        private IPlaySound _playSound;
+        private float _turnSpeed;
+        private float _shotDelay;
+        private float _shootDistance;
+        private PauseService _pauseService;
+
+        private event Action OnShoot;
+
+        [Inject]
+        public void Construct(IConfigHandler configHandler, PauseService pauseService, IPlaySound playSound)
+        {
+            _configHandler = configHandler;
+            _pauseService = pauseService;
+            _playSound = playSound;
+        }
 
         private void Awake()
         {
@@ -31,7 +49,7 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
 
         private void LoadingConfig()
         {
-            var config = _baseEnemy.ConfigHandler.GetConfig<ShootingEnemyConfig>(_baseEnemy.Key);
+            var config = _configHandler.GetConfig<ShootingEnemyConfig>(_keyConfig);
             _turnSpeed = config.TurnSpeed;
             _shotDelay = config.ShotDelay;
             _shootDistance = config.ShootDistance;
@@ -41,6 +59,7 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
         {
             shootingZone.OnEnter += StartShooting;
             shootingZone.OnExited += StopShooting;
+            OnShoot += _playSound.PlayEnemyShotSound;
         }
 
 
@@ -95,17 +114,18 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
         private void Shoot()
         {
             if (_target == null) return;
-            if(_baseEnemy.PauseService.Pause) return;
-            
+            if (_pauseService.Pause) return;
+
             Projectile newProjectile = _projectilePool.GetItem();
             newProjectile.transform.position = _firePoint.position;
             newProjectile.SetDirection(transform.forward);
             newProjectile.Initialize(_projectilePool);
-            _baseEnemy.SoundPlayer.PlayEnemyShotSound(_target != null);
+            OnShoot?.Invoke();
         }
 
         private void OnDisable()
         {
+            OnShoot -= _playSound.PlayEnemyShotSound;
             shootingZone.OnEnter -= StartShooting;
             shootingZone.OnExited -= StopShooting;
         }

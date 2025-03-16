@@ -15,18 +15,14 @@ namespace _Project.Scripts.UI
         private PlayerItem _subscribedItem;
         private SaveAndLoadView _saveViewInstance;
         private SaveAndLoadModel _saveAndLoadModel;
-        private PauseService _pauseService;
+        private IInstantiator _instantiator;
 
-        private void OnEnable()
-        {
-            _pauseService.OnPause += ShowSaveScreen;
-        }
 
         [Inject]
-        public void Construct(SaveAndLoadModel saveAndLoadModel, PauseService pauseService)
+        public void Construct(SaveAndLoadModel saveAndLoadModel, IInstantiator Instantiator)
         {
             _saveAndLoadModel = saveAndLoadModel;
-            _pauseService = pauseService;
+            _instantiator = Instantiator;
         }
 
         public void SubscribeInObject(PlayerItem playerItem)
@@ -43,23 +39,19 @@ namespace _Project.Scripts.UI
         {
             if (_saveViewInstance != null)
             {
+                _saveViewInstance.DisposeView();
                 Destroy(_saveViewInstance.gameObject);
                 return;
             }
 
-            _saveViewInstance = Instantiate(_saveView, transform);
+            _saveViewInstance = _instantiator.InstantiatePrefabForComponent<SaveAndLoadView>(_saveView, transform);
             var presenter = new SaveAndLoadPresenter(_saveAndLoadModel);
             _saveAndLoadModel.SetView(_saveViewInstance);
             _saveViewInstance.Initialize(presenter);
         }
 
         public void DisableItem() => Destroy(gameObject);
-        
-        private void UnsubscribeInObject() => _subscribedItem.OnHealthChanged -= _hpBar.SetNewData;
 
-        private void OnDisable()
-        {
-            _pauseService.OnPause += ShowSaveScreen;
-        }
+        private void UnsubscribeInObject() => _subscribedItem.OnHealthChanged -= _hpBar.SetNewData;
     }
 }

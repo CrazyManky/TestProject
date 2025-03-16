@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a93943e45042d9aca9aeb43851cd43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyItem: ShotingEnemy
+  _keyItem: EnemyTwo
 --- !u!114 &5227940354890037277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8979655b844c8f84dbdf99a8898a2a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _keyConfig: ShotingEnemy
   shootingZone: {fileID: 3356418174619448361}
-  _shotSound: {fileID: 4493632492521258375}
   _projectile: {fileID: 1830768578802685395, guid: 01cd69fa3b573224789fac7344c16737, type: 3}
   _firePoint: {fileID: 4414908733651618931}
 --- !u!82 &4493632492521258375

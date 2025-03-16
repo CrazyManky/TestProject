@@ -47,7 +47,6 @@ namespace _Project.Scripts.GameStateMachine.States
         {
             _handlerLose.Subscribe();
             InitGamePlay();
-            _inputHandler.Initialize();
             _advertisingShow.Initialize();
             _advertisingShow.Show();
             _playSound.PlayBackgroundSound(true);
@@ -60,6 +59,7 @@ namespace _Project.Scripts.GameStateMachine.States
             _switchingService.SubscribeElements(cameraFollowInstance, _movementPlayer, gameUIInstance);
             _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movementPlayer,
                 _gameObject.transform);
+            _inputHandler.Initialize(gameUIInstance);
         }
 
         public void FixedTick() => _movementPlayer.FixedTick();
@@ -68,8 +68,8 @@ namespace _Project.Scripts.GameStateMachine.States
         public void ExitState()
         {
             _handlerLose.Unsubscribe();
-             _levelInitializer.DestroyObject();
-             _gameUIFactory.DestroyGameUI();
+            _levelInitializer.DestroyObject();
+            _gameUIFactory.DestroyGameUI();
             _switchingService.UnsubscribeElements();
             _advertisingShow.DisposeShow();
             _cameraFollowFactory.DestroyInstance();

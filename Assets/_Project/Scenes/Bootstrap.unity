@@ -310,7 +310,7 @@ MonoBehaviour:
     - {fileID: 4347839775322463542, guid: f3b6e1b239c37df4ab4444dd8d6e2719, type: 3}
     - {fileID: 2892477964716001885, guid: f567a2b19075f7249b97957b7a4b1dd7, type: 3}
   _gameUI: {fileID: 283884486167705403, guid: df751137ae0725b478c886f9faf98d9d, type: 3}
-  _gameOverScreen: {fileID: 7086580897579956225, guid: 7714852865e3529409901f9f754de343, type: 3}
+  gameOverUI: {fileID: 7086580897579956225, guid: 7714852865e3529409901f9f754de343, type: 3}
   _audioServicePrefab:
     _shotSound: {fileID: 8061147985783388383}
     _exitZoneSound: {fileID: 9134490652921877037}
@@ -567,7 +567,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: dde3f52439f7f8b40934dd8fd9e2ec4d, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 1
   Loop: 0

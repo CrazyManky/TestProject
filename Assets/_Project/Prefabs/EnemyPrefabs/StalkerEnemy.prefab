@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a93943e45042d9aca9aeb43851cd43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyItem: StalkerEnemy
+  _keyItem: EnemyFree
 --- !u!114 &8782213219154950322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fieldView: {fileID: 2936724146798781082}
+  _keyConfig: StalkerEnemy
 --- !u!54 &8840380561919942530
 Rigidbody:
   m_ObjectHideFlags: 0

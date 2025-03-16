@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using _Project.Scripts.Services.PauseSystem;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace _Project.Scripts.UI.SaveAndLoadUI
 {
@@ -13,6 +15,13 @@ namespace _Project.Scripts.UI.SaveAndLoadUI
         [SerializeField] private SaveDataItem _saveButtonPrefab;
 
         private SaveAndLoadPresenter _saveAndLoadPresenter;
+        private PauseService _pauseService;
+
+        [Inject]
+        public void Construct(PauseService PauseService)
+        {
+            _pauseService = PauseService;
+        }
 
         public void Initialize(SaveAndLoadPresenter saveAndLoadPresenter)
         {
@@ -21,6 +30,7 @@ namespace _Project.Scripts.UI.SaveAndLoadUI
             _buttonLoad.onClick.AddListener(_saveAndLoadPresenter.ShowSaveFiles);
             _byuDisableAdsButton.onClick.AddListener(_saveAndLoadPresenter.BuyStoreItem);
             saveAndLoadPresenter.ShowSaveFiles();
+            _pauseService.PauseActive();
         }
 
         public void ShowSaveFiles(List<string> files)
@@ -39,10 +49,11 @@ namespace _Project.Scripts.UI.SaveAndLoadUI
             }
         }
 
-        public void OnDisable()
+        public void DisposeView()
         {
             _buttonSave.onClick.RemoveListener(_saveAndLoadPresenter.Save);
             _buttonLoad.onClick.RemoveListener(_saveAndLoadPresenter.ShowSaveFiles);
+            _pauseService.PauseDisable();
         }
     }
 }

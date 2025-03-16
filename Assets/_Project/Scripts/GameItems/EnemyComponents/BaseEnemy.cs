@@ -1,9 +1,5 @@
-﻿using _Project.Screpts.Services.LoadSystem.ConfigLoading;
-using _Project.Scripts.Services.Audio;
-using _Project.Scripts.Services.LoadSystem;
-using _Project.Scripts.Services.LoadSystem.ConfigLoading;
+﻿using _Project.Scripts.Services.LoadSystem;
 using _Project.Scripts.Services.LoadSystem.LoaderEntity;
-using _Project.Scripts.Services.PauseSystem;
 using _Project.Scripts.Services.SaveSystem;
 using UnityEngine;
 using Zenject;
@@ -15,21 +11,13 @@ namespace _Project.Scripts.GameItems.EnemyComponents
         [SerializeField] private string _keyItem;
 
         private IDataProvider _dataProvider;
-        public IPlaySound SoundPlayer { get; private set; }
-        public IConfigHandler ConfigHandler { get; private set; }
-        public PauseService PauseService { get; private set; }
-
         public string Key => _keyItem;
 
 
         [Inject]
-        public void Construct(IConfigHandler configHandler, IDataProvider dataProvider, IPlaySound soundPlayer,
-            PauseService pauseService)
+        public void Construct(IDataProvider dataProvider)
         {
-            ConfigHandler = configHandler;
             _dataProvider = dataProvider;
-            PauseService = pauseService;
-            SoundPlayer = soundPlayer;
         }
 
         public void SetPosition(Vector3 position) => transform.position = position;

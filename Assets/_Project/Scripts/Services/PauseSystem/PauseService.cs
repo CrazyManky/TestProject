@@ -6,17 +6,20 @@ namespace _Project.Scripts.Services.PauseSystem
     {
         public bool Pause { get; private set; } = false;
         public event Action OnPause;
-
-        public void PauseExecute()
+        
+        
+        public void PauseActive()
         {
-            SwitchValue();
+            Pause = true;
             OnPause?.Invoke();
         }
 
-        private void SwitchValue()
+        public void PauseDisable()
         {
-            var value = !Pause;
-            Pause = value;
+            Pause = false;
+            OnPause?.Invoke();
         }
+
+        private void SetValue(bool value) => Pause = value;
     }
 }

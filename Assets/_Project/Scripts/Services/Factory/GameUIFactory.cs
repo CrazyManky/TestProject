@@ -33,7 +33,16 @@ namespace _Project.Scripts.Services.Factory
             return gameOverUIInstance;
         }
 
+        public GameUI GetInstanceUI()
+        {
+            if (_gameUIInstance != null)
+            {
+                return _gameUIInstance;
+            }
+
+            return null;
+        }
+
         public void DestroyGameUI() => _gameUIInstance.DisableItem();
-        
     }
 }

@@ -1,12 +1,18 @@
 ﻿using _Project.Scripts.MathUtils;
+using _Project.Scripts.Services.LoadSystem.ConfigLoading;
+using _Project.Scripts.Services.PauseSystem;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.GameItems.EnemyComponents.Movement
 {
     [RequireComponent(typeof(BaseEnemy), typeof(Rigidbody))]
-    public class PathFollowingEnemy : MonoBehaviour // TODO : Добавить движение через физику
+    public class PathFollowingEnemy : MonoBehaviour
     {
-        private BaseEnemy _baseEnemy;
+        [SerializeField] private string _keyConfig;
+
+        private IConfigHandler _configHandler;
+        private PauseService _pauseService;
         private Rigidbody _rb;
         private float _patrolDistance;
         private float _speed;
@@ -15,9 +21,15 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Movement
         private Vector3 _startPosition;
         private Vector3 _direction = Vector3.forward;
 
+        [Inject]
+        public void Construct(IConfigHandler configHandler, PauseService pauseService)
+        {
+            _configHandler = configHandler;
+            _pauseService = pauseService;
+        }
+
         private void Awake()
         {
-            _baseEnemy = GetComponent<BaseEnemy>();
             _rb = GetComponent<Rigidbody>();
             LoadingConfig();
         }
@@ -26,7 +38,7 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Movement
 
         private void LoadingConfig()
         {
-            var config = _baseEnemy.ConfigHandler.GetConfig<EnemyPathConfig>(_baseEnemy.Key);
+            var config = _configHandler.GetConfig<EnemyPathConfig>(_keyConfig);
             _patrolDistance = config.PatrolDistance;
             _speed = config.Speed;
             _damage = config.Damage;
@@ -41,7 +53,7 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Movement
 
         private void MoveAlongPath()
         {
-            if (_baseEnemy.PauseService.Pause)
+            if (_pauseService.Pause)
             {
                 _rb.velocity = Vector3.zero;
                 return;

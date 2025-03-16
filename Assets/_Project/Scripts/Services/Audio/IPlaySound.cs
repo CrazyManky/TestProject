@@ -2,7 +2,7 @@
 {
     public interface IPlaySound
     {
-        public void PlayEnemyShotSound(bool play);
+        public void PlayEnemyShotSound();
         public void PlayCollisionExitZone(bool play);
         public void PlayBackgroundSound(bool play);
     }

@@ -34,7 +34,10 @@ namespace _Project.Scripts.GameStateMachine.Context
         [SerializeField] private CameraFollow cameraFollow;
         [SerializeField] private GameItemsConteiner<PlayerItem> _playerObjects;
         [SerializeField] private GameUI _gameUI;
-        [FormerlySerializedAs("_gameOverScreen")] [SerializeField] private GameOverUI gameOverUI;
+
+        [FormerlySerializedAs("_gameOverScreen")] [SerializeField]
+        private GameOverUI gameOverUI;
+
         [SerializeField] private AudioService _audioServicePrefab;
 
         private GameFSM _gameFSM;
@@ -43,8 +46,8 @@ namespace _Project.Scripts.GameStateMachine.Context
         public override void InstallBindings()
         {
             RegisterStates(Container);
-            RegisterServices(Container);
             RegisterFactories(Container);
+            RegisterServices(Container);
             RegisterContainers(Container);
             RegisterGameObjects(Container);
             RegisterAnalyticService(Container);

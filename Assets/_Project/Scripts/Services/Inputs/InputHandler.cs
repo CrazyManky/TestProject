@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Project.Screpts.Services;
-using _Project.Scripts.Services.Factory;
 using _Project.Scripts.Services.PauseSystem;
+using _Project.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
@@ -13,9 +12,8 @@ namespace _Project.Scripts.Services.Inputs
         private Dictionary<KeyCode, Action> _keyActions;
         private PauseService _pauseService;
         private SwitchingService _switchingService;
-        private GameUIFactory _gameUIFactory;
         public Vector3 MoveDirection { get; private set; }
-        
+
 
         [Inject]
         public void Construct(PauseService pauseService, SwitchingService switchingService)
@@ -24,12 +22,12 @@ namespace _Project.Scripts.Services.Inputs
             _switchingService = switchingService;
         }
 
-        public void Initialize()
+        public void Initialize(GameUI ui)
         {
             _keyActions = new Dictionary<KeyCode, Action>()
             {
                 [KeyCode.Tab] = _switchingService.SwitchObject,
-                [KeyCode.Escape] = () => { _pauseService.PauseExecute(); },
+                [KeyCode.Escape] = ui.ShowSaveScreen
             };
         }
 

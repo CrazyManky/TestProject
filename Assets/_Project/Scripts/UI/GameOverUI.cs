@@ -1,5 +1,6 @@
 using _Project.Scripts.GameStateMachine;
 using _Project.Scripts.GameStateMachine.States;
+using _Project.Scripts.Services.PauseSystem;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,11 +15,13 @@ namespace _Project.Scripts.UI
         [SerializeField] private RectTransform _rectTransform;
 
         private GameFSM _gameFsm;
+        private PauseService _pauseService;
 
         [Inject]
-        public void Construct(GameFSM gameFsm)
+        public void Construct(GameFSM gameFsm, PauseService pauseService)
         {
             _gameFsm = gameFsm;
+            _pauseService = pauseService;
             _restartLevel.onClick.AddListener(Restart);
             _exitApp.onClick.AddListener(CloseApp);
         }
@@ -27,6 +30,7 @@ namespace _Project.Scripts.UI
         {
             _restartLevel.interactable = false;
             _exitApp.interactable = false;
+            _pauseService.PauseActive();
             _rectTransform.localScale = new Vector3(0, 0, 1);
             _rectTransform.DOScale(new Vector3(1, 1, 1), 0.5f).OnComplete(() =>
             {
@@ -37,6 +41,7 @@ namespace _Project.Scripts.UI
 
         public void Restart()
         {
+            _pauseService.PauseDisable();
             _gameFsm.Enter<GameOverState>();
             _restartLevel.onClick.RemoveListener(Restart);
             _exitApp.onClick.RemoveListener(CloseApp);
