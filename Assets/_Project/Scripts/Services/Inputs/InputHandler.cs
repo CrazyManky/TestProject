@@ -14,6 +14,7 @@ namespace _Project.Scripts.Services.Inputs
         private SwitchingService _switchingService;
         public Vector3 MoveDirection { get; private set; }
 
+        public event Action OnEscapeButtonClick;
 
         [Inject]
         public void Construct(PauseService pauseService, SwitchingService switchingService)
@@ -22,12 +23,12 @@ namespace _Project.Scripts.Services.Inputs
             _switchingService = switchingService;
         }
 
-        public void Initialize(GameUI ui)
+        public void Initialize()
         {
             _keyActions = new Dictionary<KeyCode, Action>()
             {
                 [KeyCode.Tab] = _switchingService.SwitchObject,
-                [KeyCode.Escape] = ui.ShowSaveScreen
+                [KeyCode.Escape] = () => OnEscapeButtonClick?.Invoke()
             };
         }
 

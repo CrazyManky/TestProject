@@ -59,7 +59,7 @@ namespace _Project.Scripts.GameStateMachine.States
             _switchingService.SubscribeElements(cameraFollowInstance, _movementPlayer, gameUIInstance);
             _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movementPlayer,
                 _gameObject.transform);
-            _inputHandler.Initialize(gameUIInstance);
+            _inputHandler.Initialize();
         }
 
         public void FixedTick() => _movementPlayer.FixedTick();
