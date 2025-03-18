@@ -15,31 +15,32 @@ namespace _Project.Scripts.Services.Audio
         private PauseService _pauseService;
 
         [Inject]
-        public void Construct(PauseService pauseService)
-        {
-            _pauseService = pauseService;
-        }
-
-        private void OnEnable()
-        {
-            _pauseService.OnPauseActive += Mute;
-            _pauseService.OnPauseDisable += Continue;
-        }
-
-
+        public void Construct(PauseService pauseService) => _pauseService = pauseService;
+        
+        private void OnEnable() => _pauseService.OnValueChange += Mute;
+        
         public void PlayEnemyShotSound() => SetSoundState(_shotSound);
         public void PlayCollisionExitZone() => SetSoundState(_exitZoneSound);
         public void PlayBackgroundSound() => SetSoundState(_backgroundSound);
 
         private void SetSoundState(AudioSource source) => source.Play();
 
-        private void Mute() => _backgroundSound.Stop();
-        private void Continue() => _backgroundSound.Play();
-
-        private void OnDisable()
+        private void Mute(bool value)
         {
-            _pauseService.OnPauseActive -= Mute;
-            _pauseService.OnPauseDisable -= Continue;
+            if (value)
+            {
+                _backgroundSound.mute = value;
+                _shotSound.mute = value;
+                _exitZoneSound.mute = value;
+            }
+            else
+            {
+                _backgroundSound.mute = value;
+                _shotSound.mute = value;
+                _exitZoneSound.mute = value;
+            }
         }
+        
+        private void OnDisable() => _pauseService.OnValueChange -= Mute;
     }
 }
