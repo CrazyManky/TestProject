@@ -22,7 +22,6 @@ using _Project.Scripts.ShopSystem;
 using _Project.Scripts.UI;
 using _Project.Scripts.UI.SaveAndLoadUI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts.GameStateMachine.Context
@@ -34,10 +33,7 @@ namespace _Project.Scripts.GameStateMachine.Context
         [SerializeField] private CameraFollow cameraFollow;
         [SerializeField] private GameItemsConteiner<PlayerItem> _playerObjects;
         [SerializeField] private GameUI _gameUI;
-
-        [FormerlySerializedAs("_gameOverScreen")] [SerializeField]
-        private GameOverUI gameOverUI;
-
+        [SerializeField] private GameOverUI gameOverUI;
         [SerializeField] private AudioService _audioServicePrefab;
 
         private GameFSM _gameFSM;
@@ -50,13 +46,9 @@ namespace _Project.Scripts.GameStateMachine.Context
             RegisterServices(Container);
             RegisterContainers(Container);
             RegisterGameObjects(Container);
-            RegisterAnalyticService(Container);
-            RegisterAdsServices(Container);
-            RegisterPurchaseServices(Container);
             RegisterModel(Container);
             CreateGameFsm(Container);
             RegisterEntryPoint(Container);
-            DontDestroyOnLoad(this);
         }
 
         private void RegisterEntryPoint(DiContainer container)
@@ -74,45 +66,19 @@ namespace _Project.Scripts.GameStateMachine.Context
 
         private void RegisterStates(DiContainer container)
         {
-            container.Bind<LoadingState>().AsTransient();
-            container.BindInterfacesAndSelfTo<GamePlayState>().AsTransient();
-            container.Bind<GameOverState>().AsTransient();
+            container.Bind<LoadingState>().AsSingle();
+            container.BindInterfacesAndSelfTo<GamePlayState>().AsSingle();
+            container.Bind<GameOverState>().AsSingle();
         }
 
-        private void RegisterAnalyticService(DiContainer container)
-        {
-            container.Bind<IAnalytics>().To<EventHandler>().AsSingle();
-        }
-
-        private void RegisterAdsServices(DiContainer container)
-        {
-            container.BindInterfacesAndSelfTo<UnityAdsInitializer>().AsSingle();
-            container.Bind<IShowReward>().To<RewardHandler>().AsCached();
-            container.Bind<IAdvertisingShow>().To<AdvertisingHandler>().AsSingle();
-        }
-
-        private void RegisterPurchaseServices(DiContainer container)
-        {
-            container.BindInterfacesAndSelfTo<GameStoreListener>().AsSingle();
-            container.BindInterfacesAndSelfTo<GameStoreInitialize>().AsSingle();
-        }
 
         private void RegisterServices(DiContainer container)
         {
-            container.BindInterfacesAndSelfTo<InputHandler>().AsSingle();
             container.Bind<LevelInitializer>().AsSingle();
-            container.Bind<SaveDataHandler>().AsSingle();
             container.BindInterfacesAndSelfTo<LoadingService>().AsSingle();
-            container.Bind<PauseService>().AsSingle();
-            container.Bind<PlayerObjectCollector>().AsSingle();
-            container.Bind<MovementPlayer>().AsSingle();
-            container.Bind<SwitchingService>().AsSingle();
             container.Bind<HandlerLose>().AsSingle();
             container.Bind<LevelWinHandle>().AsSingle();
-            container.Bind<IConfigHandler>().To<ConfigHandler>().AsSingle();
-            container.Bind<ISaveStrategy>().To<SaveToFile>().AsSingle();
-            container.Bind<SceneLoader>().AsSingle();
-            container.Bind<EntityLoaderService>().AsSingle();
+            container.Bind<GameObjectDestroyer>().AsSingle();
         }
 
         private void RegisterModel(DiContainer container)
@@ -134,7 +100,7 @@ namespace _Project.Scripts.GameStateMachine.Context
             container.Bind<CameraFollow>().FromInstance(cameraFollow).AsSingle();
             container.Bind<GameUI>().FromInstance(_gameUI).AsSingle();
             container.Bind<GameOverUI>().FromInstance(gameOverUI).AsSingle();
-            container.Bind<IPlaySound>().FromInstance(_audioServicePrefab).AsSingle();
+            container.Bind<AudioService>().FromInstance(_audioServicePrefab).AsSingle();
         }
 
         private void RegisterContainers(DiContainer container)

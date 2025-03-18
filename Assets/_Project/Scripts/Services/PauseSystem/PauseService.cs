@@ -5,21 +5,19 @@ namespace _Project.Scripts.Services.PauseSystem
     public class PauseService
     {
         public bool Pause { get; private set; } = false;
-        public event Action OnPause;
-        
-        
+        public event Action OnPauseActive;
+        public event Action OnPauseDisable;
+
         public void PauseActive()
         {
             Pause = true;
-            OnPause?.Invoke();
+            OnPauseActive?.Invoke();
         }
 
         public void PauseDisable()
         {
             Pause = false;
-            OnPause?.Invoke();
+            OnPauseDisable?.Invoke();
         }
-
-        private void SetValue(bool value) => Pause = value;
     }
 }

@@ -6,46 +6,53 @@ namespace _Project.Scripts.Services
 {
     public class PlayerObjectCollector
     {
-        private int _activeItemIndex;
-        private int _removeItems = 0;
-
+        private int _activeItemIndex = 0;
         private List<PlayerItem> _switchableElements = new();
-        
-        public int ObjectCount { get; private set; }
+
+        public int ObjectCount => _switchableElements.Count;
 
         public void AddMoveObject(PlayerItem capsule)
         {
-            ObjectCount++;
+            if (capsule == null)
+                return;
+
             _switchableElements.Add(capsule);
         }
 
         public PlayerItem GetNewMoveObject()
         {
-            _activeItemIndex++;
-            if (_activeItemIndex <= ObjectCount && _switchableElements[_activeItemIndex].IActive)
-                return _switchableElements[_activeItemIndex];
-            _activeItemIndex = 0;
-            return _switchableElements[_activeItemIndex];
+            if (_switchableElements.Count == 0)
+                return null;
+
+            for (int i = 0; i < _switchableElements.Count; i++)
+            {
+                _activeItemIndex = (_activeItemIndex + 1) % _switchableElements.Count;
+                if (_switchableElements[_activeItemIndex].IActive)
+                    return _switchableElements[_activeItemIndex];
+            }
+
+            return null;
         }
 
         public void RemoveItem(PlayerItem playerItem)
         {
-            _removeItems++;
-            ObjectCount -= _removeItems;
+            if (playerItem == null || !_switchableElements.Contains(playerItem))
+                return;
+
             playerItem.DisableItem();
+            _switchableElements.Remove(playerItem);
         }
 
         public void RemoveItems()
         {
             foreach (var item in _switchableElements)
             {
-                if (item == null)
-                    continue;
-
-                Object.Destroy(item.gameObject);
+                if (item != null)
+                    Object.Destroy(item.gameObject);
             }
 
             _switchableElements.Clear();
+            _activeItemIndex = 0;
         }
     }
 }

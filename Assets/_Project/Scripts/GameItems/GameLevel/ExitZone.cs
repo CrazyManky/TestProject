@@ -22,12 +22,11 @@ namespace _Project.Scripts.GameItems.GameLevel
 
         [Inject]
         public void Construct(PlayerObjectCollector playerObjectCollector, SwitchingService switchingService,
-            IAnalytics analytics, IPlaySound soundPlayer)
+            IAnalytics analytics)
         {
             _playerObjectCollector = playerObjectCollector;
             _switchingService = switchingService;
             _analytics = analytics;
-            _soundPlayer = soundPlayer;
         }
 
         public void OnTriggerEnter(Collider other)
@@ -38,7 +37,6 @@ namespace _Project.Scripts.GameItems.GameLevel
                 OnEnterObject?.Invoke();
                 _playerObjectCollector.RemoveItem(moveObject);
                 _switchingService.SwitchObject();
-                _soundPlayer.PlayCollisionExitZone(true);
                 ShowCollisionEffect(moveObject.transform.position);
             }
         }

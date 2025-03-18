@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using _Project.Scripts.GameItems;
+using _Project.Scripts.GameItems.EnemyComponents;
 using _Project.Scripts.GameItems.GameLevel;
 using _Project.Scripts.GameItems.PlayerItems;
 using _Project.Scripts.GameItems.PlayerItems.MoveItems;
+using _Project.Scripts.Services.Audio;
 using _Project.Scripts.Services.Factory;
 using _Project.Scripts.Services.MoveItems;
 using _Project.Scripts.UI;
@@ -19,61 +21,66 @@ namespace _Project.Scripts.Services.Level
         private IInstantiator _instantiator;
         private LevelWinHandle _levelWinHandle;
         private List<IDestroy> _destroyGameElements = new();
-
+        private AudioService _audioServicePrefab;
         private GameLevel _gameLevelInstance;
+        private IPlaySound _audioServiceInstance;
 
         [Inject]
-        public void Construct(GameLevel levelPrefab, FactoryPlayerObjects factoryPlayerObjects,
-            EnemyFactory enemyFactory, LevelWinHandle levelWinHandle, DiContainer container)
+        public void Construct(GameLevel levelPrefab, AudioService audioService,
+            FactoryPlayerObjects factoryPlayerObjects,
+            EnemyFactory enemyFactory, LevelWinHandle levelWinHandle, IInstantiator container)
         {
             _levelPrefab = levelPrefab;
             _factoryPlayerObjects = factoryPlayerObjects;
             _enemyFactory = enemyFactory;
             _instantiator = container;
             _levelWinHandle = levelWinHandle;
+            _audioServicePrefab = audioService;
         }
 
         public void InitializeLevel(CameraFollow cameraFollow, GameUI gameUI, MovementPlayer movementPlayer,
             Transform parent)
         {
             _gameLevelInstance = _instantiator.InstantiatePrefabForComponent<GameLevel>(_levelPrefab, parent);
+            _audioServiceInstance =
+                _instantiator.InstantiatePrefabForComponent<AudioService>(_audioServicePrefab, parent);
+            _audioServiceInstance.PlayBackgroundSound();
             _gameLevelInstance.ExitZone.OnEnterObject += _levelWinHandle.CheckWin;
+            _gameLevelInstance.ExitZone.OnEnterObject += _audioServiceInstance.PlayCollisionExitZone;
             _destroyGameElements.Add(_gameLevelInstance);
-            var moveObject = AddPlayerObjects(_gameLevelInstance);
-            AddEnemy(_gameLevelInstance);
+            var moveObject = AddPlayerObjects(parent);
+            AddEnemy(parent);
             SetItemInSystem(moveObject, cameraFollow, gameUI, movementPlayer);
         }
 
-        private PlayerItem AddPlayerObjects(GameLevel levelInstance)
+        private PlayerItem AddPlayerObjects(Transform parent)
         {
-            var playerInstanceItemOne = _factoryPlayerObjects.CreateMoveableObject(0);
-            playerInstanceItemOne.transform.SetParent(_gameLevelInstance.transform);
-            _destroyGameElements.Add(playerInstanceItemOne);
-            var playerInstanceItemTwo = _factoryPlayerObjects.CreateMoveableObject(1);
-            playerInstanceItemTwo.transform.SetParent(_gameLevelInstance.transform);
-            _destroyGameElements.Add(playerInstanceItemTwo);
-
-            playerInstanceItemOne.SetPosition(levelInstance.GetPlayerPosition());
-            playerInstanceItemTwo.SetPosition(levelInstance.GetPlayerPosition());
-
+            var playerInstanceItemOne = SettingsPlayerObject(_factoryPlayerObjects.CreateMoveableObject(0, parent));
+            SettingsPlayerObject(_factoryPlayerObjects.CreateMoveableObject(1, parent));
             return playerInstanceItemOne;
         }
 
-        private void AddEnemy(GameLevel levelInstance)
+        private PlayerItem SettingsPlayerObject(PlayerItem playerItem)
         {
-            var enemyInstanceOne = _enemyFactory.InstanceEnemy(0);
-            enemyInstanceOne.transform.SetParent(_gameLevelInstance.transform);
-            _destroyGameElements.Add(enemyInstanceOne);
-            var enemyInstanceTwo = _enemyFactory.InstanceEnemy(1);
-            enemyInstanceTwo.transform.SetParent(_gameLevelInstance.transform);
-            _destroyGameElements.Add(enemyInstanceTwo);
-            var enemyInstanceFree = _enemyFactory.InstanceEnemy(2);
-            enemyInstanceFree.transform.SetParent(_gameLevelInstance.transform);
-            _destroyGameElements.Add(enemyInstanceFree);
+            playerItem.transform.SetParent(_gameLevelInstance.transform);
+            _destroyGameElements.Add(playerItem);
+            playerItem.SetPosition(_gameLevelInstance.GetPlayerPosition());
+            return playerItem;
+        }
 
-            enemyInstanceOne.SetPosition(levelInstance.GetEnemyPosition());
-            enemyInstanceTwo.SetPosition(levelInstance.GetEnemyPosition());
-            enemyInstanceFree.SetPosition(levelInstance.GetEnemyPosition());
+        private void AddEnemy(Transform parent)
+        {
+            SettingsEnemy(_enemyFactory.InstanceEnemy(0, parent));
+            SettingsEnemy(_enemyFactory.InstanceEnemy(1, parent));
+            SettingsEnemy(_enemyFactory.InstanceEnemy(2, parent));
+        }
+
+        private void SettingsEnemy(BaseEnemy enemy)
+        {
+            enemy.transform.SetParent(_gameLevelInstance.transform);
+            _destroyGameElements.Add(enemy);
+            enemy.SetPosition(_gameLevelInstance.GetEnemyPosition());
+            enemy.OnShot += _audioServiceInstance.PlayEnemyShotSound;
         }
 
         private static void SetItemInSystem(PlayerItem subItem, CameraFollow cameraFollow, GameUI gameUI,
@@ -87,7 +94,9 @@ namespace _Project.Scripts.Services.Level
         public void DestroyObject()
         {
             _gameLevelInstance.ExitZone.OnEnterObject -= _levelWinHandle.CheckWin;
+            _gameLevelInstance.ExitZone.OnEnterObject -= _audioServiceInstance.PlayCollisionExitZone;
             ClearCollections();
+            _audioServiceInstance.PlayBackgroundSound();
             Object.Destroy(_gameLevelInstance.gameObject);
         }
 

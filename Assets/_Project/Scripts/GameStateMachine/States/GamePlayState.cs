@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using _Project.Scripts.AdvertisingServices;
+﻿using _Project.Scripts.AdvertisingServices;
 using _Project.Scripts.Services;
-using _Project.Scripts.Services.Audio;
 using _Project.Scripts.Services.Factory;
-using _Project.Scripts.Services.Inputs;
 using _Project.Scripts.Services.Level;
 using _Project.Scripts.Services.MoveItems;
 using UnityEngine;
@@ -14,25 +11,20 @@ namespace _Project.Scripts.GameStateMachine.States
     public class GamePlayState : IGameState, IFixedTickable
     {
         private MovementPlayer _movementPlayer;
-        private InputHandler _inputHandler;
         private LevelInitializer _levelInitializer;
         private SwitchingService _switchingService;
         private GameUIFactory _gameUIFactory;
         private CameraFollowFactory _cameraFollowFactory;
         private HandlerLose _handlerLose;
         private IAdvertisingShow _advertisingShow;
-        private GameObject _gameObject = new("level");
-        private IPlaySound _playSound;
-
-        private List<GameObject> _destroyGameObject = new List<GameObject>();
+        private GameObjectDestroyer _destroyer;
 
         [Inject]
-        public GamePlayState(InputHandler inputHandler, CameraFollowFactory cameraFollowFactory,
+        public GamePlayState(CameraFollowFactory cameraFollowFactory,
             LevelInitializer levelInitializer, MovementPlayer movementPlayer, GameUIFactory gameUIFactory,
             SwitchingService switchingService, HandlerLose handlerLose,
-            IAdvertisingShow advertisingShow, IPlaySound playSound)
+            IAdvertisingShow advertisingShow, GameObjectDestroyer destroyer)
         {
-            _inputHandler = inputHandler;
             _cameraFollowFactory = cameraFollowFactory;
             _levelInitializer = levelInitializer;
             _movementPlayer = movementPlayer;
@@ -40,7 +32,7 @@ namespace _Project.Scripts.GameStateMachine.States
             _switchingService = switchingService;
             _handlerLose = handlerLose;
             _advertisingShow = advertisingShow;
-            _playSound = playSound;
+            _destroyer = destroyer;
         }
 
         public void EnterState()
@@ -49,17 +41,17 @@ namespace _Project.Scripts.GameStateMachine.States
             InitGamePlay();
             _advertisingShow.Initialize();
             _advertisingShow.Show();
-            _playSound.PlayBackgroundSound(true);
         }
 
         private void InitGamePlay()
         {
-            var gameUIInstance = _gameUIFactory.InstanceGUI(_gameObject.transform);
-            var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(_gameObject.transform);
+            var gameObject = new GameObject("level");
+            _destroyer.AddItem(gameObject);
+            var gameUIInstance = _gameUIFactory.InstanceGUI(gameObject.transform);
+            var cameraFollowInstance = _cameraFollowFactory.InstanceCameraFollow(gameObject.transform);
             _switchingService.SubscribeElements(cameraFollowInstance, _movementPlayer, gameUIInstance);
             _levelInitializer.InitializeLevel(cameraFollowInstance, gameUIInstance, _movementPlayer,
-                _gameObject.transform);
-            _inputHandler.Initialize();
+                gameObject.transform);
         }
 
         public void FixedTick() => _movementPlayer.FixedTick();
@@ -73,7 +65,6 @@ namespace _Project.Scripts.GameStateMachine.States
             _switchingService.UnsubscribeElements();
             _advertisingShow.DisposeShow();
             _cameraFollowFactory.DestroyInstance();
-            Object.Destroy(_gameObject.gameObject);
         }
     }
 }

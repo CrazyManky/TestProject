@@ -22,7 +22,7 @@ namespace _Project.Scripts.Services.Level
 
         public void Subscribe() => _showReward.OnFieldShow += LoseGame;
 
-        public void Unsubscribe() => _showReward.OnFieldShow += LoseGame;
+        public void Unsubscribe() => _showReward.OnFieldShow -= LoseGame;
 
         private void LoseGame()
         {

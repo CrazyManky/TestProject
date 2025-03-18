@@ -23,20 +23,17 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
         private Coroutine _shootRoutine;
         private BaseEnemy _baseEnemy;
         private IConfigHandler _configHandler;
-        private IPlaySound _playSound;
         private float _turnSpeed;
         private float _shotDelay;
         private float _shootDistance;
         private PauseService _pauseService;
 
-        private event Action OnShoot;
 
         [Inject]
-        public void Construct(IConfigHandler configHandler, PauseService pauseService, IPlaySound playSound)
+        public void Construct(IConfigHandler configHandler, PauseService pauseService)
         {
             _configHandler = configHandler;
             _pauseService = pauseService;
-            _playSound = playSound;
         }
 
         private void Awake()
@@ -59,7 +56,7 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
         {
             shootingZone.OnEnter += StartShooting;
             shootingZone.OnExited += StopShooting;
-            OnShoot += _playSound.PlayEnemyShotSound;
+            _baseEnemy.OnShot += Shoot;
         }
 
 
@@ -89,7 +86,7 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
                 yield return StartCoroutine(RotateTowardsTarget());
 
                 if (MathfDistance.Calculate(transform.position, _target.position) <= _shootDistance)
-                    Shoot();
+                    _baseEnemy.ShotToTarget();
 
                 yield return new WaitForSeconds(_shotDelay);
             }
@@ -120,12 +117,11 @@ namespace _Project.Scripts.GameItems.EnemyComponents.Shot
             newProjectile.transform.position = _firePoint.position;
             newProjectile.SetDirection(transform.forward);
             newProjectile.Initialize(_projectilePool);
-            OnShoot?.Invoke();
         }
 
         private void OnDisable()
         {
-            OnShoot -= _playSound.PlayEnemyShotSound;
+            _baseEnemy.OnShot -= Shoot;
             shootingZone.OnEnter -= StartShooting;
             shootingZone.OnExited -= StopShooting;
         }

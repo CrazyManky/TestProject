@@ -1,4 +1,5 @@
 ﻿using _Project.Scripts.GameStateMachine.States;
+using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.GameStateMachine
@@ -15,7 +16,7 @@ namespace _Project.Scripts.GameStateMachine
         }
 
 
-        public void Enter<TState>() where TState : IGameState, IStateExit
+        public void Enter<TState>() where TState : IGameState
         {
             _activeState?.ExitState();
             var state = _instantiator.Instantiate<TState>();

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Project.Scripts.Services.PauseSystem;
-using _Project.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.Services.Inputs
 {
-    public class InputHandler : ITickable
+    public class InputHandler : ITickable, IInitializable
     {
         private Dictionary<KeyCode, Action> _keyActions;
         private PauseService _pauseService;
@@ -36,10 +35,13 @@ namespace _Project.Scripts.Services.Inputs
         {
             HandleActionKey();
             if (_pauseService.Pause)
+            {
+                MoveDirection = Vector3.zero;
                 return;
-
-            var direaction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            MoveDirection = direaction;
+            }
+            
+            var direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            MoveDirection = direction;
         }
 
         private void HandleActionKey()
@@ -55,11 +57,6 @@ namespace _Project.Scripts.Services.Inputs
                     break;
                 }
             }
-        }
-
-        public void Disable()
-        {
-            _keyActions.Clear();
         }
     }
 }

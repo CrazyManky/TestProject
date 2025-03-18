@@ -19,8 +19,7 @@ namespace _Project.Scripts.Services.Factory
 
         public CameraFollow InstanceCameraFollow(Transform parent)
         {
-            _cameraFollowInstance =
-                _instantiator.InstantiatePrefabForComponent<CameraFollow>(_cameraFollowPrefab, parent);
+            _cameraFollowInstance = _instantiator.InstantiatePrefabForComponent<CameraFollow>(_cameraFollowPrefab, parent);
             return _cameraFollowInstance;
         }
 

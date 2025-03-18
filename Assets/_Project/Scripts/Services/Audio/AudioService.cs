@@ -1,25 +1,45 @@
 using System;
+using _Project.Scripts.Services.PauseSystem;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Services.Audio
 {
     [Serializable]
-    public class AudioService : IPlaySound
+    public class AudioService : MonoBehaviour, IPlaySound
     {
         [SerializeField] private AudioSource _shotSound;
         [SerializeField] private AudioSource _exitZoneSound;
         [SerializeField] private AudioSource _backgroundSound;
 
-        public void PlayEnemyShotSound() => SetSoundState(_shotSound, true);
-        public void PlayCollisionExitZone(bool play) => SetSoundState(_exitZoneSound, play);
-        public void PlayBackgroundSound(bool play) => SetSoundState(_backgroundSound, play);
+        private PauseService _pauseService;
 
-        private void SetSoundState(AudioSource source, bool play)
+        [Inject]
+        public void Construct(PauseService pauseService)
         {
-            if (source == null) return;
+            _pauseService = pauseService;
+        }
 
-            if (play) source.Play();
-            else source.Stop();
+        private void OnEnable()
+        {
+            _pauseService.OnPauseActive += Mute;
+            _pauseService.OnPauseDisable += Continue;
+        }
+
+
+        public void PlayEnemyShotSound() => SetSoundState(_shotSound);
+        public void PlayCollisionExitZone() => SetSoundState(_exitZoneSound);
+        public void PlayBackgroundSound() => SetSoundState(_backgroundSound);
+
+        private void SetSoundState(AudioSource source) => source.Play();
+
+        private void Mute() => _backgroundSound.Stop();
+        private void Continue() => _backgroundSound.Play();
+
+        private void OnDisable()
+        {
+            _pauseService.OnPauseActive -= Mute;
+            _pauseService.OnPauseDisable -= Continue;
         }
     }
 }

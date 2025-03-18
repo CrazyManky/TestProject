@@ -28,15 +28,14 @@ namespace _Project.Scripts.Services.Factory
         }
 
 
-        public PlayerItem CreateMoveableObject(int itemIndex)
+        public PlayerItem CreateMoveableObject(int itemIndex, Transform parent)
         {
-            var gameObject = new GameObject("MoveableObject");
             var instance =
                 _instantiator.InstantiatePrefabForComponent<PlayerItem>(_playerObjectConteiner.GetObject(itemIndex));
             _playerObjectCollector.AddMoveObject(instance);
             _saveDataHandler.AddItem(instance);
             _loadingService.AddLoadingEntity(instance);
-            instance.transform.SetParent(gameObject.transform);
+            instance.transform.SetParent(parent.transform);
             return instance;
         }
     }

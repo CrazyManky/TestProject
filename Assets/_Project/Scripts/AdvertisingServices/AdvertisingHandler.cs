@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.ShopSystem;
+﻿using _Project.Scripts.Services.PauseSystem;
+using _Project.Scripts.ShopSystem;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using Zenject;
@@ -10,9 +11,14 @@ namespace _Project.Scripts.AdvertisingServices
         private string _lodingAdID = "Interstitial_Android";
         private IPurchaseItem _purchaseItem;
         private bool _canWatch = true;
+        private PauseService _pauseService;
 
         [Inject]
-        public void Construct(IPurchaseItem purchaseItem) => _purchaseItem = purchaseItem;
+        public void Construct(IPurchaseItem purchaseItem, PauseService pauseService)
+        {
+            _purchaseItem = purchaseItem;
+            _pauseService = pauseService;
+        }
 
         public void Initialize()
         {
@@ -33,13 +39,17 @@ namespace _Project.Scripts.AdvertisingServices
                 return;
 
             if (Advertisement.isInitialized && !Advertisement.isShowing)
+            {
                 Advertisement.Show(_lodingAdID, this);
+                _pauseService.PauseActive();
+            }
         }
 
 
         public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
         {
             Debug.Log("OnUnityAdsShowComplete");
+            _pauseService.PauseDisable();
         }
 
         private void DisableShowAds()
@@ -49,6 +59,7 @@ namespace _Project.Scripts.AdvertisingServices
         }
 
         public void DisposeShow() => _purchaseItem.OnPurchaseNoAdsComplete -= DisableShowAds;
+
         public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message){}
 
         public void OnUnityAdsShowStart(string placementId){}

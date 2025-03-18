@@ -23,7 +23,6 @@ namespace _Project.Scripts.Services.Level
 
         public void CheckWin()
         {
-            Debug.Log(_playerObjectCollector.ObjectCount);
             if (_playerObjectCollector.ObjectCount - 1 <= 0)
             {
                 _analytics.NotifyLevelCompleted();
